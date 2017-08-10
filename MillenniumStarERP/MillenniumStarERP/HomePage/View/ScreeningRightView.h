@@ -1,0 +1,18 @@
+//
+//  ScreeningRightView.h
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/20.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+@class CDRTranslucentSideBar;
+typedef void (^ProRightViewBack)(NSDictionary *dic,BOOL isSel);
+@interface ScreeningRightView : UIView
+@property (nonatomic,  copy) NSArray*goods;
+@property (nonatomic,strong)CDRTranslucentSideBar *rightSideBar;
+@property (nonatomic,  copy)ProRightViewBack tableBack;
+@property (nonatomic,strong)NSMutableDictionary *dictB;
+@property (nonatomic,assign)BOOL isTop;
+@end
