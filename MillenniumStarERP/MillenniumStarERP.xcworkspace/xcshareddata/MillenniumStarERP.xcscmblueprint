@@ -1,32 +1,32 @@
 {
-  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "E3886637914E3AA3310423F335B5D9B08C930D14",
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "59ff6036-c6ce-4146-bb76-968ea519240f++1948",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
-    "E3886637914E3AA3310423F335B5D9B08C930D14" : {
+    "59ff6036-c6ce-4146-bb76-968ea519240f++1948" : {
 
     }
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "3FD50694D3D1E045A03EBFEDF129D1344C67BCF0" : 0,
-    "E3886637914E3AA3310423F335B5D9B08C930D14" : 0
+    "59ff6036-c6ce-4146-bb76-968ea519240f++1948" : 0,
+    "A027BA3BDDA21BB7560E630694AB8060B97ADE17" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A1F69F7E-6FA5-41DC-944B-5C7A8E25B50E",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "3FD50694D3D1E045A03EBFEDF129D1344C67BCF0" : "",
-    "E3886637914E3AA3310423F335B5D9B08C930D14" : "MillenniumStarERP\/"
+    "59ff6036-c6ce-4146-bb76-968ea519240f++1948" : "MillenniumStarERP\/",
+    "A027BA3BDDA21BB7560E630694AB8060B97ADE17" : ""
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "MillenniumStarERP",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "MillenniumStarERP.xcworkspace",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
     {
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jianqingyu\/New_Millenniums.git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3FD50694D3D1E045A03EBFEDF129D1344C67BCF0"
-    },
-    {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/192.168.1.248\/svn\/IOS",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E3886637914E3AA3310423F335B5D9B08C930D14"
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "59ff6036-c6ce-4146-bb76-968ea519240f++1948"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jianqingyu\/New_Millenniums.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A027BA3BDDA21BB7560E630694AB8060B97ADE17"
     }
   ]
 }

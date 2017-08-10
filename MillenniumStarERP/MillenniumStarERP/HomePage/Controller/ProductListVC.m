@@ -482,8 +482,8 @@
     ProductInfo *info = self.dataArray[indexPath.row];
     if ([[AccountTool account].isNorm intValue]==0) {
         if (self.isSel) {
-        [[NSNotificationCenter defaultCenter]postNotificationName:NotificationRingName
-                                  object:nil userInfo:@{UserInfoRingName:info}];
+            [[NSNotificationCenter defaultCenter]postNotificationName:NotificationRingName
+                                      object:nil userInfo:@{UserInfoRingName:info}];
         }
         NewCustomProDetailVC *new = [NewCustomProDetailVC new];
         new.isCus = self.isSel;

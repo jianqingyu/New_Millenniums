@@ -52,8 +52,14 @@
         recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
         [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
         [self addGestureRecognizer:recognizer];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(clickConfirm:)
+                                                    name:NotificationClickName object:nil];
     }
     return self;
+}
+
+- (void)clickConfirm:(NSNotification *)notification{
+    [self openConfirmOrder];
 }
 
 - (void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer{
@@ -167,6 +173,18 @@
 }
 
 - (IBAction)confirmClick:(id)sender {
+    [self openConfirmOrder];
+}
+
+- (void)openConfirmOrder{
+    if (!self.imgInfo) {
+        [MBProgressHUD showError:@"请挑选戒托"];
+        return;
+    }
+    if (!self.info) {
+        [MBProgressHUD showError:@"请挑选钻石"];
+        return;
+    }
     UIViewController *cur = [ShowLoginViewTool getCurrentVC];
     ConfirmOrderVC *firmVc = [ConfirmOrderVC new];
     firmVc.isSel = YES;
@@ -176,4 +194,7 @@
     }
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 @end

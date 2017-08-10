@@ -687,6 +687,11 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 }
 #pragma mark -- 提交订单
 - (IBAction)addOrder:(id)sender {
+    if (self.isCus) {
+        [[NSNotificationCenter defaultCenter]postNotificationName:NotificationClickName
+                                  object:nil userInfo:@{UserInfoClickName:@"点击"}];
+        return;
+    }
     if ([self.proNum length]==0) {
         [MBProgressHUD showError:@"请选择件数"];
         return;

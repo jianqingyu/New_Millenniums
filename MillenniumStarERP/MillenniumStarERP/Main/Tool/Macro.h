@@ -71,6 +71,9 @@
 /**选择裸钻通知名字*/
 #define NotificationDriName @"NotificationChangeDri"
 #define UserInfoDriName @"userinfoDriName"
+/**确认定制通知名字*/
+#define NotificationClickName @"NotificationClickName"
+#define UserInfoClickName @"userinfoClickName"
 /**选择头像通知名字*/
 #define NotificationImg @"NotificationChangeImg"
 #define UserInfoImg @"UserinfoHeadImg"
