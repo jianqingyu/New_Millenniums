@@ -40,7 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"搜索结果";
-    self.isShow = [[AccountTool account].isShow intValue];
+    self.isShow = ![[AccountTool account].isNoShow intValue];
     self.dataArray = @[].mutableCopy;
     [self setupBaseTableView];
     [self setupHeaderRefresh];
@@ -84,7 +84,7 @@
 
 - (void)setupBaseTableView{
     for (UIButton *btn in _bottomBtns) {
-        btn.enabled = [[AccountTool account].isShow intValue];
+        btn.enabled = ![[AccountTool account].isNoShow intValue];
         [btn setLayerWithW:3 andColor:BordColor andBackW:0.001];
     }
     [self.chooseBtn setLayerWithW:3 andColor:BordColor andBackW:0.001];
@@ -236,7 +236,8 @@
 }
 
 - (void)setTableViewHeadView:(NSArray *)arr{
-    NakedDriSeaHeadV *head = [[NakedDriSeaHeadV alloc]initWithFrame:CGRectMake(0, 0, (arr.count+1)*80+40, 30)];
+    CGRect frame = CGRectMake(0, 0, (arr.count+1)*80+40, 30);
+    NakedDriSeaHeadV *head = [[NakedDriSeaHeadV alloc]initWithFrame:frame];
     head.back = ^(NSString *mess){
         _sortStr = mess;
         [self.tableView.header beginRefreshing];
@@ -315,6 +316,30 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.isPro) {
+        for (int i=0; i<_dataArray.count; i++) {
+            NakedDriSeaListInfo *dInfo = _dataArray[i];
+            if (i!=indexPath.row) {
+                dInfo.isSel = NO;
+            }
+        }
+    }
+    NakedDriSeaListInfo *listInfo;
+    if (indexPath.row<_dataArray.count) {
+        listInfo = _dataArray[indexPath.row];
+    }
+    listInfo.isSel = !listInfo.isSel;
+    [self.tableView reloadData];
+    if (self.isCus) {
+        if (self.isSel) {
+            [self chooseCustomDri];
+        }else{
+            [self chooseCustomPro];
+        }
+    }
+}
+
 - (void)cellBackWithIndex:(NSInteger)index{
     if (!self.isShow) {
         return;
@@ -384,7 +409,7 @@
         return;
     }
     ProductListVC *listVc = [ProductListVC new];
-    listVc.isSel = self.isCus;
+    listVc.isCus = self.isCus;
     listVc.driInfo = listInfo;
     //    listVc.backDict = @{@"weight":listInfo.Weight}.mutableCopy;
     [self.navigationController pushViewController:listVc animated:YES];

@@ -25,6 +25,7 @@
 #import "CustomDriFirstCell.h"
 #import "ChooseNakedDriVC.h"
 #import "CustomDriWordCell.h"
+#import "CustomShowView.h"
 #import "ConfirmOrderCollectionVC.h"
 @interface NewCustomProDetailVC ()<UINavigationControllerDelegate,UITableViewDelegate,
 UITableViewDataSource,MWPhotoBrowserDelegate>
@@ -32,34 +33,42 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 @property (nonatomic,  weak) IBOutlet UIButton *lookBtn;
 @property (nonatomic,  weak) IBOutlet UIButton *addBtn;
 @property (nonatomic,  weak) IBOutlet UILabel *numLab;
+@property (nonatomic,  weak) IBOutlet UILabel *priceLab;
+@property (nonatomic,  weak) IBOutlet UILabel *allLab;
+
 @property (nonatomic,assign)int isCan;
-@property (nonatomic,assign)float wid;
 @property (nonatomic,assign)int idx;
+@property (nonatomic,assign)float wid;
+
+@property (nonatomic,  copy)NSString*proNum;
+@property (nonatomic,  copy)NSString*handStr;
+@property (nonatomic,  copy)NSString *driWord;
+@property (nonatomic,  copy)NSString*lastMess;
+@property (nonatomic,  copy)NSString *driCode;
+@property (nonatomic,  copy)NSString *driPrice;
+@property (nonatomic,  copy)NSString *driId;
+
 @property (nonatomic,  copy)NSArray *typeArr;
 @property (nonatomic,  copy)NSArray *typeSArr;
 @property (nonatomic,  copy)NSArray*detailArr;
-@property (nonatomic,  copy)NSString*proNum;
-@property (nonatomic,  copy)NSString*handStr;
 @property (nonatomic,  copy)NSArray*remakeArr;
 @property (nonatomic,  copy)NSArray*IDarray;
 @property (nonatomic,  copy)NSArray*headImg;
 @property (nonatomic,  copy)NSArray*photos;
 @property (nonatomic,  copy)NSArray*specTitles;
-@property (nonatomic,  copy)NSString*lastMess;
 @property (nonatomic,  copy)NSArray *handArr;
+@property (nonatomic,  copy)NSArray *puritys;
 @property (nonatomic,  copy)NSArray *chooseArr;
+
 @property (nonatomic,  strong)NSMutableArray*bools;
 @property (nonatomic,  strong)NSMutableArray*mutArr;
 @property (nonatomic,  strong)NSMutableArray*nums;
-@property (nonatomic,    copy)NSString *driCode;
-@property (nonatomic,    copy)NSString *driPrice;
-@property (nonatomic,    copy)NSString *driId;
+
 @property (nonatomic,  strong)UIView *hView;
 @property (nonatomic,  strong)DetailModel *modelInfo;
 @property (nonatomic,  strong)DetailTypeInfo *colorInfo;
 @property (nonatomic,  strong)CustomPickView *pickView;
-@property (weak, nonatomic) IBOutlet UILabel *priceLab;
-@property (weak, nonatomic) IBOutlet UILabel *allLab;
+@property (nonatomic,  weak) CustomShowView *wordView;
 @end
 
 @implementation NewCustomProDetailVC
@@ -78,8 +87,8 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     [self.lookBtn setLayerWithW:5 andColor:BordColor andBackW:0.5];
     [self.addBtn setLayerWithW:5 andColor:BordColor andBackW:0.001];
     self.lookBtn.hidden = self.isCus;
-    self.priceLab.hidden = ![[AccountTool account].isShow intValue];
-    self.allLab.hidden = ![[AccountTool account].isShow intValue];
+    self.priceLab.hidden = [[AccountTool account].isNoShow intValue];
+    self.allLab.hidden = [[AccountTool account].isNoShow intValue];
     [self.priceLab setAdjustsFontSizeToFitWidth:YES];
     [self.numLab setAdjustsFontSizeToFitWidth:YES];
     if (self.isCus) {
@@ -269,6 +278,12 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
             if ([YQObjectBool boolForObject:response.data[@"jewelStone"]]) {
                 [self addStoneWithDic:response.data[@"jewelStone"]];
             }
+            if ([YQObjectBool boolForObject:response.data[@"modelPuritys"]]) {
+                self.puritys = response.data[@"modelPuritys"];
+                if (self.puritys.count==0) {
+                    self.colorInfo = [DetailTypeInfo objectWithKeyValues:self.puritys[0]];
+                }
+            }
             if ([YQObjectBool boolForObject:response.data[@"model"]]) {
                 DetailModel *modelIn = [DetailModel objectWithKeyValues:
                                         response.data[@"model"]];
@@ -429,6 +444,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     if (isHead) {
         headF = CGRectMake(0, 0, SDevWidth, SDevWidth);
     }
+    //轮播视图
     UIView *headView = [[UIView alloc]initWithFrame:headF];
     CGFloat wid = headView.width;
     CGFloat height = headView.height;
@@ -441,6 +457,17 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     };
     loop.alignment = kPageControlAlignRight;
     [headView addSubview:loop];
+    //预览视图
+    CustomShowView *show = [[CustomShowView alloc]init];
+    [headView addSubview:show];
+    [show mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(headView).offset(0);
+        make.right.equalTo(headView).offset(0);
+        make.size.mas_equalTo(CGSizeMake(150, 75));
+    }];
+    show.hidden = YES;
+    self.wordView = show;
+    
     self.hView = headView;
     if (isHead) {
         self.tableView.tableHeaderView = self.hView;
@@ -489,12 +516,20 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         DetailTypeInfo *info = [dict allValues][0];
         if (staue==1) {
             self.colorInfo = info;
+            if (self.isCus) {
+                [[NSNotificationCenter defaultCenter]postNotificationName:NotificationColourName
+                                    object:nil userInfo:@{UserInfoColourName:info}];
+            }
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }else if (staue==2){
             self.handStr = info.title;
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            if (self.isCus) {
+                StorageDataTool *data = [StorageDataTool shared];
+                data.handSize = info.title;
+            }
         }else if (staue==4){
             self.lastMess = [NSString stringWithFormat:@"%@%@",self.lastMess,info.title];
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.mutArr.count+self.idx-1 inSection:0];
@@ -524,8 +559,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView
- numberOfRowsInSection:(NSInteger)section{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.mutArr.count+self.idx;
 }
 
@@ -586,6 +620,19 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         NSInteger index = indexPath.row-self.idx+1;
         if (self.isCus&&indexPath.row==1) {
             CustomDriWordCell *driCell = [CustomDriWordCell cellWithTableView:tableView];
+            driCell.word = self.driWord;
+            driCell.back = ^(BOOL isSel,NSString *word){
+                if (isSel) {
+                    self.driWord = word;
+                    if (self.isCus) {
+                        StorageDataTool *data = [StorageDataTool shared];
+                        data.word = word;
+                    }
+                }else{
+                    self.wordView.wordLab.text = self.driWord;
+                    self.wordView.hidden = NO;
+                }
+            };
             return driCell;
         }else{
             NewCustomProCell *proCell = [NewCustomProCell cellWithTableView:tableView];
@@ -618,7 +665,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         self.pickView.selTitle = title;
     }else{
         self.pickView.titleStr = @"成色";
-        self.pickView.typeList = self.handArr;
+        self.pickView.typeList = self.puritys;
         self.pickView.selTitle = self.colorInfo.title;
     }
     self.pickView.section = index;
@@ -797,6 +844,11 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     float price = _modelInfo.price;
     if (self.driPrice.length>0) {
         price = price + [self.driPrice floatValue];
+    }else{
+        StorageDataTool *data = [StorageDataTool shared];
+        if (data.BaseSeaInfo&&self.isCus){
+            price = price + [data.BaseSeaInfo.Price floatValue];
+        }
     }
     self.priceLab.text = [OrderNumTool strWithPrice:price];
 }

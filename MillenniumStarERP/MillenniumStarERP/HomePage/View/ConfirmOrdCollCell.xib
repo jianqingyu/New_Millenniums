@@ -171,7 +171,7 @@
                 <outletCollection property="allBtns" destination="Q53-Rq-cKu" id="ihV-qj-06A"/>
                 <outletCollection property="allBtns" destination="xAv-Np-fht" id="QX5-CX-RHb"/>
             </connections>
-            <point key="canvasLocation" x="465" y="378.5"/>
+            <point key="canvasLocation" x="435" y="320.5"/>
         </collectionViewCell>
     </objects>
     <resources>

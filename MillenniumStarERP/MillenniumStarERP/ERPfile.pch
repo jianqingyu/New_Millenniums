@@ -15,6 +15,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import "Md5PassWord.h"
+#import "StorageDataTool.h"
 #import "Macro.h"
 #import "CommonUtils.h"
 #import "AFNetworking.h"

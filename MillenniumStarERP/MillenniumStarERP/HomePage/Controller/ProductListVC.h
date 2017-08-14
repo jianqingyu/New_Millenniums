@@ -10,7 +10,7 @@
 #import "ProductInfo.h"
 #import "NakedDriSeaListInfo.h"
 @interface ProductListVC : BaseViewController
-@property (nonatomic, assign)BOOL isSel;
+@property (nonatomic, assign)BOOL isCus;
 @property (nonatomic, strong) NSMutableDictionary *backDict;
 @property (nonatomic, strong)NakedDriSeaListInfo *driInfo;
 @end

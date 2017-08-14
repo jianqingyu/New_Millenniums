@@ -20,6 +20,10 @@
     self.title = @"裸钻库";
     [self setRightNaviBar];
     [self creatNakedDriView];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 

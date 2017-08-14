@@ -80,7 +80,7 @@
     UITextField *min = [[UITextField alloc]initWithFrame:frame];
     min.borderStyle = UITextBorderStyleRoundedRect;
     min.textAlignment = NSTextAlignmentCenter;
-    min.keyboardType = UIKeyboardTypeNumberPad;
+    min.keyboardType = UIKeyboardTypeDecimalPad;
     min.font = [UIFont systemFontOfSize:14];
     return min;
 }

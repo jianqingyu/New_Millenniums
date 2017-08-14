@@ -32,7 +32,7 @@
                 [btn addSubview:img];
                 self.imgBtn = img;
             }
-            if (i==2&&[[AccountTool account].isShow intValue]==1) {
+            if (i==2&&[[AccountTool account].isNoShow intValue]==0) {
                 UIButton *img = [UIButton buttonWithType:UIButtonTypeCustom];
                 img.frame = CGRectMake(rowWid-20, 0, 20, 30);
                 [img setImage:[UIImage imageNamed:@"icon_sort"] forState:UIControlStateNormal];

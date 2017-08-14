@@ -53,6 +53,8 @@
 - (void)setCertCode:(NSString *)certCode{
     if (certCode) {
         _certCode = certCode;
+        self.accBtn.enabled = !_certCode.length;
+        self.addBtn.enabled = !_certCode.length;
         self.fie1.userInteractionEnabled = !_certCode.length;
     }
 }

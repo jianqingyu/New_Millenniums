@@ -38,7 +38,7 @@
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oKn-Fp-iDO" customClass="YQTextView">
                         <rect key="frame" x="15" y="49" width="295" height="70"/>
-                        <color key="backgroundColor" red="0.92941176469999998" green="0.92156862750000001" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.92549019607843142" green="0.91764705882352937" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="70" id="hMj-ho-ldr"/>
                         </constraints>
@@ -59,6 +59,7 @@
                     <constraint firstAttribute="trailing" secondItem="U8R-UR-gGc" secondAttribute="trailing" constant="15" id="kom-FH-Pzx"/>
                     <constraint firstItem="Kkr-eZ-374" firstAttribute="top" secondItem="TWO-aI-DBP" secondAttribute="bottom" constant="11" id="mVc-6B-szt"/>
                     <constraint firstItem="TWO-aI-DBP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="miW-kr-dW6"/>
+                    <constraint firstAttribute="trailing" secondItem="HSE-Kk-JZq" secondAttribute="trailing" constant="15" id="p3Y-0y-cdl"/>
                     <constraint firstItem="TWO-aI-DBP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="pmK-7y-lpM"/>
                     <constraint firstAttribute="bottom" secondItem="oKn-Fp-iDO" secondAttribute="bottom" constant="10" id="re7-bR-EoM"/>
                     <constraint firstItem="HSE-Kk-JZq" firstAttribute="centerY" secondItem="U8R-UR-gGc" secondAttribute="centerY" id="sW3-s0-QmJ"/>
@@ -68,6 +69,7 @@
                     <mask key="constraints">
                         <exclude reference="WhE-vp-fVi"/>
                         <exclude reference="kom-FH-Pzx"/>
+                        <exclude reference="awG-Wn-jxC"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>

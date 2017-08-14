@@ -7,7 +7,11 @@
 //
 
 #import "CustomDriWordCell.h"
+@interface CustomDriWordCell()<UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UITextField *wordFie;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *btns;
 
+@end
 @implementation CustomDriWordCell
 
 + (id)cellWithTableView:(UITableView *)tableView{
@@ -26,6 +30,43 @@
         self = [[NSBundle mainBundle]loadNibNamed:@"CustomDriWordCell" owner:nil options:nil][0];
     }
     return self;
+}
+
+- (void)setWord:(NSString *)word{
+    if (word) {
+        _word = word;
+        self.wordFie.text = _word;
+    }
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    [self resetText:textField];
+}
+
+- (IBAction)textClick:(UIButton *)sender {
+    NSInteger idx = [self.btns indexOfObject:sender];
+    if (idx==0) {
+        self.wordFie.text = [NSString stringWithFormat:@"%@❤️",self.wordFie.text];
+    }else{
+        self.wordFie.text = [NSString stringWithFormat:@"%@&",self.wordFie.text];
+    }
+    [self resetText:self.wordFie];
+}
+
+- (void)resetText:(UITextField *)fie{
+    //如果输入框中的文字大于5，就截取前5个作为输入框的文字
+    if (fie.text.length > 5) {
+        fie.text = [fie.text substringToIndex:5];
+    }
+    if (self.back) {
+        self.back(YES,fie.text);
+    }
+}
+
+- (IBAction)lookWord:(id)sender {
+    if (self.back) {
+        self.back(NO,@"");
+    }
 }
 
 @end

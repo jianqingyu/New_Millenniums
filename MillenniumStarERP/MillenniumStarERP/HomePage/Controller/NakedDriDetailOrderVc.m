@@ -36,12 +36,6 @@
 - (void)back{
     NakedDriListOrderVc *orderVc = [NakedDriListOrderVc new];
     [self.navigationController pushViewController:orderVc animated:YES];
-    NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: self.navigationController.viewControllers];
-    NSInteger index = self.navigationController.viewControllers.count;
-    [navigationArray removeObjectAtIndex: index-2];
-    [navigationArray removeObjectAtIndex: index-3];
-    [navigationArray removeObjectAtIndex: index-4];
-    self.navigationController.viewControllers = navigationArray;
 }
 
 - (void)setupTableView{

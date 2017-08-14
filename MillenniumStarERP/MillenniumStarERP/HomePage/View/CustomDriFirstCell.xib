@@ -105,8 +105,8 @@
                             <constraint firstAttribute="height" constant="1" id="DBO-U7-n4E"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="成   色" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B28-cd-770">
-                        <rect key="frame" x="72" y="52" width="42" height="18"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="请选择成色" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B28-cd-770">
+                        <rect key="frame" x="206" y="52" width="75" height="18"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -137,6 +137,8 @@
                     <constraint firstItem="6hr-nn-AA2" firstAttribute="leading" secondItem="APs-sK-vEh" secondAttribute="trailing" constant="10" id="Cmf-N5-kaQ"/>
                     <constraint firstItem="rby-Lj-5Zp" firstAttribute="width" secondItem="6hr-nn-AA2" secondAttribute="width" id="DFC-IX-qNv"/>
                     <constraint firstItem="e6k-LX-yqX" firstAttribute="leading" secondItem="RPY-35-caa" secondAttribute="trailing" constant="15" id="EiU-FD-idG"/>
+                    <constraint firstItem="6kb-5W-eup" firstAttribute="leading" secondItem="B28-cd-770" secondAttribute="trailing" constant="15" id="FFV-Mg-weI"/>
+                    <constraint firstItem="B28-cd-770" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="GRF-ts-dSn"/>
                     <constraint firstItem="UJT-DF-9kf" firstAttribute="top" secondItem="RPY-35-caa" secondAttribute="bottom" constant="8" id="H8d-Vw-kjA"/>
                     <constraint firstItem="5Du-eS-J7t" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oeh-ya-iaZ" secondAttribute="trailing" constant="10" id="I27-L6-CWa"/>
                     <constraint firstAttribute="trailing" secondItem="6kb-5W-eup" secondAttribute="trailing" constant="15" id="I9o-gC-aAo"/>
@@ -175,6 +177,8 @@
                 <variation key="default">
                     <mask key="constraints">
                         <exclude reference="jak-wv-QW2"/>
+                        <exclude reference="5eh-LV-TrV"/>
+                        <exclude reference="GRF-ts-dSn"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
@@ -187,7 +191,7 @@
                 <outlet property="ptLab" destination="5Du-eS-J7t" id="rKh-pv-8uf"/>
                 <outlet property="titleLab" destination="oeh-ya-iaZ" id="s1X-W9-Ipq"/>
             </connections>
-            <point key="canvasLocation" x="359" y="580.5"/>
+            <point key="canvasLocation" x="344" y="378.5"/>
         </tableViewCell>
     </objects>
     <resources>

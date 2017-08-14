@@ -31,11 +31,16 @@
 		790D22471EE115FE00EB6450 /* NakedDriConfirmHeadV.m in Sources */ = {isa = PBXBuildFile; fileRef = 790D22461EE115FE00EB6450 /* NakedDriConfirmHeadV.m */; };
 		790D22491EE1161B00EB6450 /* NakedDriConfirmHeadV.xib in Resources */ = {isa = PBXBuildFile; fileRef = 790D22481EE1161B00EB6450 /* NakedDriConfirmHeadV.xib */; };
 		790D224C1EE136A700EB6450 /* NakedDriConfirmInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 790D224B1EE136A700EB6450 /* NakedDriConfirmInfo.m */; };
+		7912BC5B1F41760E00D22EBA /* ChangeUserInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7912BC591F41760E00D22EBA /* ChangeUserInfoVC.m */; };
+		7912BC5C1F41760E00D22EBA /* ChangeUserInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7912BC5A1F41760E00D22EBA /* ChangeUserInfoVC.xib */; };
+		7912BC5F1F41810C00D22EBA /* StorageDataTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 7912BC5E1F41810C00D22EBA /* StorageDataTool.m */; };
 		7915BCE01E7A6F0100407927 /* ProductionDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7915BCDF1E7A6F0100407927 /* ProductionDetailView.m */; };
 		7915BCE31E7A6F5100407927 /* SettlementDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7915BCE21E7A6F5100407927 /* SettlementDetailView.m */; };
 		7915BCE61E7A6F9B00407927 /* FinishedDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7915BCE51E7A6F9B00407927 /* FinishedDetailView.m */; };
 		7915BCEA1E7A833E00407927 /* SearchResultTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7915BCE81E7A833E00407927 /* SearchResultTableCell.m */; };
 		7915BCEB1E7A833E00407927 /* SearchResultTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7915BCE91E7A833E00407927 /* SearchResultTableCell.xib */; };
+		791B01601F3D817800CA96CB /* CustomShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 791B015F1F3D817800CA96CB /* CustomShowView.m */; };
+		791B01621F3D818E00CA96CB /* CustomShowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 791B01611F3D818E00CA96CB /* CustomShowView.xib */; };
 		7922F2971DCADD88003E0C8F /* CusTomLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7922F2961DCADD88003E0C8F /* CusTomLoginView.m */; };
 		7922F29C1DCAEF72003E0C8F /* ShowLoginViewTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 7922F29B1DCAEF72003E0C8F /* ShowLoginViewTool.m */; };
 		7924C55E1DF8ED1E005B89FA /* BaseCusLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7924C55D1DF8ED1E005B89FA /* BaseCusLoginView.m */; };
@@ -456,6 +461,11 @@
 		790D22481EE1161B00EB6450 /* NakedDriConfirmHeadV.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NakedDriConfirmHeadV.xib; sourceTree = "<group>"; };
 		790D224A1EE136A700EB6450 /* NakedDriConfirmInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NakedDriConfirmInfo.h; sourceTree = "<group>"; };
 		790D224B1EE136A700EB6450 /* NakedDriConfirmInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NakedDriConfirmInfo.m; sourceTree = "<group>"; };
+		7912BC581F41760E00D22EBA /* ChangeUserInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeUserInfoVC.h; sourceTree = "<group>"; };
+		7912BC591F41760E00D22EBA /* ChangeUserInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeUserInfoVC.m; sourceTree = "<group>"; };
+		7912BC5A1F41760E00D22EBA /* ChangeUserInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeUserInfoVC.xib; sourceTree = "<group>"; };
+		7912BC5D1F41810C00D22EBA /* StorageDataTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageDataTool.h; sourceTree = "<group>"; };
+		7912BC5E1F41810C00D22EBA /* StorageDataTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageDataTool.m; sourceTree = "<group>"; };
 		7915BCDE1E7A6F0100407927 /* ProductionDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductionDetailView.h; sourceTree = "<group>"; };
 		7915BCDF1E7A6F0100407927 /* ProductionDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductionDetailView.m; sourceTree = "<group>"; };
 		7915BCE11E7A6F5100407927 /* SettlementDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettlementDetailView.h; sourceTree = "<group>"; };
@@ -465,6 +475,9 @@
 		7915BCE71E7A833E00407927 /* SearchResultTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultTableCell.h; sourceTree = "<group>"; };
 		7915BCE81E7A833E00407927 /* SearchResultTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultTableCell.m; sourceTree = "<group>"; };
 		7915BCE91E7A833E00407927 /* SearchResultTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultTableCell.xib; sourceTree = "<group>"; };
+		791B015E1F3D817700CA96CB /* CustomShowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomShowView.h; sourceTree = "<group>"; };
+		791B015F1F3D817800CA96CB /* CustomShowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomShowView.m; sourceTree = "<group>"; };
+		791B01611F3D818E00CA96CB /* CustomShowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomShowView.xib; sourceTree = "<group>"; };
 		7922F2951DCADD88003E0C8F /* CusTomLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CusTomLoginView.h; sourceTree = "<group>"; };
 		7922F2961DCADD88003E0C8F /* CusTomLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CusTomLoginView.m; sourceTree = "<group>"; };
 		7922F29A1DCAEF72003E0C8F /* ShowLoginViewTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowLoginViewTool.h; sourceTree = "<group>"; };
@@ -1383,6 +1396,8 @@
 				7979A0281E5BCFAF00604BD5 /* CommonUsedTool.m */,
 				793BD0941E7240C700E32389 /* ArrayWithDict.h */,
 				793BD0951E7240C700E32389 /* ArrayWithDict.m */,
+				7912BC5D1F41810C00D22EBA /* StorageDataTool.h */,
+				7912BC5E1F41810C00D22EBA /* StorageDataTool.m */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -1674,6 +1689,9 @@
 				792C01B91D89043B005943AE /* ConfirmOrderVC.h */,
 				792C01BA1D89043B005943AE /* ConfirmOrderVC.m */,
 				792C01BB1D89043B005943AE /* ConfirmOrderVC.xib */,
+				7912BC581F41760E00D22EBA /* ChangeUserInfoVC.h */,
+				7912BC591F41760E00D22EBA /* ChangeUserInfoVC.m */,
+				7912BC5A1F41760E00D22EBA /* ChangeUserInfoVC.xib */,
 				79409AD91F3846BC00B06A99 /* ConfirmOrderCollectionVC.h */,
 				79409ADA1F3846BC00B06A99 /* ConfirmOrderCollectionVC.m */,
 				79409ADB1F3846BC00B06A99 /* ConfirmOrderCollectionVC.xib */,
@@ -1937,6 +1955,9 @@
 				795C944C1F20640E00D2C044 /* NewCustomProCell.h */,
 				795C944D1F20640E00D2C044 /* NewCustomProCell.m */,
 				795C944E1F20640E00D2C044 /* NewCustomProCell.xib */,
+				791B015E1F3D817700CA96CB /* CustomShowView.h */,
+				791B015F1F3D817800CA96CB /* CustomShowView.m */,
+				791B01611F3D818E00CA96CB /* CustomShowView.xib */,
 				790C2C2B1E092A8E006D9DCF /* ProgressListCell.h */,
 				790C2C2C1E092A8E006D9DCF /* ProgressListCell.m */,
 				790C2C2D1E092A8E006D9DCF /* ProgressListCell.xib */,
@@ -2294,6 +2315,7 @@
 				795515971D9BAF7800A458AE /* AddEditAddressVC.xib in Resources */,
 				79E8B2401D800279009D7296 /* EditAddressCell.xib in Resources */,
 				790C2C2F1E092A8E006D9DCF /* ProgressListCell.xib in Resources */,
+				791B01621F3D818E00CA96CB /* CustomShowView.xib in Resources */,
 				79E1778D1E690FC300318916 /* SettlementOrderVC.xib in Resources */,
 				7969FB781DBE068900139681 /* ChooseAddressTableCell.xib in Resources */,
 				79655E171D7D0EE2006B90FC /* HomePageVC.xib in Resources */,
@@ -2309,6 +2331,7 @@
 				790D22491EE1161B00EB6450 /* NakedDriConfirmHeadV.xib in Resources */,
 				794F28971EDEB68F003EC54D /* NakedDriDetailOrderVc.xib in Resources */,
 				799235E51DB766BE0003379B /* ClassListController.xib in Resources */,
+				7912BC5C1F41760E00D22EBA /* ChangeUserInfoVC.xib in Resources */,
 				79FF7A8E1E6D3A81003EF5E7 /* OrderSettlementTableCell.xib in Resources */,
 				790C70A61DCC1B23007343BA /* NoNetViewController.xib in Resources */,
 				7933E2EC1EE012A600C6247F /* NakedDriOrderDetailCell.xib in Resources */,
@@ -2520,6 +2543,7 @@
 				793B9F521D91112C00DCFB6E /* CDRTranslucentSideBar.m in Sources */,
 				796BFF871DE28B11008D78A4 /* ProductionOrderVC.m in Sources */,
 				79CF35F51F21AFD700BD3242 /* EditCustomDriTableCell.m in Sources */,
+				7912BC5B1F41760E00D22EBA /* ChangeUserInfoVC.m in Sources */,
 				795B5FBF1DD5B0F10031FF00 /* OrderListNewInfo.m in Sources */,
 				794EDBE31DDD38CD0018DDF3 /* IQKeyboardReturnKeyHandler.m in Sources */,
 				79CF35F11F21905600BD3242 /* EditCustomDriView.m in Sources */,
@@ -2535,6 +2559,7 @@
 				799235DD1DB752400003379B /* RemarkPopView.m in Sources */,
 				79CD6B9D1E77E8D700492463 /* CustomTextField.m in Sources */,
 				79655D861D7D0668006B90FC /* AppDelegate.m in Sources */,
+				7912BC5F1F41810C00D22EBA /* StorageDataTool.m in Sources */,
 				7922F29C1DCAEF72003E0C8F /* ShowLoginViewTool.m in Sources */,
 				79655DEA1D7D0AAA006B90FC /* YQTextView.m in Sources */,
 				793FC6771E4C15C8009F6296 /* PackagingTool.m in Sources */,
@@ -2565,6 +2590,7 @@
 				794F28AD1EDEF914003EC54D /* NakedDriLibSLabCell.m in Sources */,
 				790D22471EE115FE00EB6450 /* NakedDriConfirmHeadV.m in Sources */,
 				792DF4BB1E021B7E00128456 /* ChooseInvoiceCell.m in Sources */,
+				791B01601F3D817800CA96CB /* CustomShowView.m in Sources */,
 				79E1779D1E69256400318916 /* DeliveryListInfo.m in Sources */,
 				796218F61D98FD6200FE01D6 /* ETFoursquareImages.m in Sources */,
 				7915BCE61E7A6F9B00407927 /* FinishedDetailView.m in Sources */,

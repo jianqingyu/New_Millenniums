@@ -27,6 +27,7 @@
 - (void)setSeaInfo:(NakedDriSeaListInfo *)seaInfo{
     if (seaInfo) {
         _seaInfo = seaInfo;
+        self.backgroundColor = _seaInfo.isSel?DefaultColor:[UIColor whiteColor];
         NSArray *arr = [self arrWithModel];
         if (self.mutBtns.count==0) {
             [self creatBtnWithInfo:arr];
@@ -52,6 +53,7 @@
         [btn setTitle:arr[i] forState:UIControlStateNormal];
         if (i==0) {
             btn.selected = _seaInfo.isSel;
+            btn.userInteractionEnabled = YES;
             [btn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
             [btn setImage:[UIImage imageNamed:@"icon_select4"] forState:UIControlStateNormal];
             [btn setImage:[UIImage imageNamed:@"icon_select3"] forState:UIControlStateSelected];
@@ -62,6 +64,7 @@
         }
         if (i==total-1) {
             btn.x = rowWid*i+40;
+            btn.userInteractionEnabled = YES;
             [btn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
             [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
         }
@@ -102,7 +105,8 @@
 
 - (UIButton *)creatBtn{
     CustomShapeBtn *btn = [CustomShapeBtn buttonWithType:UIButtonTypeCustom];
-    btn.backgroundColor = [UIColor whiteColor];
+    btn.userInteractionEnabled = NO;
+//    btn.backgroundColor = [UIColor whiteColor];
     btn.titleLabel.font = [UIFont systemFontOfSize:12.0];
     [btn.titleLabel setAdjustsFontSizeToFitWidth:YES];
     [btn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];

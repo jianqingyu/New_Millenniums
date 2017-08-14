@@ -84,8 +84,8 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.isShowPrice = [[AccountTool account].isShow intValue];
-    self.hisBtn.enabled = [[AccountTool account].isShow intValue];
+    self.isShowPrice = ![[AccountTool account].isNoShow intValue];
+    self.hisBtn.enabled = ![[AccountTool account].isNoShow intValue];
     App;
     [OrderNumTool orderWithNum:app.shopNum andView:self.orderNumLab];
 }
@@ -322,7 +322,6 @@
     }
     [self.popClassView removeFromSuperview];
 }
-
 //弹出视图
 - (void)setPopView{
     CGRect allFrame = CGRectMake(0, 40, SDevWidth, SDevHeight-40);
@@ -481,12 +480,12 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     ProductInfo *info = self.dataArray[indexPath.row];
     if ([[AccountTool account].isNorm intValue]==0) {
-        if (self.isSel) {
+        if (self.isCus) {
             [[NSNotificationCenter defaultCenter]postNotificationName:NotificationRingName
                                       object:nil userInfo:@{UserInfoRingName:info}];
         }
         NewCustomProDetailVC *new = [NewCustomProDetailVC new];
-        new.isCus = self.isSel;
+        new.isCus = self.isCus;
         new.seaInfo = self.driInfo;
         new.proId = info.id;
         [self.navigationController pushViewController:new animated:YES];

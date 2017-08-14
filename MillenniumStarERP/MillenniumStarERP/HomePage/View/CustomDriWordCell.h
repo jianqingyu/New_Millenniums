@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+typedef void (^CusWordBack)(BOOL isSel,NSString *word);
 @interface CustomDriWordCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UITextField *wordFie;
-@property (weak, nonatomic) IBOutlet UIButton *lookBtn;
 + (id)cellWithTableView:(UITableView *)tableView;
+@property (nonatomic,copy)NSString *word;
+@property (nonatomic,copy)CusWordBack back;
 @end

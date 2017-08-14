@@ -62,9 +62,15 @@
 //微信支付网址
 #define WXStonePay [NSString stringWithFormat:@"%@Payment/GetWxpayStoneParameter",baseNet]
 #define WXPay [NSString stringWithFormat:@"%@Payment/GetWxpayModelParameter",baseNet]
+/**选择信息通知名字*/
+#define NotificationMessName @"NotificationChangeMess"
+#define UserInfoMessName @"UserinfoMessName"
 /**选择地址通知名字*/
 #define NotificationName @"NotificationChangeCity"
 #define UserInfoName @"UserinfoCityName"
+/**选择成色通知名字*/
+#define NotificationColourName @"NotificationChangeColour"
+#define UserInfoColourName @"userinfoColourName"
 /**选择戒托通知名字*/
 #define NotificationRingName @"NotificationChangeRing"
 #define UserInfoRingName @"userinfoRingName"

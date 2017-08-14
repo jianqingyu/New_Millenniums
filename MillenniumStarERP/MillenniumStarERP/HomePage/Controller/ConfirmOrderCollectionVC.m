@@ -64,8 +64,8 @@
 }
 
 - (void)creatConfirmOrder{
-    self.priceLab.hidden = ![[AccountTool account].isShow intValue];
-    self.conBtn.enabled = [[AccountTool account].isShow intValue];
+    self.priceLab.hidden = [[AccountTool account].isNoShow intValue];
+    self.conBtn.enabled = ![[AccountTool account].isNoShow intValue];
     [self changeHeightWithDev];
     [self setCollectionView];
     [self creatHeadView];

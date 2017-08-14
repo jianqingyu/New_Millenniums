@@ -119,7 +119,7 @@
     tableCell.textLabel.text = key;
     if(indexPath.row==0){
         UISwitch *switchBtn = [[UISwitch alloc]initWithFrame:CGRectMake(0, 0, 50, 20)];
-        [switchBtn setOn:[[AccountTool account].isShow intValue]];
+        [switchBtn setOn:![[AccountTool account].isNoShow intValue]];
         tableCell.accessoryView = switchBtn;
         [switchBtn addTarget:self action:@selector(showPriceClick:)
             forControlEvents:UIControlEventTouchUpInside];
@@ -143,7 +143,7 @@
     params[@"password"] = [AccountTool account].password;
     params[@"phone"] = [AccountTool account].phone;
     params[@"tokenKey"] = [AccountTool account].tokenKey;
-    params[@"isShow"] = [AccountTool account].isShow;
+    params[@"isNoShow"] = [AccountTool account].isNoShow;
     params[@"isNorm"] = @(btn.on);
     Account *account = [Account accountWithDict:params];
     //自定义类型存储用NSKeyedArchiver

@@ -14,15 +14,15 @@
 #import "CusHauteCoutureView.h"
 #import "NakedDriLibViewController.h"
 @interface NewHomeBannerVC ()<UINavigationControllerDelegate>
-@property (nonatomic,strong)NSArray *photos;
-@property (nonatomic,strong)NSArray *bPhotos;
-@property (nonatomic,  copy) NSString *openUrl;
-@property(nonatomic,   copy) NSDictionary *versionDic;
-@property (nonatomic,  weak)HYBLoopScrollView *loopView;
-@property (nonatomic,  weak)UIView *proDriView;
 @property (nonatomic,  weak)UIView *baView;
 @property (nonatomic,  weak)UIWindow *keyWin;
-@property (nonatomic,  weak)CusHauteCoutureView *cusView;
+@property (nonatomic,strong)NSArray *photos;
+@property (nonatomic,strong)NSArray *bPhotos;
+@property (nonatomic,  copy)NSString *openUrl;
+@property (nonatomic,  weak)UIView *proDriView;
+@property (nonatomic,  copy)NSDictionary *versionDic;
+@property (nonatomic,  weak)HYBLoopScrollView *loopView;
+@property (nonatomic,strong)CusHauteCoutureView *cusView;
 @end
 
 @implementation NewHomeBannerVC
@@ -33,11 +33,20 @@
     self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝2/id1244977034?mt=8";
 //    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
     self.automaticallyAdjustsScrollViewInsets = NO;
-    [self creatBottomBtn];[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+    [self creatBottomBtn];
+    [self loadNSNotification];
+    [self loadAddressDataInfo];
+}
+//添加各种通知
+- (void)loadNSNotification{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:)
+             name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeNakedDri:)
                                                 name:NotificationDriName object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRingHolder:)
                                                 name:NotificationRingName object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeColour:)
+                                                name:NotificationColourName object:nil];
 }
 
 - (void)orientChange:(NSNotification *)notification{
@@ -52,8 +61,20 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.delegate = self;
-    [self resetWindow];
+//    [self resetWindow];
     [self loadNewVersion];
+}
+//加载默认地址
+- (void)loadAddressDataInfo{
+    NSString *url = [NSString stringWithFormat:@"%@InitDataForQxzx",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            StorageDataTool *data = [StorageDataTool shared];
+            data.addInfo = [AddressInfo objectWithKeyValues:response.data[@"address"]];
+        }
+    } requestURL:url params:params];
 }
 //重置视图
 - (void)resetWindow{
@@ -155,9 +176,10 @@
         CustomTopBtn *right = [CustomTopBtn creatCustomView];
         right.bBtn.tag = i;
         [right.sBtn setBackgroundImage:[UIImage imageNamed:arr[i]] forState:
-            UIControlStateNormal];
+                                   UIControlStateNormal];
         right.titleLab.text = arrS[i];
-        [right.bBtn addTarget:self action:@selector(openClick:) forControlEvents:UIControlEventTouchUpInside];
+        [right.bBtn addTarget:self action:@selector(openClick:)
+                                  forControlEvents:UIControlEventTouchUpInside];
         right.frame = CGRectMake(i*(60+mar), 0, 60, 80);
         [bottomV addSubview:right];
     }
@@ -216,7 +238,7 @@
     }
     if(btn.tag==5){
         ProductListVC *list = [ProductListVC new];
-        list.isSel = YES;
+        list.isCus = YES;
         [self.navigationController pushViewController:list animated:YES];
     }else if(btn.tag==6){
         NakedDriLibViewController *list = [NakedDriLibViewController new];
@@ -245,6 +267,14 @@
 }
 
 - (void)openWindowCusHuateView{
+    CGFloat wid = MIN(SDevWidth, SDevHeight);
+    CGFloat height = 320;
+    if (wid>320) {
+        height = 340;
+    }
+    if (!IsPhone) {
+        height = 400;
+    }
     if (self.cusView) {
         return;
     }
@@ -253,11 +283,11 @@
         if (staue==0) {
             if (isYes) {
                 [self.cusView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.width.mas_equalTo(@32);
+                    make.width.mas_equalTo(@22);
                 }];
             }else{
                 [self.cusView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.width.mas_equalTo(@260);
+                    make.width.mas_equalTo(height-30);
                 }];
             }
         }else{
@@ -273,8 +303,8 @@
     [aView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(window).offset(0);
         make.centerY.mas_equalTo(window.mas_centerY);
-        make.width.mas_equalTo(@260);
-        make.height.mas_equalTo(@270);
+        make.width.mas_equalTo(height-30);
+        make.height.mas_equalTo(height);
     }];
     self.cusView = aView;
     self.keyWin = window;
@@ -282,12 +312,23 @@
 //修改戒托
 - (void)changeRingHolder:(NSNotification *)notification{
     ProductInfo *info = notification.userInfo[UserInfoRingName];
+    StorageDataTool *data = [StorageDataTool shared];
+    data.BaseInfo = info;
     self.cusView.imgInfo = info;
 }
 //修改裸石
 - (void)changeNakedDri:(NSNotification *)notification{
     NakedDriSeaListInfo *listInfo = notification.userInfo[UserInfoDriName];
+    StorageDataTool *data = [StorageDataTool shared];
+    data.BaseSeaInfo = listInfo;
     self.cusView.info = listInfo;
+}
+//修改成色
+- (void)changeColour:(NSNotification *)notification{
+    DetailTypeInfo *info = notification.userInfo[UserInfoColourName];
+    StorageDataTool *data = [StorageDataTool shared];
+    data.colorInfo = info;
+    self.cusView.colorInfo = info;
 }
 
 - (void)dealloc {

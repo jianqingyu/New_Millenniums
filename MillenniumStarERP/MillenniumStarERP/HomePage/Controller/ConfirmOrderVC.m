@@ -9,7 +9,6 @@
 #import "ConfirmOrderVC.h"
 #import "ConfirmOrdHeadView.h"
 #import "ConfirmOrdCell.h"
-#import "ConfirmOrderVC.h"
 #import "PayViewController.h"
 #import "ChooseAddressVC.h"
 #import "OrderListInfo.h"
@@ -25,6 +24,7 @@
 #import "InvoiceViewController.h"
 #import "ProductionOrderVC.h"
 #import "CustomPickView.h"
+#import "OrderListController.h"
 #import "NewCustomProDetailVC.h"
 @interface ConfirmOrderVC ()<UITableViewDelegate,UITableViewDataSource,
                             ConfirmOrdHeadViewDelegate,ConfirmOrdCellDelegate>{
@@ -67,8 +67,8 @@
 }
 
 - (void)creatConfirmOrder{
-    self.priceLab.hidden = ![[AccountTool account].isShow intValue];
-    self.conBtn.enabled = [[AccountTool account].isShow intValue];
+    self.priceLab.hidden = [[AccountTool account].isNoShow intValue];
+    self.conBtn.enabled = ![[AccountTool account].isNoShow intValue];
     [self changeHeightWithDev];
     [self setupTableView];
     [self creatHeadView];
@@ -91,6 +91,14 @@
         [self setupHeaderRefresh];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    if (self.editId) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"icon_return"] style:UIBarButtonItemStyleDone target:self action:@selector(back)];
+    }
+}
+
+- (void)back{
+    OrderListController *listVC = [OrderListController new];
+    [self.navigationController pushViewController:listVC animated:YES];
 }
 
 - (void)orientChange:(NSNotification *)notification{

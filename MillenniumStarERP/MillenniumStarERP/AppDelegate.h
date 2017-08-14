@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+
 typedef void (^DelegateNetBack)(BOOL isSel);
 typedef void (^AliPayCallBack)(BOOL isSuccess);
 typedef void (^WeChatPayCallBack)(BOOL isSuccess);
