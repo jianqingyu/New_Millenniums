@@ -30,6 +30,9 @@
     if (self) {
         self = [[NSBundle mainBundle]loadNibNamed:@"CustomDriFirstCell" owner:nil options:nil][0];
         self.fie1.delegate = self;
+        self.accBtn.enabled = NO;
+        self.addBtn.enabled = NO;
+        self.fie1.userInteractionEnabled = NO;
     }
     return self;
 }
@@ -50,14 +53,14 @@
     }
 }
 
-- (void)setCertCode:(NSString *)certCode{
-    if (certCode) {
-        _certCode = certCode;
-        self.accBtn.enabled = !_certCode.length;
-        self.addBtn.enabled = !_certCode.length;
-        self.fie1.userInteractionEnabled = !_certCode.length;
-    }
-}
+//- (void)setCertCode:(NSString *)certCode{
+//    if (certCode) {
+//        _certCode = certCode;
+//        self.accBtn.enabled = !_certCode.length;
+//        self.addBtn.enabled = !_certCode.length;
+//        self.fie1.userInteractionEnabled = !_certCode.length;
+//    }
+//}
 
 - (IBAction)accClick:(id)sender {
     float str = [self.fie1.text floatValue];

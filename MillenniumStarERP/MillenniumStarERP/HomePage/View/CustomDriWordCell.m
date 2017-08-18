@@ -10,7 +10,7 @@
 @interface CustomDriWordCell()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *wordFie;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *btns;
-
+@property (weak, nonatomic) IBOutlet UIButton *lookBtn;
 @end
 @implementation CustomDriWordCell
 
@@ -30,6 +30,14 @@
         self = [[NSBundle mainBundle]loadNibNamed:@"CustomDriWordCell" owner:nil options:nil][0];
     }
     return self;
+}
+
+- (void)setCate:(NSString *)cate{
+    if (cate) {
+        _cate = cate;
+        BOOL isShow = [_cate containsString:@"戒"];
+        self.lookBtn.hidden = !isShow;
+    }
 }
 
 - (void)setWord:(NSString *)word{

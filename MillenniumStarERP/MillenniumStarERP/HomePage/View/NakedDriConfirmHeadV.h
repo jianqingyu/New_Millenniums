@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *noteLab;
 @property (weak, nonatomic) IBOutlet UITextField *customFie;
 @property (weak, nonatomic) IBOutlet UIView *bottomV;
+@property (weak, nonatomic) IBOutlet UIView *noteView;
 @property (weak, nonatomic) id<NakedDriConfirmHeadVDelegate> delegate;
 @property (nonatomic,strong)AddressInfo *addInfo;
 @property (nonatomic,  copy)NSString *invoMes;

@@ -52,6 +52,14 @@
     return self;
 }
 
+- (void)setDriFieText{
+    StorageDataTool *data = [StorageDataTool shared];
+    if (data.BaseInfo) {
+        NSDictionary *dic = data.BaseInfo.stoneWeightRange;
+        self.driWei = dic[@"value"];
+    }
+}
+
 - (void)setInfo:(NakedDriLiblistInfo *)info{
     if (info) {
         _info = info;
@@ -60,6 +68,20 @@
             UIButton *btn = _topBtns[i];
             [btn setTitle:linfo.name forState:UIControlStateNormal];
             btn.selected = linfo.isSel;
+        }
+    }
+}
+
+- (void)setDriWei:(NSString *)driWei{
+    if (driWei) {
+        _driWei = driWei;
+        NSArray *arr = [_driWei componentsSeparatedByString:@","];
+        self.driFie1.text = arr[0];
+        self.driFie2.text = arr[1];
+        NSDictionary *dic = _topArr[0];
+        self.mutDic[dic[@"keyword"]] = _driWei;
+        if (self.back) {
+            self.back(self.mutDic);
         }
     }
 }
@@ -75,6 +97,7 @@
             NSDictionary *dict2 = _topArr[1];
             _priceArr = [SearchDateInfo objectArrayWithKeyValuesArray:dict2[@"list"]];
             [self creatBaseView:_priceArr isYes:NO];
+            [self setDriFieText];
         }
     }
 }
@@ -183,9 +206,10 @@
         }
     }
     sender.selected = !sender.selected;
-    self.driFie1.text = @"";
-    self.driFie2.text = @"";
     SearchDateInfo *info = _weightArr[sender.tag];
+    NSArray *arr = [info.key componentsSeparatedByString:@","];
+    self.driFie1.text = arr[0];
+    self.driFie2.text = arr[1];
     NSDictionary *dic = _topArr[0];
     NSString *key = sender.selected?info.key:@"";
     self.mutDic[dic[@"keyword"]] = key;
@@ -202,9 +226,11 @@
         }
     }
     sender.selected = !sender.selected;
-    self.priceFie1.text = @"";
-    self.priceFie2.text = @"";
     SearchDateInfo *info = _priceArr[sender.tag];
+    NSArray *arr = [info.key componentsSeparatedByString:@","];
+    self.priceFie1.text = arr[0];
+    BOOL isZero = [arr[1] isEqualToString:@"0"];
+    self.priceFie2.text = isZero?@"":arr[1];
     NSDictionary *dic = _topArr[1];
     NSString *key = sender.selected?info.key:@"";
     self.mutDic[dic[@"keyword"]] = key;

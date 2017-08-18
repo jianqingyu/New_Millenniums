@@ -106,6 +106,7 @@
                 </variation>
             </tableViewCellContentView>
             <connections>
+                <outlet property="lookBtn" destination="t1g-bB-LOr" id="V2y-JW-wP7"/>
                 <outlet property="wordFie" destination="oCD-rI-qjX" id="tyl-jN-hff"/>
                 <outletCollection property="btns" destination="jEl-CT-Rgi" id="4lj-ZQ-icg"/>
                 <outletCollection property="btns" destination="tMQ-Dl-KmW" id="okr-nn-QEh"/>

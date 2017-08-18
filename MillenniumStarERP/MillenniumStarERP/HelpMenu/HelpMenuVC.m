@@ -20,9 +20,9 @@
     [super viewDidLoad];
     self.helpTable.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     self.helpArr = @[@"iOS下载地址"];
-//  self.dictArr = @[@{@"title":@"苹果最新版",@"image":@"iOSCode",@"url":
+//  self.dictArr = @[@{@"title":@"苹果最新版",@"image":@"mStar",@"url":
 //          @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8"}];
-    self.dictArr = @[@{@"title":@"苹果最新版",@"image":@"iOSCode2",@"url":
+    self.dictArr = @[@{@"title":@"苹果最新版",@"image":@"mStar2",@"url":
             @"https://itunes.apple.com/cn/app/千禧之星珠宝2/id1244977034?mt=8"}];
 }
 

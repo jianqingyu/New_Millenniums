@@ -106,7 +106,6 @@
 - (UIButton *)creatBtn{
     CustomShapeBtn *btn = [CustomShapeBtn buttonWithType:UIButtonTypeCustom];
     btn.userInteractionEnabled = NO;
-//    btn.backgroundColor = [UIColor whiteColor];
     btn.titleLabel.font = [UIFont systemFontOfSize:12.0];
     [btn.titleLabel setAdjustsFontSizeToFitWidth:YES];
     [btn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];

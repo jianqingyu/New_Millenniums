@@ -12,4 +12,5 @@ typedef void (^CusWordBack)(BOOL isSel,NSString *word);
 + (id)cellWithTableView:(UITableView *)tableView;
 @property (nonatomic,copy)NSString *word;
 @property (nonatomic,copy)CusWordBack back;
+@property (nonatomic,copy)NSString *cate;
 @end

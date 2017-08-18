@@ -56,6 +56,14 @@
     }
 }
 
+- (void)setDriweight:(NSDictionary *)driweight{
+    if (driweight) {
+        _driweight = driweight;
+        NSString *key = _driweight.allValues[0];
+        self.headView.driWei = key;
+    }
+}
+
 - (void)setNakedTableView{
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.delegate = self;

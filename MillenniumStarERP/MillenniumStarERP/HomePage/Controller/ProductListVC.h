@@ -11,6 +11,7 @@
 #import "NakedDriSeaListInfo.h"
 @interface ProductListVC : BaseViewController
 @property (nonatomic, assign)BOOL isCus;
-@property (nonatomic, strong) NSMutableDictionary *backDict;
+@property (nonatomic, assign)BOOL isRefresh;
+@property (nonatomic, strong)NSMutableDictionary *backDict;
 @property (nonatomic, strong)NakedDriSeaListInfo *driInfo;
 @end

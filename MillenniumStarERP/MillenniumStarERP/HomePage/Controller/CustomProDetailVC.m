@@ -437,18 +437,12 @@
             [self chooseType:dict];
         }else if (staue==2){
             self.handStr = info.title;
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }else if (staue==3){
             [self.nums setObject:info.title atIndexedSubscript:path.section];
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:path.section+1 inSection:0];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }else if (staue==4){
             self.lastMess = [NSString stringWithFormat:@"%@%@",self.lastMess,info.title];
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.mutArr.count+2 inSection:0];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:
-             UITableViewRowAnimationNone];
         }
+        [self.tableView reloadData];
         [self dismissCustomPopView];
     };
     [self.view addSubview:popV];
@@ -480,9 +474,6 @@
     if (path.section!=0) {
         [self.bools setObject:@NO atIndexedSubscript:path.section];
     }
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:path.section+1 inSection:0];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:
-                                                   UITableViewRowAnimationNone];
 }
 //一个石头里面的数据齐全
 - (BOOL)boolWithArr:(NSArray *)arr{

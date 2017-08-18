@@ -37,6 +37,7 @@
             if (!info.mulSelect) {
                 UIView *view = [self setupTextField];
                 height = CGRectGetMaxY(view.frame);
+                [self setMinAndMaxFie:_wInfo];
             }
             NSInteger total = info.attributeList.count;
             for (int i=0; i<total; i++) {
@@ -44,9 +45,16 @@
                 int column = i % COLUMN;
                 ScreenDetailInfo *dInfo = info.attributeList[i];
                 UIButton *btn = [self creatBtn];
-                btn.frame = CGRectMake(ROWSPACE + ROWWIDTH*column + ROWSPACE * column,height+ ROWSPACE + (ROWHEIHT + ROWSPACE)*row, ROWWIDTH, ROWHEIHT);
+                btn.frame = CGRectMake(ROWSPACE + ROWWIDTH*column + ROWSPACE * column,
+                        height+ ROWSPACE + (ROWHEIHT + ROWSPACE)*row, ROWWIDTH, ROWHEIHT);
                 btn.tag = i;
-                btn.selected = dInfo.isSelect;
+                if (!info.mulSelect) {
+                    if ([dInfo.value isEqualToString:_wInfo.value]) {
+                        btn.selected = YES;
+                    }
+                }else{
+                    btn.selected = dInfo.isSelect;
+                }
                 [btn setTitle:dInfo.title forState:UIControlStateNormal];
                 [self.screenBtns addObject:btn];
             }
@@ -60,11 +68,13 @@
     view.layer.cornerRadius = 5;
     view.layer.masksToBounds = YES;
     [self.contentView addSubview:view];
-    UITextField *min = [self creatFieWithFrame:CGRectMake(5, 5, (view.width-30)/2, ROWHEIHT-10)];
+    UITextField *min = [self creatFieWithFrame:CGRectMake(2, 2, (view.width-30)/2, ROWHEIHT-4)];
     min.placeholder = @"最小值";
+    min.textColor = MAIN_COLOR;
     min.delegate = self;
-    UITextField *max = [self creatFieWithFrame:CGRectMake(view.width-min.width-5, 5, min.width, ROWHEIHT-10)];
+    UITextField *max = [self creatFieWithFrame:CGRectMake(view.width-min.width-2, 2, min.width, min.height)];
     max.placeholder = @"最大值";
+    max.textColor = MAIN_COLOR;
     max.delegate = self;
     [view addSubview:min];
     [view addSubview:max];
@@ -93,24 +103,8 @@
             sBtn.selected = NO;
             dInfo.isSelect = NO;
         }
-        
-        if (self.minFie.text.length>0&&self.maxFie.text.length==0) {
-            self.clickblock([NSString stringWithFormat:@"%@|",self.minFie.text]);
-        }
-        if (self.minFie.text.length==0&&self.maxFie.text.length>0) {
-            self.clickblock([NSString stringWithFormat:@"|%@",self.maxFie.text]);
-        }
-        if (self.minFie.text.length>0&&self.maxFie.text.length>0) {
-            self.clickblock([NSString stringWithFormat:@"%@|%@",self.minFie.text,self.maxFie.text]);
-        }
+        [self backMaxminValue];
     }
-}
-
-- (void)cleanTextFie{
-    [self.minFie resignFirstResponder];
-    [self.maxFie resignFirstResponder];
-    self.minFie.text = @"";
-    self.maxFie.text = @"";
 }
 
 - (UIButton *)creatBtn{
@@ -140,10 +134,43 @@
                 dInfo.isSelect = NO;
             }
         }
-        [self cleanTextFie];
     }
     btn.selected = !btn.selected;
+    if (!_info.mulSelect) {
+        self.wInfo.value = btn.selected?dInfo.value:@"";
+        [self setMinAndMaxFie:self.wInfo];
+        return;
+    }
     dInfo.isSelect = btn.selected;
+}
+//对最大最小值赋值
+- (void)setMinAndMaxFie:(WeightInfo *)maxMin{
+    NSArray *arr;
+    if ([maxMin.value containsString:@"|"]) {
+        arr = [maxMin.value componentsSeparatedByString:@"|"];
+    }
+    if (arr.count==0) {
+        self.minFie.text = @"";
+        self.maxFie.text = @"";
+    }else{
+        self.minFie.text = arr[0];
+        self.maxFie.text = arr[1];
+    }
+}
+
+- (void)backMaxminValue{
+    if (self.minFie.text.length>0&&self.maxFie.text.length==0) {
+        self.wInfo.value = [NSString stringWithFormat:@"%@|",self.minFie.text];
+    }
+    if (self.minFie.text.length==0&&self.maxFie.text.length>0) {
+        self.wInfo.value = [NSString stringWithFormat:@"|%@",self.maxFie.text];
+    }
+    if (self.minFie.text.length>0&&self.maxFie.text.length>0) {
+        self.wInfo.value = [NSString stringWithFormat:@"%@|%@",self.minFie.text,self.maxFie.text];
+    }
+    if (self.minFie.text.length==0&&self.maxFie.text.length==0) {
+        self.wInfo.value = @"";
+    }
 }
 
 @end

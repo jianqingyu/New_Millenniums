@@ -55,6 +55,7 @@
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     
     self.slideRightTab = [[ScreeningRightView alloc]initWithFrame:CGRectZero];
+    self.slideRightTab.values = self.values;
     __weak typeof(self) weakSelf = self;
     self.slideRightTab.tableBack = ^(NSDictionary *dict,BOOL isSel){
         NSMutableDictionary *mutD = dict.mutableCopy;

@@ -29,25 +29,41 @@
     self.title = @"选择客户信息";
     self.view.backgroundColor = DefaultColor;
     [self setupTableHeadView];
-    StorageDataTool *data = [StorageDataTool shared];
-    self.addressInfo = data.addInfo;
+    [self loadAddressDataInfo];
+}
+
+//加载默认地址
+- (void)loadAddressDataInfo{
+    NSString *url = [NSString stringWithFormat:@"%@InitDataForQxzx",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            if ([YQObjectBool boolForObject:response.data[@"address"]]){
+                self.addressInfo = [AddressInfo objectWithKeyValues:response.data[@"address"]];
+            }
+            if ([YQObjectBool boolForObject:response.data[@"DefaultCustomer"]]){
+                self.cusInfo = [CustomerInfo objectWithKeyValues:response.data[@"DefaultCustomer"]];
+            }
+        }
+    } requestURL:url params:params];
 }
 
 - (void)setupTableHeadView{
     [self.conBtn setLayerWithW:3 andColor:BordColor andBackW:0.0001];
     NakedDriConfirmHeadV *headV = [[NakedDriConfirmHeadV alloc]initWithFrame:CGRectZero];
     headV.bottomV.hidden = YES;
+    headV.noteView.hidden = YES;
     headV.delegate = self;
     [self.view addSubview:headV];
     [headV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(0);
         make.top.equalTo(self.view).offset(0);
         make.right.equalTo(self.view).offset(0);
-        make.height.mas_equalTo(@(225-48));
+        make.height.mas_equalTo(@(128));
     }];
     self.headView = headV;
 }
-
 //选择客户
 - (void)setCusInfo:(CustomerInfo *)cusInfo{
     if (cusInfo) {
@@ -140,7 +156,6 @@
     if (self.back) {
         self.back(dic);
     }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

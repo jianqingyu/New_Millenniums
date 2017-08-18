@@ -37,15 +37,16 @@
 @property (weak, nonatomic) IBOutlet UILabel *orderNumLab;
 @property (weak, nonatomic) IBOutlet UIButton *hisBtn;
 @property (copy, nonatomic) NSString *keyWord;
-@property (nonatomic, assign) int index;
-@property (nonatomic, assign) int idxPage;
-@property (nonatomic,   weak) UIView *baView;
-@property (nonatomic,   weak) UILabel *numLab;
-@property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) AllListPopView *popClassView;
-@property (nonatomic, strong) CDRTranslucentSideBar *rightSideBar;
-@property (nonatomic,   weak) ScreeningRightView *slideRightTab;
-@property (nonatomic, assign)BOOL isShowPrice;
+@property (nonatomic,assign) int index;
+@property (nonatomic,assign) int idxPage;
+@property (nonatomic,  weak) UIView *baView;
+@property (nonatomic,  weak) UILabel *numLab;
+@property (nonatomic,strong) NSMutableArray *dataArray;
+@property (nonatomic,strong) AllListPopView *popClassView;
+@property (nonatomic,strong) CDRTranslucentSideBar *rightSideBar;
+@property (nonatomic,  weak) ScreeningRightView *slideRightTab;
+@property (nonatomic,assign) BOOL isShowPrice;
+@property (nonatomic,  copy) NSArray *values;
 @end
 
 @implementation ProductListVC
@@ -55,6 +56,13 @@
     [self setBaseAllViewData];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:)
         name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+}
+//开启刷新
+- (void)setIsRefresh:(BOOL)isRefresh{
+    if (isRefresh) {
+        _isRefresh = isRefresh;
+        [self.rightCollection.header beginRefreshing];
+    }
 }
 
 - (void)orientChange:(NSNotification *)notification{
@@ -147,13 +155,18 @@
         return;
     }
     // 得到每页高度
-    CGFloat pageWidth = sender.frame.size.height;
+    CGFloat pageHei = sender.frame.size.height;
     // 根据当前的x坐标和页宽度计算出当前页数
-    int currentPage = floor((sender.contentOffset.y - pageWidth / 2) / pageWidth) + 1;
+    int currentPage = (floor((sender.contentOffset.y - pageHei/2)/pageHei) + 1)+1;
+    NSLog(@"%d",currentPage);
     int toPage = totalCount%12==0?totalCount/12:totalCount/12+1;
     if (self.idxPage!=currentPage&&totalCount!=0) {
         self.idxPage = currentPage;
-        self.numLab.text = [NSString stringWithFormat:@"%d/%d",self.idxPage/3+1,toPage];
+        int num = self.idxPage/3+1;
+        if (num>toPage) {
+            num = toPage;
+        }
+        self.numLab.text = [NSString stringWithFormat:@"%d/%d",num,toPage];
         if(self.numLab.hidden){
             self.numLab.hidden = NO;
         }
@@ -303,6 +316,7 @@
 
 - (IBAction)classifyQuery:(id)sender {
     ClassListController *classVc = [ClassListController new];
+    classVc.values = self.values;
     classVc.listBack = ^(BOOL isYes){
         if (isYes) {
             [self.rightCollection.header beginRefreshing];
@@ -417,6 +431,11 @@
 }
 //初始化数据
 - (void)setupDataWithData:(NSDictionary *)data{
+    if([YQObjectBool boolForObject:data[@"searchValue"]]){
+        self.values = [WeightInfo
+                       objectArrayWithKeyValuesArray:data[@"searchValue"]];
+        self.slideRightTab.values = self.values;
+    }
     if([YQObjectBool boolForObject:data[@"typeList"]]){
         self.slideRightTab.isTop = YES;
         self.slideRightTab.goods = [ScreeningInfo

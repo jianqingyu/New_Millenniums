@@ -7,9 +7,11 @@
 //
 
 #import "ScreeningTopView.h"
+#import "WeightInfo.h"
 #import "ScreeningInfo.h"
 #import "ScreenDetailInfo.h"
 @interface ScreeningTopView ()
+@property (nonatomic,assign)int count;
 @property (nonatomic,strong)NSMutableArray *mutA;
 @property (nonatomic,strong)NSMutableArray *mutB;
 @end
@@ -37,54 +39,74 @@
 - (void)setGoods:(NSArray *)goods{
     if (goods) {
         _goods = goods;
+        self.count = 0;
         [self.mutA removeAllObjects];
         for (ScreeningInfo *info in _goods) {
             for (ScreenDetailInfo *dInfo in info.attributeList) {
-                if (dInfo.isSelect) {
+                if (dInfo.isSelect&&info.mulSelect) {
                     [self.mutA addObject:dInfo];
+                    self.count++;
                 }
+            }
+        }
+        for (WeightInfo *wInfo in self.values) {
+            if (wInfo.txt.length>0) {
+                [self.mutA addObject:wInfo];
             }
         }
         for (UIButton *btn in _mutB) {
             [btn removeFromSuperview];
         }
-        int num = 4;
-        CGFloat labH = 30;
-        CGFloat height = 24;
-        CGFloat width = (self.width - 5*5)/4;
-        if (width<0) {
-            width = (MIN(SDevWidth, SDevHeight)*0.8 - 5*5)/4;
-        }
+        CGFloat height = 20+ 2*HROWSPACE;
         for (int i=0; i<self.mutA.count; i++) {
-            int column = i % num;
-            int row = i / num;
-            ScreenDetailInfo *dInfo = self.mutA[i];
-            UIButton *btn = [self creatBtn];
-            btn.frame = CGRectMake((width+5)*column+5,labH+(height+5)*row,width, height);
+            int column = i % HCOLUMN;
+            int row = i / HCOLUMN;
+            UIButton *btn;
+            NSString *title;
+            if (i<self.count) {
+                ScreenDetailInfo *dInfo = self.mutA[i];
+                btn = [self creatBtn:@selector(subCateBtn:)];
+                title = [NSString stringWithFormat:@"x %@",dInfo.title];
+            }else{
+                WeightInfo *info = self.mutA[i];
+                btn = [self creatBtn:@selector(subValueBtn:)];
+                title = [NSString stringWithFormat:@"x %@",info.txt];
+            }
+            btn.frame = CGRectMake(HROWSPACE +(HROWWIDTH+ HROWSPACE)* column,height +(HROWHEIHT+ HROWSPACE)*row, HROWWIDTH, HROWHEIHT);
             btn.tag = i;
-            NSString *title = [NSString stringWithFormat:@"x %@",dInfo.title];
             [btn setTitle:title forState:UIControlStateNormal];
             [self.mutB addObject:btn];
         }
     }
 }
 
-- (UIButton *)creatBtn{
+- (UIButton *)creatBtn:(SEL)action{
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.backgroundColor = [UIColor whiteColor];
-    btn.titleLabel.font = [UIFont systemFontOfSize:14.0];
+    btn.titleLabel.font = [UIFont systemFontOfSize:13.0];
     [btn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateSelected];
     [btn setLayerWithW:5 andColor:MAIN_COLOR andBackW:1];
-    [btn addTarget:self action:@selector(subCateBtnAction:)
-                                 forControlEvents:UIControlEventTouchUpInside]; 
+    [btn addTarget:self action:action
+                                forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:btn];
     return btn;
 }
 
-- (void)subCateBtnAction:(UIButton *)btn{
+- (void)subCateBtn:(UIButton *)btn{
     ScreenDetailInfo *dInfo = self.mutA[btn.tag];
     dInfo.isSelect = NO;
+    [btn removeFromSuperview];
+    [self.mutB removeObject:btn];
+    if (self.back) {
+        self.back(_goods);
+    }
+}
+
+- (void)subValueBtn:(UIButton *)btn{
+    WeightInfo *dInfo = self.mutA[btn.tag];
+    dInfo.txt = @"";
+    dInfo.value = @"";
     [btn removeFromSuperview];
     [self.mutB removeObject:btn];
     if (self.back) {

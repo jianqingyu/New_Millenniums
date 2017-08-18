@@ -8,6 +8,7 @@
 
 #import "EditUserInfoVC.h"
 #import "AccountTool.h"
+#import "AppDownViewC.h"
 #import "CustomInvoice.h"
 #import "EditAddressVC.h"
 #import "EditPhoneNumVc.h"
@@ -42,7 +43,7 @@
 
 - (void)setBaseViewData{
     self.textArr = @[@[@"用户名",@"修改头像"],
-                     @[@"设置",@"修改密码",@"修改手机号码",@"管理地址",@"清理缓存",@"分享该应用"]];
+                     @[@"设置",@"检查新版本",@"修改密码",@"修改手机号码",@"管理地址",@"清理缓存",@"分享该应用"]];
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -217,18 +218,21 @@
             if (indexPath.row==0){
                 self.putView.hidden = NO;
             }else if (indexPath.row==1) {
+                AppDownViewC *appVc = [[AppDownViewC alloc]init];
+                [self.navigationController pushViewController:appVc animated:YES];
+            }else if (indexPath.row==2) {
                 PassWordViewController *passVc = [[PassWordViewController alloc]init];
                 passVc.title = @"修改密码";
                 passVc.isForgot = NO;
                 [self.navigationController pushViewController:passVc animated:YES];
-            }else if(indexPath.row==2){
+            }else if(indexPath.row==3){
                 [MBProgressHUD showSuccess:@"功能暂未开放"];
 //                EditPhoneNumVc *editNum = [EditPhoneNumVc new];
 //                [self.navigationController pushViewController:editNum animated:YES];
-            }else if(indexPath.row==3){
+            }else if(indexPath.row==4){
                 EditAddressVC *addVc = [EditAddressVC new];
                 [self.navigationController pushViewController:addVc animated:YES];
-            }else if(indexPath.row==4){
+            }else if(indexPath.row==5){
                 [self clearTmpPics];
             }else{
                 [MBProgressHUD showSuccess:@"功能暂未开放"];

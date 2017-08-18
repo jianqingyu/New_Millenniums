@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ScreeningInfo.h"
+#import "WeightInfo.h"
 #define COLUMN (IsPhone?3:5)
 #define ROWHEIHT 30
 #define ROWSPACE 10
@@ -16,7 +17,8 @@ typedef void (^ScreenClickBack)(id data);
 @interface ScreeningTableCell : UITableViewCell
 + (id)cellWithTableView:(UITableView *)tableView;
 @property (nonatomic,strong)ScreeningInfo *info;
-@property (nonatomic,copy)ScreenClickBack clickblock;
-@property (nonatomic,weak)UITextField *minFie;
-@property (nonatomic,weak)UITextField *maxFie;
+@property (nonatomic,  copy)ScreenClickBack clickblock;
+@property (nonatomic,strong)WeightInfo *wInfo;
+@property (nonatomic,  weak)UITextField *minFie;
+@property (nonatomic,  weak)UITextField *maxFie;
 @end

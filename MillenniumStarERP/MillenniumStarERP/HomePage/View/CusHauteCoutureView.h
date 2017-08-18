@@ -7,17 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AddressInfo.h"
-#import "CustomerInfo.h"
-#import "ProductInfo.h"
-#import "DetailTypeInfo.h"
-#import "NakedDriSeaListInfo.h"
+
 typedef void (^CusHauBack)(int staue,BOOL isYes);
 @interface CusHauteCoutureView : UIView
-@property (nonatomic,  copy)CusHauBack driBack;
-@property (nonatomic,strong)AddressInfo *addInfo;
-@property (nonatomic,strong)ProductInfo *imgInfo;
-@property (nonatomic,strong)DetailTypeInfo *colorInfo;
-@property (nonatomic,strong)NakedDriSeaListInfo *info;
-@property (nonatomic,strong)CustomerInfo *cusInfo;
+@property (nonatomic,copy)CusHauBack driBack;
 @end

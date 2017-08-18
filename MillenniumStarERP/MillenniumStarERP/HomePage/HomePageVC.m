@@ -89,9 +89,9 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSString *str = [self.openUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     UIApplication *application = [UIApplication sharedApplication];
-    [application openURL:[NSURL URLWithString:self.openUrl]];
-    application = nil;
+    [application openURL:[NSURL URLWithString:str]];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

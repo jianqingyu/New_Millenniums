@@ -14,4 +14,5 @@
 @property (nonatomic,assign)BOOL isSel;
 @property (nonatomic,assign)BOOL isPro;
 @property (nonatomic,strong)UINavigationController *supNav;
+@property (nonatomic,strong)NSDictionary *driweight;
 @end

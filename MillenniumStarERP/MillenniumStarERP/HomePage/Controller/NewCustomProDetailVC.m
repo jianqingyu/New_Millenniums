@@ -92,7 +92,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     [self.priceLab setAdjustsFontSizeToFitWidth:YES];
     [self.numLab setAdjustsFontSizeToFitWidth:YES];
     if (self.isCus) {
-        [self.addBtn setTitle:@"确认定制" forState:UIControlStateNormal];
+        [self.addBtn setTitle:@"确定" forState:UIControlStateNormal];
     }
     if (self.isEdit) {
         [self.lookBtn setTitle:@"取消" forState:UIControlStateNormal];
@@ -280,13 +280,17 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
             }
             if ([YQObjectBool boolForObject:response.data[@"modelPuritys"]]) {
                 self.puritys = response.data[@"modelPuritys"];
+                StorageDataTool *data = [StorageDataTool shared];
+                if (data.colorInfo&&_isCus) {
+                    self.colorInfo = data.colorInfo;
+                }
                 if (self.puritys.count==0) {
                     self.colorInfo = [DetailTypeInfo objectWithKeyValues:self.puritys[0]];
                 }
             }
             if ([YQObjectBool boolForObject:response.data[@"model"]]) {
                 DetailModel *modelIn = [DetailModel objectWithKeyValues:
-                                        response.data[@"model"]];
+                                                       response.data[@"model"]];
                 [self setupBaseListData:modelIn];
                 [self creatCusTomHeadView];
                 [self.tableView reloadData];
@@ -409,15 +413,15 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     NSMutableArray *mPic = @[].mutableCopy;
     NSMutableArray *bPic = @[].mutableCopy;
     for (NSDictionary*dict in self.modelInfo.pics) {
-        NSString *str = [dict[@"pic"]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *str = [self UsingEncoding:dict[@"pic"]];
         if (str.length>0) {
             [pic addObject:str];
         }
-        NSString *strm = [dict[@"picm"]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *strm = [self UsingEncoding:dict[@"picm"]];
         if (strm.length>0) {
             [mPic addObject:strm];
         }
-        NSString *strb = [dict[@"picb"]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *strb = [self UsingEncoding:dict[@"picb"]];
         if (strb.length>0) {
             [bPic addObject:strb];
         }
@@ -434,6 +438,20 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     self.headImg = headArr;
     self.IDarray = [bPic copy];
     [self changeTableHeadView];
+}
+
+- (NSString *)UsingEncoding:(NSString *)str{
+    return [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
+
+- (void)setLastMess:(NSString *)lastMess{
+    if (lastMess) {
+        _lastMess = lastMess;
+        if (self.isCus) {
+            StorageDataTool *data = [StorageDataTool shared];
+            data.note = _lastMess;
+        }
+    }
 }
 
 - (void)setupHeadView:(NSArray *)headArr and:(BOOL)isHead{
@@ -515,27 +533,21 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     popV.popBack = ^(int staue,id dict){
         DetailTypeInfo *info = [dict allValues][0];
         if (staue==1) {
-            self.colorInfo = info;
-            if (self.isCus) {
+            if (info.title.length>0) {
+                self.colorInfo = info;
                 [[NSNotificationCenter defaultCenter]postNotificationName:NotificationColourName
-                                    object:nil userInfo:@{UserInfoColourName:info}];
+                                object:nil userInfo:@{UserInfoColourName:info}];
             }
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }else if (staue==2){
             self.handStr = info.title;
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             if (self.isCus) {
                 StorageDataTool *data = [StorageDataTool shared];
                 data.handSize = info.title;
             }
         }else if (staue==4){
             self.lastMess = [NSString stringWithFormat:@"%@%@",self.lastMess,info.title];
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.mutArr.count+self.idx-1 inSection:0];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:
-             UITableViewRowAnimationNone];
         }
+        [self.tableView reloadData];
         [self dismissCustomPopView];
     };
     [self.view addSubview:popV];
@@ -620,14 +632,13 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         NSInteger index = indexPath.row-self.idx+1;
         if (self.isCus&&indexPath.row==1) {
             CustomDriWordCell *driCell = [CustomDriWordCell cellWithTableView:tableView];
+            driCell.cate = _modelInfo.categoryTitle;
             driCell.word = self.driWord;
             driCell.back = ^(BOOL isSel,NSString *word){
                 if (isSel) {
                     self.driWord = word;
-                    if (self.isCus) {
-                        StorageDataTool *data = [StorageDataTool shared];
-                        data.word = word;
-                    }
+                    StorageDataTool *data = [StorageDataTool shared];
+                    data.word = word;
                 }else{
                     self.wordView.wordLab.text = self.driWord;
                     self.wordView.hidden = NO;
@@ -652,6 +663,9 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.isCus) {
+        return;
+    }
     if (indexPath.row==self.idx-1) {
         [self gotoNakedDriLib];
     }
@@ -735,8 +749,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 #pragma mark -- 提交订单
 - (IBAction)addOrder:(id)sender {
     if (self.isCus) {
-        [[NSNotificationCenter defaultCenter]postNotificationName:NotificationClickName
-                                  object:nil userInfo:@{UserInfoClickName:@"点击"}];
+        [self customNakedDriAddOrd];
         return;
     }
     if ([self.proNum length]==0) {
@@ -756,6 +769,15 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         [self paramsWithArr:arr andI:i andD:params];
     }
     [self addOrderWithDict:params];
+}
+//裸钻定制下单
+- (void)customNakedDriAddOrd{
+    if (!self.colorInfo) {
+        [MBProgressHUD showError:@"请选择成色"];
+        return;
+    }
+    [[NSNotificationCenter defaultCenter]postNotificationName:NotificationClickName
+                                object:nil userInfo:@{UserInfoClickName:@"成色"}];
 }
 
 - (void)paramsWithArr:(NSArray *)arr andI:(int)i andD:(NSMutableDictionary *)params{
@@ -845,10 +867,10 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     if (self.driPrice.length>0) {
         price = price + [self.driPrice floatValue];
     }else{
-        StorageDataTool *data = [StorageDataTool shared];
-        if (data.BaseSeaInfo&&self.isCus){
-            price = price + [data.BaseSeaInfo.Price floatValue];
-        }
+//        StorageDataTool *data = [StorageDataTool shared];
+//        if (data.BaseSeaInfo&&self.isCus){
+//            price = price + [data.BaseSeaInfo.Price floatValue];
+//        }
     }
     self.priceLab.text = [OrderNumTool strWithPrice:price];
 }

@@ -94,7 +94,7 @@
         [self createBtnFrame:CGRectMake(0, height+Bheight, SDevWidth/2, 40) andTitle:@"确定"
                       andTag:10 andColor:MAIN_COLOR andTColor:[UIColor whiteColor]];
         [self createBtnFrame:CGRectMake(SDevWidth/2, height+Bheight, SDevWidth/2, 40)
-                    andTitle:@"重置筛选" andTag:20 andColor:DefaultColor andTColor:[UIColor blackColor]];
+                andTitle:@"重置筛选" andTag:20 andColor:DefaultColor andTColor:[UIColor blackColor]];
     }
 }
 

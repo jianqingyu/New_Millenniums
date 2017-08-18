@@ -45,11 +45,27 @@
     [self setupBaseTableView];
     [self setupHeaderRefresh];
     [self setRightNaviBar];
-    self.bottomView.hidden = self.isCus;
-    self.bottomV.hidden = self.isSel;
-    self.sureBtn.hidden = !self.isSel;
-    BOOL isHid = !(!self.isSel&&[[AccountTool account].isNorm intValue]==0);
-    self.chooseBtn.hidden = isHid;
+    //其他页面选裸钻
+    if (self.isCus||self.isSel) {
+        self.bottomV.hidden = YES;
+        self.chooseBtn.hidden = YES;
+        self.sureBtn.hidden = NO;
+    }
+    if ([[AccountTool account].isNorm intValue]==1) {
+        self.chooseBtn.hidden = YES;
+    }
+}
+
+- (void)setIsRef:(BOOL)isRef{
+    if (isRef) {
+        _isRef = isRef;
+        [self.tableView.header beginRefreshing];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)setRightNaviBar{
@@ -130,11 +146,16 @@
     // 得到每页高度
     CGFloat pageWidth = sender.frame.size.height;
     // 根据当前的x坐标和页宽度计算出当前页数
-    int currentPage = floor((sender.contentOffset.y - pageWidth / 2) / pageWidth) + 1;
+    int currentPage = (floor((sender.contentOffset.y - pageWidth / 2) / pageWidth) + 1)+1;
+    NSLog(@"%d",currentPage);
     int toPage = totalCount%30==0?totalCount/30:totalCount/30+1;
     if (self.idxPage!=currentPage&&totalCount!=0) {
         self.idxPage = currentPage;
-        self.numLab.text = [NSString stringWithFormat:@"%d/%d",self.idxPage+1,toPage];
+        int num = self.idxPage/2+1;
+        if (num>toPage) {
+            num = toPage;
+        }
+        self.numLab.text = [NSString stringWithFormat:@"%d/%d",num,toPage];
         if(self.numLab.hidden){
             self.numLab.hidden = NO;
         }
@@ -289,24 +310,10 @@
     cell.isCus = self.isCus;
     cell.isShow = self.isShow;
     cell.back = ^(BOOL isSel){
-        if (self.isPro) {
-            for (int i=0; i<_dataArray.count; i++) {
-                NakedDriSeaListInfo *dInfo = _dataArray[i];
-                if (i!=indexPath.row) {
-                    dInfo.isSel = NO;
-                }
-            }
-            [self.tableView reloadData];
-        }
         if (isSel) {
             [self cellBackWithIndex:indexPath.row];
-        }else{
-            if (self.isSel) {
-                [self chooseCustomDri];
-            }else{
-                [self chooseCustomPro];
-            }
         }
+        [self.tableView reloadData];
     };
     NakedDriSeaListInfo *listInfo;
     if (indexPath.row<self.dataArray.count) {
@@ -317,27 +324,20 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.isPro) {
-        for (int i=0; i<_dataArray.count; i++) {
-            NakedDriSeaListInfo *dInfo = _dataArray[i];
-            if (i!=indexPath.row) {
-                dInfo.isSel = NO;
-            }
-        }
-    }
+//    if (self.isPro) {
+//        for (int i=0; i<_dataArray.count; i++) {
+//            NakedDriSeaListInfo *dInfo = _dataArray[i];
+//            if (i!=indexPath.row) {
+//                dInfo.isSel = NO;
+//            }
+//        }
+//    }
     NakedDriSeaListInfo *listInfo;
     if (indexPath.row<_dataArray.count) {
         listInfo = _dataArray[indexPath.row];
     }
     listInfo.isSel = !listInfo.isSel;
     [self.tableView reloadData];
-    if (self.isCus) {
-        if (self.isSel) {
-            [self chooseCustomDri];
-        }else{
-            [self chooseCustomPro];
-        }
-    }
 }
 
 - (void)cellBackWithIndex:(NSInteger)index{
@@ -378,6 +378,9 @@
     }
     [[NSNotificationCenter defaultCenter]postNotificationName:NotificationDriName
                                 object:nil userInfo:@{UserInfoDriName:listInfo}];
+    if (self.isCus) {//定制
+        return;
+    }
     NSInteger count = self.navigationController.viewControllers.count;
     BaseViewController *baseVc = self.navigationController.viewControllers[count-3];
     [self.navigationController popToViewController:baseVc animated:YES];
@@ -386,7 +389,7 @@
 - (IBAction)chooseProClick:(id)sender {
     [self chooseCustomPro];
 }
-
+//选择戒托
 - (void)chooseCustomPro{
     NSArray *arr = [self arrWithInfo];
     if (arr.count==0) {
@@ -402,16 +405,10 @@
         [MBProgressHUD showError:@"没有证书不能选择"];
         return;
     }
-    [[NSNotificationCenter defaultCenter]postNotificationName:NotificationDriName
-                               object:nil userInfo:@{UserInfoDriName:listInfo}];
-    //选过商品不用再跳到页面
-    if (self.isPro) {
-        return;
-    }
     ProductListVC *listVc = [ProductListVC new];
-    listVc.isCus = self.isCus;
     listVc.driInfo = listInfo;
-    //    listVc.backDict = @{@"weight":listInfo.Weight}.mutableCopy;
+    NSDictionary *dic = listInfo.modelWeightRange;
+    listVc.backDict = @{dic[@"key"]:dic[@"value"]}.mutableCopy;
     [self.navigationController pushViewController:listVc animated:YES];
 }
 

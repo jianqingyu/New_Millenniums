@@ -10,6 +10,7 @@
 #import "CustomTopBtn.h"
 #import "ProductListVC.h"
 #import "EditUserInfoVC.h"
+#import "CustomerInfo.h"
 #import "HYBLoopScrollView.h"
 #import "CusHauteCoutureView.h"
 #import "NakedDriLibViewController.h"
@@ -37,16 +38,10 @@
     [self loadNSNotification];
     [self loadAddressDataInfo];
 }
-//添加各种通知
+//添加通知
 - (void)loadNSNotification{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:)
              name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeNakedDri:)
-                                                name:NotificationDriName object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRingHolder:)
-                                                name:NotificationRingName object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeColour:)
-                                                name:NotificationColourName object:nil];
 }
 
 - (void)orientChange:(NSNotification *)notification{
@@ -72,18 +67,25 @@
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             StorageDataTool *data = [StorageDataTool shared];
-            data.addInfo = [AddressInfo objectWithKeyValues:response.data[@"address"]];
+            if ([YQObjectBool boolForObject:response.data[@"address"]]){
+                data.addInfo = [AddressInfo objectWithKeyValues:response.data[@"address"]];
+            }
+            if ([YQObjectBool boolForObject:response.data[@"DefaultCustomer"]]){
+                data.cusInfo = [CustomerInfo objectWithKeyValues:response.data[@"DefaultCustomer"]];
+            }
         }
     } requestURL:url params:params];
 }
 //重置视图
 - (void)resetWindow{
     if (self.keyWin) {
-        self.keyWin.windowLevel = 200;
-        self.keyWin.hidden = YES;
-        self.keyWin = nil;
-        [self.cusView removeFromSuperview];
-        self.cusView = nil;
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.cusView removeFromSuperview];
+            self.keyWin.windowLevel = 200;
+            self.keyWin.hidden = YES;
+            self.keyWin = nil;
+            self.cusView = nil;
+        }];
     }
 }
 
@@ -104,15 +106,16 @@
     NSString *CurrentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
     if (![CurrentVersion isEqualToString:self.versionDic[@"version"]]) {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"温馨提示"
-                                                       message:self.versionDic[@"message"] delegate:self
-                                             cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                        message:self.versionDic[@"message"] delegate:self
+                           cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alert show];
     }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSString *str = [self.openUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     UIApplication *application = [UIApplication sharedApplication];
-    [application openURL:[NSURL URLWithString:self.openUrl]];
+    [application openURL:[NSURL URLWithString:str]];
     application = nil;
 }
 
@@ -171,7 +174,7 @@
     }];
     CGFloat mar = (width-4*60)/3;
     NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_06-1",@"p_08-1"];
-    NSArray *arrS = @[@"定制",@"产品",@"裸钻库",@"个人中心"];
+    NSArray *arrS = @[@"快速定制",@"产品",@"裸钻库",@"个人中心"];
     for (int i=0; i<arr.count; i++) {
         CustomTopBtn *right = [CustomTopBtn creatCustomView];
         right.bBtn.tag = i;
@@ -250,7 +253,15 @@
 
 - (void)openClick:(UIView *)btn{
     if (btn.tag==0) {
-        [self openWindowCusHuateView];
+        if ([[AccountTool account].isNorm intValue]==1) {
+            [MBProgressHUD showSuccess:@"高级定制不能定制钻石"];
+            return;
+        }
+        if (self.cusView) {
+            [self resetWindow];
+        }else{
+            [self openWindowCusHuateView];
+        }
     }else if(btn.tag==1){
         [self resetWindow];
         ProductListVC *list = [ProductListVC new];
@@ -282,12 +293,18 @@
     aView.driBack = ^(int staue,BOOL isYes){
         if (staue==0) {
             if (isYes) {
-                [self.cusView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.width.mas_equalTo(@22);
+                [UIView animateWithDuration:0.5 animations:^{
+                    [self.cusView mas_updateConstraints:^(MASConstraintMaker *make) {
+                          make.width.mas_equalTo(@22);
+                    }];
+                    [self.cusView layoutIfNeeded];//强制绘制
                 }];
             }else{
-                [self.cusView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.width.mas_equalTo(height-30);
+                [UIView animateWithDuration:0.5 animations:^{
+                    [self.cusView mas_updateConstraints:^(MASConstraintMaker *make) {
+                        make.width.mas_equalTo(height-30);
+                    }];
+                    [self.cusView layoutIfNeeded];//强制绘制
                 }];
             }
         }else{
@@ -300,35 +317,17 @@
     window.backgroundColor = [UIColor clearColor];
     // 添加到窗口
     [window addSubview:aView];
-    [aView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(window).offset(0);
-        make.centerY.mas_equalTo(window.mas_centerY);
-        make.width.mas_equalTo(height-30);
-        make.height.mas_equalTo(height);
+    [UIView animateWithDuration:0.5 animations:^{
+        [aView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(window).offset(0);
+            make.centerY.mas_equalTo(window.mas_centerY);
+            make.width.mas_equalTo(height-30);
+            make.height.mas_equalTo(height);
+        }];
+        [aView layoutIfNeeded];//强制绘制
     }];
     self.cusView = aView;
     self.keyWin = window;
-}
-//修改戒托
-- (void)changeRingHolder:(NSNotification *)notification{
-    ProductInfo *info = notification.userInfo[UserInfoRingName];
-    StorageDataTool *data = [StorageDataTool shared];
-    data.BaseInfo = info;
-    self.cusView.imgInfo = info;
-}
-//修改裸石
-- (void)changeNakedDri:(NSNotification *)notification{
-    NakedDriSeaListInfo *listInfo = notification.userInfo[UserInfoDriName];
-    StorageDataTool *data = [StorageDataTool shared];
-    data.BaseSeaInfo = listInfo;
-    self.cusView.info = listInfo;
-}
-//修改成色
-- (void)changeColour:(NSNotification *)notification{
-    DetailTypeInfo *info = notification.userInfo[UserInfoColourName];
-    StorageDataTool *data = [StorageDataTool shared];
-    data.colorInfo = info;
-    self.cusView.colorInfo = info;
 }
 
 - (void)dealloc {

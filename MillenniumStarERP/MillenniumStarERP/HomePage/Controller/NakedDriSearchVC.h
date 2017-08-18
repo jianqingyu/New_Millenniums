@@ -10,6 +10,7 @@
 
 @interface NakedDriSearchVC : BaseViewController
 @property (nonatomic,strong)NSDictionary *seaDic;
+@property (nonatomic,assign)BOOL isRef;
 @property (nonatomic,assign)BOOL isSel;
 @property (nonatomic,assign)BOOL isCus;
 @property (nonatomic,assign)BOOL isPro;

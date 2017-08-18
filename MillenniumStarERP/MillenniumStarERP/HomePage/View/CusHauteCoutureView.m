@@ -7,6 +7,10 @@
 //
 
 #import "CusHauteCoutureView.h"
+#import "AddressInfo.h"
+#import "CustomerInfo.h"
+#import "ProductInfo.h"
+#import "DetailTypeInfo.h"
 #import "ProductListVC.h"
 #import "StrWithIntTool.h"
 #import "ConfirmOrderVC.h"
@@ -14,10 +18,13 @@
 #import "ShowLoginViewTool.h"
 #import "PayViewController.h"
 #import "ChangeUserInfoVC.h"
+#import "NakedDriSearchVC.h"
+#import "NakedDriSeaListInfo.h"
+#import "NewCustomProDetailVC.h"
 #import "NakedDriLibViewController.h"
 @interface CusHauteCoutureView()
 @property (weak, nonatomic) IBOutlet UIImageView *image;
-@property (weak, nonatomic) IBOutlet UILabel *hands;
+@property (weak, nonatomic) IBOutlet UILabel *title;
 @property (weak, nonatomic) IBOutlet UILabel *staueLab;
 @property (weak, nonatomic) IBOutlet UIButton *proBtn;
 @property (weak, nonatomic) IBOutlet UILabel *infoLab;
@@ -32,6 +39,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *line1H;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *line2H;
 @property (weak, nonatomic) IBOutlet UIButton *sureBtn;
+@property (weak, nonatomic) IBOutlet UILabel *handsLab;
+@property (weak, nonatomic) IBOutlet UIButton *reBtn;
 @end
 @implementation CusHauteCoutureView
 
@@ -53,9 +62,15 @@
     [self.proBtn setLayerWithW:3 andColor:[UIColor whiteColor] andBackW:0.5];
     [self.driBtn setLayerWithW:3 andColor:[UIColor whiteColor] andBackW:0.5];
     [self.messBtn setLayerWithW:3 andColor:[UIColor whiteColor] andBackW:0.5];
+    [self.reBtn setLayerWithW:3 andColor:BordColor andBackW:0.0001];
     [self.conBtn setLayerWithW:3 andColor:BordColor andBackW:0.0001];
     [self.infoView setLayerWithW:3 andColor:BordColor andBackW:0.0001];
     [self.myView setLayerWithW:3 andColor:BordColor andBackW:0.0001];
+    //        单击手势
+    UITapGestureRecognizer* singleRecognizer;
+    singleRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(SingleTap:)];
+    singleRecognizer.numberOfTapsRequired = 1;
+    [self.image addGestureRecognizer:singleRecognizer];
     //        右滑手势
     UISwipeGestureRecognizer * recognizer;
     recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
@@ -65,72 +80,96 @@
     recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
     [self addGestureRecognizer:recognizer];
+    
+    [self addNotification];
+    StorageDataTool *data = [StorageDataTool shared];
+    [self reSetProctInfo:data];
+    [self reSetNakedInfo:data];
+    [self reSetColorInfo:data];
+    [self reSetHandsSize:data];
+    [self reSetCusInfo:data];
+    [self reSetAddInfo:data];
+}
+
+- (void)addNotification{
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(clickConfirm:)
                                                 name:NotificationClickName object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeNakedDri:)
+                                                name:NotificationDriName object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRingHolder:)
+                                                name:NotificationRingName object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeColour:)
+                                                name:NotificationColourName object:nil];
+}
+//修改戒托
+- (void)changeRingHolder:(NSNotification *)notification{
+    ProductInfo *info = notification.userInfo[UserInfoRingName];
     StorageDataTool *data = [StorageDataTool shared];
+    data.BaseInfo = info;
+    data.colorInfo = nil;
+    self.staueLab.hidden = YES;
+    [self reSetProctInfo:data];
+}
+//修改裸石
+- (void)changeNakedDri:(NSNotification *)notification{
+    NakedDriSeaListInfo *listInfo = notification.userInfo[UserInfoDriName];
+    StorageDataTool *data = [StorageDataTool shared];
+    data.BaseSeaInfo = listInfo;
+    [self reSetNakedInfo:data];
+    [self viewDidShow];
     if (data.BaseInfo) {
-        self.imgInfo = data.BaseInfo;
+        if (data.cusInfo) {
+            [MBProgressHUD showSuccess:@"已选择完毕,请点确认定制"];
+        }else{
+            [MBProgressHUD showSuccess:@"请继续选择信息"];
+        }
+    }else{
+        [MBProgressHUD showSuccess:@"请继续挑选戒托"];
     }
-    if (data.BaseSeaInfo) {
-        self.info = data.BaseSeaInfo;
-    }
-    if (data.colorInfo) {
-        self.colorInfo = data.colorInfo;
-    }
-    if (data.cusInfo) {
-        self.cusInfo = data.cusInfo;
-    }
-    if (data.addInfo) {
-        self.addInfo = data.addInfo;
-    }
+}
+//修改成色
+- (void)changeColour:(NSNotification *)notification{
+    DetailTypeInfo *info = notification.userInfo[UserInfoColourName];
+    StorageDataTool *data = [StorageDataTool shared];
+    data.colorInfo = info;
+    [self reSetColorInfo:data];
 }
 
 - (void)clickConfirm:(NSNotification *)notification{
-    [self openConfirmOrder];
-}
-
-- (void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer{
-    if(recognizer.direction == UISwipeGestureRecognizerDirectionDown) {
-        NSLog(@"swipe down");
-    }
-    if(recognizer.direction == UISwipeGestureRecognizerDirectionUp) {
-        NSLog(@"swipe up");
-    }
-    if(recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
-        [self viewDidDismiss];
-    }
-    if(recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
-        [self viewDidShow];
+    StorageDataTool *data = [StorageDataTool shared];
+    [self reSetHandsSize:data];
+    [self viewDidShow];
+    if (data.BaseSeaInfo) {
+        if (data.cusInfo) {
+            [MBProgressHUD showSuccess:@"已选择完毕,请点确认定制"];
+        }else{
+            [MBProgressHUD showSuccess:@"请继续选择信息"];
+        }
+    }else{
+        [MBProgressHUD showSuccess:@"请继续挑选裸钻"];
     }
 }
-
-- (void)setImgInfo:(ProductInfo *)imgInfo{
-    if (imgInfo) {
-        _imgInfo = imgInfo;
-        [self.image sd_setImageWithURL:[NSURL URLWithString:_imgInfo.pic] placeholderImage:DefaultImage];
-        self.hands.text = _imgInfo.title;
-        float price = _imgInfo.price;
-        if (_info) {
-            price = price+[_info.Price floatValue];
+//赋值
+- (void)reSetProctInfo:(StorageDataTool *)data{
+    if (data.BaseInfo) {
+        self.image.hidden = NO;
+        self.title.hidden = NO;
+        [self.image sd_setImageWithURL:[NSURL URLWithString:data.BaseInfo.pic]
+                      placeholderImage:DefaultImage];
+        self.title.text = data.BaseInfo.title;
+        float price = data.BaseInfo.price;
+        if (data.BaseSeaInfo) {
+            price = price+[data.BaseSeaInfo.Price floatValue];
         }
         self.priceLab.text = [NSString stringWithFormat:@"合计:%0.0f元",price];
-        if (_info) {
-            if (_cusInfo) {
-                [MBProgressHUD showSuccess:@"已选择完毕,请点确认定制"];
-            }else{
-                [MBProgressHUD showSuccess:@"请继续选择信息"];
-            }
-        }else{
-            [MBProgressHUD showSuccess:@"请继续挑选裸钻"];
-        }
     }
 }
 
-- (void)setInfo:(NakedDriSeaListInfo *)info{
-    if (info) {
-        _info = info;
-        [self viewDidShow];
-        NSArray *infoArr = @[@"钻石",_info.Weight,_info.Shape,_info.Color,_info.Purity,@"1粒",_info.CertCode];
+- (void)reSetNakedInfo:(StorageDataTool *)data{
+    if (data.BaseSeaInfo) {
+        self.infoLab.hidden = NO;
+        NSArray *infoArr = @[@"钻石",data.BaseSeaInfo.Weight,data.BaseSeaInfo.Shape,
+         data.BaseSeaInfo.Color,data.BaseSeaInfo.Purity,@"1粒",data.BaseSeaInfo.CertCode];
         NSArray *titleArr = @[@"类型",@"规格",@"形状",@"颜色",@"净度",@"数量",@"证书编号"];
         NSMutableArray *mutA = [NSMutableArray new];
         for (int i=0; i<titleArr.count; i++) {
@@ -141,23 +180,48 @@
             }
         }
         self.infoLab.text = [StrWithIntTool strWithArr:mutA With:@","];
-        float price = [_info.Price floatValue];
-        if (_imgInfo) {
-            price = price+_imgInfo.price;
+        float price = [data.BaseSeaInfo.Price floatValue];
+        if (data.BaseInfo) {
+            price = price+data.BaseInfo.price;
         }
         self.priceLab.text = [NSString stringWithFormat:@"合计:%0.0f元",price];
-        if (_imgInfo) {
-            if (_cusInfo) {
-                [MBProgressHUD showSuccess:@"已选择完毕,请点确认定制"];
-            }else{
-                [MBProgressHUD showSuccess:@"请继续选择信息"];
-            }
-        }else{
-            [MBProgressHUD showSuccess:@"请继续挑选戒托"];
-        }
     }
 }
 
+- (void)reSetHandsSize:(StorageDataTool *)data{
+    NSMutableString *mutS = [NSMutableString new];
+    if (data.handSize.length>0) {
+        [mutS appendString:[NSString stringWithFormat:@"手寸:%@",data.handSize]];
+    }
+    if (data.word.length>0) {
+        [mutS appendString:[NSString stringWithFormat:@" 字印:%@",data.word]];
+    }
+    self.handsLab.hidden = NO;
+    self.handsLab.text = mutS.copy;
+}
+
+- (void)reSetAddInfo:(StorageDataTool *)data{
+    if (data.addInfo) {
+        self.addressLab.hidden = NO;
+        self.addressLab.text = [NSString stringWithFormat:@"地址:%@ %@ %@",
+                        data.addInfo.name,data.addInfo.phone,data.addInfo.addr];
+    }
+}
+
+- (void)reSetCusInfo:(StorageDataTool *)data{
+    if (data.cusInfo) {
+        self.cusLab.hidden = NO;
+        self.cusLab.text = [NSString stringWithFormat:@"客户:%@",data.cusInfo.customerName];
+    }
+}
+
+- (void)reSetColorInfo:(StorageDataTool *)data{
+    if (data.colorInfo) {
+        self.staueLab.hidden = NO;
+        self.staueLab.text = [NSString stringWithFormat:@"质量:精品 成色:%@",data.colorInfo.title];
+    }
+}
+//显示与隐藏页面
 - (void)viewDidShow{
     if (!self.sureBtn.selected) {
         return;
@@ -178,53 +242,126 @@
     }
 }
 
-- (void)setAddInfo:(AddressInfo *)addInfo{
-    if (addInfo) {
-        _addInfo = addInfo;
-        self.addressLab.text = [NSString stringWithFormat:@"地址:%@ %@ %@",_addInfo.name,_addInfo.phone,_addInfo.addr];
+- (IBAction)showClick:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    if (self.driBack) {
+        self.driBack(0,sender.selected);
     }
 }
 
-- (void)setCusInfo:(CustomerInfo *)cusInfo{
-    if (cusInfo) {
-        _cusInfo = cusInfo;
-        self.cusLab.text = [NSString stringWithFormat:@"客户:%@",_cusInfo.customerName];
+- (void)SingleTap:(UITapGestureRecognizer*)recognizer{
+    StorageDataTool *data = [StorageDataTool shared];
+    if (!data.BaseInfo) {
+        return;
+    }
+    [self viewDidDismiss];
+    UIViewController *cur = [ShowLoginViewTool getCurrentVC];
+    if ([cur isKindOfClass:[NewCustomProDetailVC class]]) {
+        return;
+    }
+    NewCustomProDetailVC *list;
+    for (UIViewController *vc in cur.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[NewCustomProDetailVC class]]) {
+            list = (NewCustomProDetailVC *)vc;
+        }
+    }
+    if (list) {
+        list.proId = data.BaseInfo.id;
+        list.isCus = YES;
+        [cur.navigationController popToViewController:list animated:YES];
+    }else{
+        list = [NewCustomProDetailVC new];
+        list.isCus = YES;
+        list.proId = data.BaseInfo.id;
+        [cur.navigationController pushViewController:list animated:YES];
     }
 }
 
-- (void)setColorInfo:(DetailTypeInfo *)colorInfo{
-    if (colorInfo) {
-        _colorInfo = colorInfo;
+- (void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer{
+    if(recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
+        [self viewDidDismiss];
+    }
+    if(recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
         [self viewDidShow];
-        self.staueLab.text = [NSString stringWithFormat:@"质量等级:精品 成色:%@",_colorInfo.title];
     }
 }
-
+#pragma mark -- 跳转与确认定制按钮
+//选择戒托
 - (IBAction)openPuct:(id)sender {
     [self viewDidDismiss];
     UIViewController *cur = [ShowLoginViewTool getCurrentVC];
     if ([cur isKindOfClass:[ProductListVC class]]) {
         return;
     }
+    StorageDataTool *data = [StorageDataTool shared];
     ProductListVC *list;
     for (UIViewController *vc in cur.navigationController.viewControllers) {
         if ([vc isKindOfClass:[ProductListVC class]]) {
             list = (ProductListVC *)vc;
         }
     }
+    NSMutableDictionary *mutB = @{}.mutableCopy;
+    if (data.BaseSeaInfo) {
+        NSDictionary *dic = data.BaseSeaInfo.modelWeightRange;
+        mutB[dic[@"key"]] = dic[@"value"];
+    }
     if (list) {
         list.isCus = YES;
+        list.backDict = mutB;
+        list.isRefresh = YES;
         [cur.navigationController popToViewController:list animated:YES];
     }else{
         list = [ProductListVC new];
+        list.backDict = mutB;
         list.isCus = YES;
         [cur.navigationController pushViewController:list animated:YES];
     }
 }
-
+//选择裸钻
 - (IBAction)openDriClick:(id)sender {
     [self viewDidDismiss];
     UIViewController *cur = [ShowLoginViewTool getCurrentVC];
+    StorageDataTool *data = [StorageDataTool shared];
+    NSMutableDictionary *mutB = @{}.mutableCopy;
+    if (data.BaseInfo) {
+        NSDictionary *dic = data.BaseInfo.stoneWeightRange;
+        mutB[dic[@"key"]] = dic[@"value"];
+    }
+//    if (data.BaseInfo) {
+//        [self gotoNakedSeaVC:cur and:data];
+//    }else{
+    [self gotoNakedLibVC:cur and:mutB];
+}
+//有戒托直接跳转裸石
+//- (void)gotoNakedSeaVC:(UIViewController *)cur and:(StorageDataTool *)data{
+//    if ([cur isKindOfClass:[NakedDriSearchVC class]]) {
+//        return;
+//    }
+//    NakedDriSearchVC *driVc;
+//    for (UIViewController *vc in cur.navigationController.viewControllers) {
+//        if ([vc isKindOfClass:[NakedDriSearchVC class]]) {
+//            driVc = (NakedDriSearchVC *)vc;
+//        }
+//    }
+//    NSMutableDictionary *mutB = @{}.mutableCopy;
+//    if (data.BaseInfo) {
+//        NSDictionary *dic = data.BaseInfo.stoneWeightRange;
+//        mutB[dic[@"key"]] = dic[@"value"];
+//    }
+//    if (driVc) {
+//        driVc.isCus = YES;
+//        driVc.seaDic = mutB.copy;
+//        driVc.isRef = YES;
+//        [cur.navigationController popToViewController:driVc animated:YES];
+//    }else{
+//        driVc = [NakedDriSearchVC new];
+//        driVc.isCus = YES;
+//        driVc.seaDic = mutB.copy;
+//        [cur.navigationController pushViewController:driVc animated:YES];
+//    }
+//}
+//跳转搜索裸钻页面
+- (void)gotoNakedLibVC:(UIViewController *)cur and:(NSDictionary *)dic{
     if ([cur isKindOfClass:[NakedDriLibViewController class]]) {
         return;
     }
@@ -234,19 +371,17 @@
             driVc = (NakedDriLibViewController *)vc;
         }
     }
-    BOOL isPro = self.imgInfo?YES:NO;
     if (driVc) {
         driVc.isCus = YES;
-        driVc.isPro = isPro;
+        driVc.seaDic = dic;
         [cur.navigationController popToViewController:driVc animated:YES];
     }else{
         driVc = [NakedDriLibViewController new];
         driVc.isCus = YES;
-        driVc.isPro = isPro;
         [cur.navigationController pushViewController:driVc animated:YES];
     }
 }
-
+//选择客户信息
 - (IBAction)chooseMessage:(id)sender {
     [self viewDidDismiss];
     UIViewController *cur = [ShowLoginViewTool getCurrentVC];
@@ -255,20 +390,25 @@
     }
     ChangeUserInfoVC *list = list = [ChangeUserInfoVC new];
     list.back = ^(NSDictionary *dic){
-        self.addInfo = dic[@"add"];
-        self.cusInfo = dic[@"cus"];
+        StorageDataTool *data = [StorageDataTool shared];
+        data.addInfo = dic[@"add"];
+        data.cusInfo = dic[@"cus"];
+        [self reSetCusInfo:data];
+        [self reSetAddInfo:data];
         [self viewDidShow];
+        if (data.BaseInfo) {
+            if (data.cusInfo) {
+                [MBProgressHUD showSuccess:@"已选择完毕,请点确认定制"];
+            }else{
+                [MBProgressHUD showSuccess:@"请继续挑选钻石"];
+            }
+        }else{
+            [MBProgressHUD showSuccess:@"请继续挑选戒托"];
+        }
     };
     [cur.navigationController pushViewController:list animated:YES];
 }
-
-- (IBAction)showClick:(UIButton *)sender {
-    sender.selected = !sender.selected;
-    if (self.driBack) {
-        self.driBack(0,sender.selected);
-    }
-}
-
+//确认定制
 - (IBAction)confirmClick:(id)sender {
     [self openConfirmOrder];
 }
@@ -288,7 +428,7 @@
         return;
     }
     if (!data.cusInfo) {
-        [MBProgressHUD showError:@"请选择客户"];
+        [MBProgressHUD showError:@"请选择客户信息"];
         return;
     }
     NSString *url = [NSString stringWithFormat:@"%@OrderCurrentSubmitQuickNowDo",baseUrl];
@@ -298,6 +438,9 @@
     params[@"modelQualityId"] = @1;
     if (data.word.length>0) {
         params[@"word"] = data.word;
+    }
+    if (data.note.length>0) {
+        params[@"remarks"] = data.note;
     }
     params[@"customerID"] = @(data.cusInfo.customerID);
     params[@"modelPurityId"] = @(data.colorInfo.id);
@@ -320,7 +463,6 @@
         }
     } requestURL:url params:params];
 }
-
 //是否需要付款 是否下单ERP
 - (void)gotoNextViewConter:(id)dic{
     UIViewController *cur = [ShowLoginViewTool getCurrentVC];
@@ -339,15 +481,29 @@
             [cur.navigationController pushViewController:proVc animated:YES];
         }
     }
+    [self setDataEmpty];
+    if (self.driBack) {
+        self.driBack(1,YES);
+    }
+}
+
+- (IBAction)reSetData:(id)sender {
+    [self setDataEmpty];
+    self.image.hidden = YES;
+    self.title.hidden = YES;
+    self.staueLab.hidden = YES;
+    self.handsLab.hidden = YES;
+    self.infoLab.hidden = YES;
+}
+
+- (void)setDataEmpty{
     StorageDataTool *data = [StorageDataTool shared];
     data.colorInfo = nil;
+    data.note = nil;
     data.handSize = nil;
     data.word = nil;
     data.BaseInfo = nil;
     data.BaseSeaInfo = nil;
-    if (self.driBack) {
-        self.driBack(1,YES);
-    }
 }
 
 - (void)dealloc {

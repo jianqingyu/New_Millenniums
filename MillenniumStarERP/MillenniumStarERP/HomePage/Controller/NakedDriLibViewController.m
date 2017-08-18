@@ -46,6 +46,7 @@
     NakedDriLibCustomView *NakedDriView = [NakedDriLibCustomView creatCustomView];
     NakedDriView.isCus = self.isCus;
     NakedDriView.isPro = self.isPro;
+    NakedDriView.driweight = self.seaDic;
     NakedDriView.supNav = self.navigationController;
     [self.view addSubview:NakedDriView];
     [NakedDriView mas_makeConstraints:^(MASConstraintMaker *make) {

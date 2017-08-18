@@ -15,4 +15,7 @@
 @property (nonatomic,copy)NSString *picb;
 @property (nonatomic,copy)NSString *picm;
 @property (nonatomic,copy)NSString *title;
+@property (nonatomic,copy)NSString *weight;
+@property (nonatomic,strong)NSDictionary *stoneWeightRange;
+
 @end

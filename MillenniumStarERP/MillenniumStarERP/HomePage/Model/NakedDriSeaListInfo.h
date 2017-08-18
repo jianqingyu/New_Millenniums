@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface NakedDriSeaListInfo : NSObject
+@property (nonatomic,strong)NSDictionary *modelWeightRange;
 @property (nonatomic,  copy)NSString *id;
 @property (nonatomic,  copy)NSString *CertAuth;
 @property (nonatomic,  copy)NSString *CertCode;
