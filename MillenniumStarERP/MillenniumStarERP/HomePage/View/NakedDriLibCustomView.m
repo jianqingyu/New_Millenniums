@@ -56,11 +56,10 @@
     }
 }
 
-- (void)setDriweight:(NSDictionary *)driweight{
-    if (driweight) {
-        _driweight = driweight;
-        NSString *key = _driweight.allValues[0];
-        self.headView.driWei = key;
+- (void)setIsRef:(BOOL)isRef{
+    if (isRef) {
+        _isRef = isRef;
+        self.headView.isRef = _isRef;
     }
 }
 
@@ -101,7 +100,7 @@
     [btn setTitle:title forState:UIControlStateNormal];
     [btn setBackgroundColor:color];
     [btn addTarget:self action:@selector(bottomBtnClick:)
-  forControlEvents:UIControlEventTouchUpInside];
+                                forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:btn];
     return btn;
 }
@@ -128,7 +127,7 @@
 }
 
 - (void)setHomeData{
-    NSString *regiUrl = [NSString stringWithFormat:@"%@stoneSearchInfo",baseUrl];
+    NSString *regiUrl = [NSString stringWithFormat:@"%@stoneSearchInfoInhk",baseUrl];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {

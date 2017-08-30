@@ -107,6 +107,9 @@
     StorageDataTool *data = [StorageDataTool shared];
     data.BaseInfo = info;
     data.colorInfo = nil;
+    data.handSize = @"";
+    data.word = @"";
+    self.handsLab.hidden = YES;
     self.staueLab.hidden = YES;
     [self reSetProctInfo:data];
 }
@@ -322,15 +325,8 @@
     [self viewDidDismiss];
     UIViewController *cur = [ShowLoginViewTool getCurrentVC];
     StorageDataTool *data = [StorageDataTool shared];
-    NSMutableDictionary *mutB = @{}.mutableCopy;
-    if (data.BaseInfo) {
-        NSDictionary *dic = data.BaseInfo.stoneWeightRange;
-        mutB[dic[@"key"]] = dic[@"value"];
-    }
-//    if (data.BaseInfo) {
-//        [self gotoNakedSeaVC:cur and:data];
-//    }else{
-    [self gotoNakedLibVC:cur and:mutB];
+    BOOL isYes = data.BaseInfo==nil;
+    [self gotoNakedLibVC:cur and:!isYes];
 }
 //有戒托直接跳转裸石
 //- (void)gotoNakedSeaVC:(UIViewController *)cur and:(StorageDataTool *)data{
@@ -361,7 +357,7 @@
 //    }
 //}
 //跳转搜索裸钻页面
-- (void)gotoNakedLibVC:(UIViewController *)cur and:(NSDictionary *)dic{
+- (void)gotoNakedLibVC:(UIViewController *)cur and:(BOOL)isYes{
     if ([cur isKindOfClass:[NakedDriLibViewController class]]) {
         return;
     }
@@ -373,7 +369,7 @@
     }
     if (driVc) {
         driVc.isCus = YES;
-        driVc.seaDic = dic;
+        driVc.isRef = isYes;
         [cur.navigationController popToViewController:driVc animated:YES];
     }else{
         driVc = [NakedDriLibViewController new];

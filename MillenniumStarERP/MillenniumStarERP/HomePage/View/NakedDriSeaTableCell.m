@@ -74,9 +74,10 @@
 
 - (NSArray *)arrWithModel{
     NSString *str = self.isCus?@"定制":@"";
-    NSArray *arr = @[str,[self str:_seaInfo.Weight],[self str:_seaInfo.Price],[self str:_seaInfo.Shape],
-                     [self str:_seaInfo.Color],[self str:_seaInfo.Purity],[self str:_seaInfo.Cut],
-                     [self str:_seaInfo.Polishing],[self str:_seaInfo.Symmetric],[self str:_seaInfo.Fluorescence],
+    NSArray *arr = @[str,[self str:_seaInfo.Weight],[self str:_seaInfo.Price],
+                     [self str:_seaInfo.Shape],[self str:_seaInfo.Color],[self str:_seaInfo.Purity],
+                     [self str:_seaInfo.Cut],[self str:_seaInfo.Polishing],
+                     [self str:_seaInfo.Symmetric],[self str:_seaInfo.Fluorescence],
                      [self str:_seaInfo.CertAuth],[self str:_seaInfo.CertCode],@"报价"];
     if (!self.isShow) {
         NSMutableArray *mutA = arr.mutableCopy;

@@ -44,7 +44,7 @@
 - (IBAction)showPriceClick:(UISwitch *)btn {
     NSString *url = [NSString stringWithFormat:@"%@modifyUserIsShowOriginalPriceDo",baseUrl];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"isShow"] = @(btn.on);
+    params[@"isNoShow"] = @(btn.on);
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     _mInfo.isShowOriginalPrice = btn.on;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {

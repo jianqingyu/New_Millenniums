@@ -13,11 +13,9 @@
 #define ROWHEIHT 30
 #define ROWSPACE 10
 #define ROWWIDTH (MIN(SDevHeight, SDevWidth)*0.8 - (COLUMN+1)*ROWSPACE)/COLUMN
-typedef void (^ScreenClickBack)(id data);
 @interface ScreeningTableCell : UITableViewCell
 + (id)cellWithTableView:(UITableView *)tableView;
 @property (nonatomic,strong)ScreeningInfo *info;
-@property (nonatomic,  copy)ScreenClickBack clickblock;
 @property (nonatomic,strong)WeightInfo *wInfo;
 @property (nonatomic,  weak)UITextField *minFie;
 @property (nonatomic,  weak)UITextField *maxFie;

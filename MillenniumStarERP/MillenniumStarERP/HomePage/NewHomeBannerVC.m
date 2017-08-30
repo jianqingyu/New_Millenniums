@@ -31,8 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self loadNewHomeData];
-    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝2/id1244977034?mt=8";
-//    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
+    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
+//    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝2/id1244977034?mt=8";
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self creatBottomBtn];
     [self loadNSNotification];

@@ -158,7 +158,7 @@
     params[@"phone"] = [AccountTool account].phone;
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"isNorm"] = [AccountTool account].isNorm;
-    params[@"isShow"] = @(btn.on);
+    params[@"isNoShow"] = @(!btn.on);
     Account *account = [Account accountWithDict:params];
     //自定义类型存储用NSKeyedArchiver
     [AccountTool saveAccount:account];

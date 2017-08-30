@@ -20,7 +20,7 @@
         self.password = dict[@"password"];
         self.tokenKey = dict[@"tokenKey"];
         self.phone    = dict[@"phone"];
-        self.isNoShow   = dict[@"isNoShow"];
+        self.isNoShow = dict[@"isNoShow"];
         self.isNorm   = dict[@"isNorm"];
     }
     return self;

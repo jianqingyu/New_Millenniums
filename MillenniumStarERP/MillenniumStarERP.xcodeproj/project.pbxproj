@@ -2870,7 +2870,7 @@
 					"$(PROJECT_DIR)/MillenniumStarERP/ThirdSDK/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.millenniumStar.mStar2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.millenniumStar.mStar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2908,7 +2908,7 @@
 					"$(PROJECT_DIR)/MillenniumStarERP/ThirdSDK/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.millenniumStar.mStar2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.millenniumStar.mStar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

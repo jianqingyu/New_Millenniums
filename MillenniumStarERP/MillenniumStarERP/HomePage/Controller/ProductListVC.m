@@ -158,7 +158,7 @@
     CGFloat pageHei = sender.frame.size.height;
     // 根据当前的x坐标和页宽度计算出当前页数
     int currentPage = (floor((sender.contentOffset.y - pageHei/2)/pageHei) + 1)+1;
-    NSLog(@"%d",currentPage);
+//    NSLog(@"%d",currentPage);
     int toPage = totalCount%12==0?totalCount/12:totalCount/12+1;
     if (self.idxPage!=currentPage&&totalCount!=0) {
         self.idxPage = currentPage;
@@ -387,6 +387,7 @@
 - (void)loadNewRequestWith:(BOOL)isPullRefresh{
     if (isPullRefresh){
         curPage = 1;
+        self.numLab.hidden = YES;
         [self.dataArray removeAllObjects];
     }
     NSMutableDictionary *params = [self dictForLoadData];

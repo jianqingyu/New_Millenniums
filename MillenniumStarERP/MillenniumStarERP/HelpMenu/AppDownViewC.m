@@ -21,7 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"版本下载";
+    self.title = @"版本详情";
     self.iOSDic = @{@"image":@"mStar",@"url":
               @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8"};
     self.androidDic = @{@"image":@"mStar2",@"url":

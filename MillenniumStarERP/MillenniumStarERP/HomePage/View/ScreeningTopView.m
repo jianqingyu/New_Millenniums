@@ -26,7 +26,7 @@
         UILabel *lab = [[UILabel alloc]init];
         lab.text = @"已选条件";
         lab.textColor = [UIColor redColor];
-        lab.font = [UIFont systemFontOfSize:16];
+        lab.font = [UIFont systemFontOfSize:15];
         [self addSubview:lab];
         [lab mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self).offset(10);

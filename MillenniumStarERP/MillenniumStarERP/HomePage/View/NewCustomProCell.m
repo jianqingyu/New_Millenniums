@@ -36,6 +36,16 @@
     return self;
 }
 
+- (void)setIsCus:(BOOL)isCus{
+    if (isCus) {
+        _isCus = isCus;
+        if ([_titleStr isEqualToString:@"主   石"]) {
+            self.nextBtn.hidden = YES;
+            self.addBtn.hidden = YES;
+        }
+    }
+}
+
 - (void)setTitleStr:(NSString *)titleStr{
     if (titleStr) {
         _titleStr = titleStr;

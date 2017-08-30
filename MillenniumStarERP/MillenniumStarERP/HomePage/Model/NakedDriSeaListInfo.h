@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface NakedDriSeaListInfo : NSObject
-@property (nonatomic,strong)NSDictionary *modelWeightRange;
 @property (nonatomic,  copy)NSString *id;
+@property (nonatomic,assign)BOOL isSel;
 @property (nonatomic,  copy)NSString *CertAuth;
 @property (nonatomic,  copy)NSString *CertCode;
 @property (nonatomic,  copy)NSString *Weight;
@@ -23,5 +23,6 @@
 @property (nonatomic,  copy)NSString *Polishing;
 @property (nonatomic,  copy)NSString *Symmetric;
 @property (nonatomic,  copy)NSString *Fluorescence;
-@property (nonatomic,assign)BOOL isSel;
+@property (nonatomic,strong)NSDictionary *modelWeightRange;
+
 @end

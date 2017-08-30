@@ -52,11 +52,31 @@
     return self;
 }
 
+- (void)setIsRef:(BOOL)isRef{
+    if (isRef) {
+        _isRef = isRef;
+        [self setDriFieText];
+    }
+}
+//更新搜索条件
 - (void)setDriFieText{
     StorageDataTool *data = [StorageDataTool shared];
     if (data.BaseInfo) {
         NSDictionary *dic = data.BaseInfo.stoneWeightRange;
-        self.driWei = dic[@"value"];
+        NSString *str = dic[@"value"];
+        NSArray *arr;
+        if ([str containsString:@","]) {
+            arr = [str componentsSeparatedByString:@","];
+        }
+        if (arr.count!=0) {
+            self.driFie1.text = arr[0];
+            self.driFie2.text = arr[1];
+        }
+        NSDictionary *dict = _topArr[0];
+        self.mutDic[dict[@"keyword"]] = str;
+        if (self.back) {
+            self.back(self.mutDic);
+        }
     }
 }
 
@@ -68,20 +88,6 @@
             UIButton *btn = _topBtns[i];
             [btn setTitle:linfo.name forState:UIControlStateNormal];
             btn.selected = linfo.isSel;
-        }
-    }
-}
-
-- (void)setDriWei:(NSString *)driWei{
-    if (driWei) {
-        _driWei = driWei;
-        NSArray *arr = [_driWei componentsSeparatedByString:@","];
-        self.driFie1.text = arr[0];
-        self.driFie2.text = arr[1];
-        NSDictionary *dic = _topArr[0];
-        self.mutDic[dic[@"keyword"]] = _driWei;
-        if (self.back) {
-            self.back(self.mutDic);
         }
     }
 }
@@ -103,7 +109,7 @@
 }
 
 - (void)creatBaseView:(NSArray *)arr isYes:(BOOL)isFirst{
-    CGFloat space = 10;
+    CGFloat space = 0;
     CGFloat height = 30;
     CGFloat curX = 0;
     CGFloat width = 0;
@@ -118,6 +124,7 @@
             }else{
                 btnL = self.mutB[i-1];
             }
+            space = 10;
         }
         curX = CGRectGetMaxX(btnL.frame)+space;
         btn.tag = i;

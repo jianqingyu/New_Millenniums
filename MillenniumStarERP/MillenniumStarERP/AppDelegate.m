@@ -53,7 +53,7 @@
     [ShareSDK registerApp:@"1e74aa44eb1e0"
           activePlatforms:@[@(SSDKPlatformTypeSinaWeibo),
                             @(SSDKPlatformTypeWechat),
-                            @(SSDKPlatformTypeQQ),]
+                            @(SSDKPlatformTypeQQ)]
                  onImport:^(SSDKPlatformType platformType)
      {
          switch (platformType)

@@ -10,6 +10,7 @@
 typedef void (^newDriEditBack)(BOOL isSel);
 @interface NewCustomProCell : UITableViewCell
 @property (nonatomic,assign)BOOL isSel;
+@property (nonatomic,assign)BOOL isCus;
 @property (nonatomic,strong)NSArray *list;
 @property (nonatomic,  copy)NSString *num;
 @property (nonatomic,  copy)NSString *titleStr;

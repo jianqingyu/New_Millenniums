@@ -7,32 +7,32 @@
 //
 
 #import "NakedDriSearchVC.h"
-#import "NakedDriSeaListInfo.h"
-#import "NakedDriSeaTableCell.h"
-#import "NakedDriConfirmOrderVc.h"
 #import "NakedDriPriceVC.h"
 #import "StrWithIntTool.h"
 #import "NakedDriSeaHeadV.h"
 #import "ProductListVC.h"
+#import "NakedDriSeaListInfo.h"
+#import "NakedDriSeaTableCell.h"
+#import "NakedDriConfirmOrderVc.h"
 @interface NakedDriSearchVC ()<UITableViewDelegate,UITableViewDataSource>{
     int curPage;
     int pageCount;
     int totalCount;//商品总数量
 }
-@property (nonatomic,assign)BOOL isFir;
-@property (nonatomic,assign)BOOL isShow;
+@property (nonatomic,assign) BOOL isFir;
+@property (nonatomic,assign) BOOL isShow;
 @property (nonatomic,assign) int idxPage;
 @property (nonatomic,  weak) UILabel *numLab;
-@property (nonatomic,  copy)NSString *sortStr;
-@property (nonatomic,strong)UITableView *tableView;
-@property (nonatomic,strong)NSMutableArray *dataArray;
+@property (nonatomic,  copy) NSString *sortStr;
+@property (nonatomic,strong) UITableView *tableView;
+@property (nonatomic,strong) NSMutableArray *dataArray;
 @property (weak,  nonatomic) IBOutlet UIView *bottomV;
 @property (weak,  nonatomic) IBOutlet UIButton *sureBtn;
 @property (weak,  nonatomic) IBOutlet UILabel *headLab;
 @property (weak,  nonatomic) IBOutlet UIScrollView *backScr;
-@property (strong,nonatomic) IBOutletCollection(UIButton) NSArray *bottomBtns;
-@property (weak,  nonatomic) IBOutlet UIButton *chooseBtn;
 @property (weak,  nonatomic) IBOutlet UIView *bottomView;
+@property (weak,  nonatomic) IBOutlet UIButton *chooseBtn;
+@property (strong,nonatomic) IBOutletCollection(UIButton) NSArray *bottomBtns;
 @end
 
 @implementation NakedDriSearchVC
@@ -147,7 +147,7 @@
     CGFloat pageWidth = sender.frame.size.height;
     // 根据当前的x坐标和页宽度计算出当前页数
     int currentPage = (floor((sender.contentOffset.y - pageWidth / 2) / pageWidth) + 1)+1;
-    NSLog(@"%d",currentPage);
+//    NSLog(@"%d",currentPage);
     int toPage = totalCount%30==0?totalCount/30:totalCount/30+1;
     if (self.idxPage!=currentPage&&totalCount!=0) {
         self.idxPage = currentPage;
@@ -197,6 +197,7 @@
 - (void)loadNewRequestWith:(BOOL)isPullRefresh{
     if (isPullRefresh){
         curPage = 1;
+        self.numLab.hidden = YES;
         [self.dataArray removeAllObjects];
     }
     NSMutableDictionary *params = [self dictForLoadData];

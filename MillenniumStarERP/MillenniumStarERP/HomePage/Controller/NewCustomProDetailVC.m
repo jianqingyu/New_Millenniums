@@ -117,7 +117,8 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 //修改裸石
 - (void)changeNakedDri:(NSNotification *)notification{
     NakedDriSeaListInfo *listInfo = notification.userInfo[UserInfoDriName];
-    NSArray *infoArr = @[@"钻石",listInfo.Weight,[self modelWith:2 and:listInfo.Shape],[self modelWith:3 and:listInfo.Color],[self modelWith:4 and:listInfo.Purity]];
+    NSArray *infoArr = @[@"钻石",listInfo.Weight,[self modelWith:2 and:listInfo.Shape],
+        [self modelWith:3 and:listInfo.Color],[self modelWith:4 and:listInfo.Purity]];
     NSArray *arr = self.mutArr[0];
     for (int i=0; i<arr.count; i++) {
         DetailTypeInfo *info = arr[i];
@@ -137,7 +138,8 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         return;
     }
     NakedDriSeaListInfo *listInfo = self.seaInfo;
-    NSArray *infoArr = @[@"钻石",listInfo.Weight,[self modelWith:2 and:listInfo.Shape],[self modelWith:3 and:listInfo.Color],[self modelWith:4 and:listInfo.Purity]];
+    NSArray *infoArr = @[@"钻石",listInfo.Weight,[self modelWith:2 and:listInfo.Shape],
+        [self modelWith:3 and:listInfo.Color],[self modelWith:4 and:listInfo.Purity]];
     NSArray *arr = self.mutArr[0];
     for (int i=0; i<arr.count; i++) {
         DetailTypeInfo *info = arr[i];
@@ -654,6 +656,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                 proCell.certCode = self.driCode;
             }
             proCell.isSel = [self.bools[index]boolValue];
+            proCell.isCus = self.isCus;
             proCell.back = ^(BOOL isSel){
                 [self.bools setObject:@(isSel) atIndexedSubscript:index];
             };

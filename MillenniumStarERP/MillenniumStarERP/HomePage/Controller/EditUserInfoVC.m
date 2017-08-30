@@ -29,6 +29,7 @@
 @property (nonatomic,  copy)NSString *url;
 @property (nonatomic,  weak)CustomInputPassView *putView;
 @property (nonatomic,strong)NSMutableDictionary *mutDic;
+@property (nonatomic,  copy)NSDictionary *shareDic;
 @property (nonatomic,strong)MasterCountInfo *masterInfo;
 @end
 
@@ -38,12 +39,17 @@
     [super viewDidLoad];
     self.title = @"我的";
     self.mutDic = [NSMutableDictionary new];
+    NSString *url = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
+    NSString *str = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    self.shareDic = @{@"image":@"http://appapi1.fanerweb.com/images/other/AppleApp.png",
+                      @"url":str,
+                      @"title":@"千禧之星珠宝",@"des":@"下载地址"};
     [self setBaseViewData];
 }
 
 - (void)setBaseViewData{
-    self.textArr = @[@[@"用户名",@"修改头像"],
-                     @[@"设置",@"检查新版本",@"修改密码",@"修改手机号码",@"管理地址",@"清理缓存",@"分享该应用"]];
+    self.textArr = @[@[@"用户名",@"修改头像"],@[@"设置",@"版本详情",@"修改密码",
+                            @"修改手机号码",@"管理地址",@"清理缓存",@"分享该应用"]];
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -218,8 +224,9 @@
             if (indexPath.row==0){
                 self.putView.hidden = NO;
             }else if (indexPath.row==1) {
-                AppDownViewC *appVc = [[AppDownViewC alloc]init];
-                [self.navigationController pushViewController:appVc animated:YES];
+                [MBProgressHUD showSuccess:@"功能暂未开放"];
+//                AppDownViewC *appVc = [[AppDownViewC alloc]init];
+//                [self.navigationController pushViewController:appVc animated:YES];
             }else if (indexPath.row==2) {
                 PassWordViewController *passVc = [[PassWordViewController alloc]init];
                 passVc.title = @"修改密码";
@@ -235,8 +242,9 @@
             }else if(indexPath.row==5){
                 [self clearTmpPics];
             }else{
-                [MBProgressHUD showSuccess:@"功能暂未开放"];
-//                [self setShare];
+                UITableViewCell *cell = [self tableView:tableView
+                                  cellForRowAtIndexPath:indexPath];
+                [self setShare:cell];
             }
             break;
         default:
@@ -251,27 +259,18 @@
     [MBProgressHUD showSuccess:clearCacheName];
 }
 
-- (void)setShare{
-    //1、创建分享参数（必要）
+- (void)setShare:(UITableViewCell *)cell{
+    //创建分享参数（必要）
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-    [shareParams SSDKSetupShareParamsByText:@"分享内容"
-                                     images:[UIImage imageNamed:@"传入的图片名"]
-                                        url:[NSURL URLWithString:@"http://mob.com"]
-                                      title:@"分享标题" type:SSDKContentTypeAuto];
-    // 定制新浪微博的分享内容
-    [shareParams SSDKSetupSinaWeiboShareParamsByText:@"定制新浪微博的分享内容"title:nil
-                                               image:[UIImage imageNamed:@"传入的图片名"]
-                                                 url:nil latitude:0 longitude:0
-                                            objectID:nil type:SSDKContentTypeAuto];
-    // 定制微信好友的分享内容
-    [shareParams SSDKSetupWeChatParamsByText:@"定制微信的分享内容" title:@"title"
-                                         url:[NSURL URLWithString:@"http://mob.com"]
-                                  thumbImage:nil image:[UIImage imageNamed:@"传入的图片名"]
-                                musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil
-                                        type:SSDKContentTypeAuto  forPlatformSubType:SSDKPlatformSubTypeWechatSession];// 微信好友子平台
-    [ShareSDK showShareActionSheet:self.view items:nil shareParams:shareParams
-               onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
-    }];
+    NSArray *arr = @[@(SSDKPlatformTypeSinaWeibo),
+                     @(SSDKPlatformTypeWechat),
+                     @(SSDKPlatformTypeQQ)];
+    [shareParams SSDKSetupShareParamsByText:self.shareDic[@"des"]
+                                     images:[NSURL URLWithString:self.shareDic[@"image"]]
+                                        url:[NSURL URLWithString:self.shareDic[@"url"]]
+                                      title:self.shareDic[@"title"]
+                                       type:SSDKContentTypeAuto];
+    [ShareSDK showShareActionSheet:cell items:arr shareParams:shareParams onShareStateChanged:nil];
 }
 
 - (void)creatUIAlertView:(UITableViewCell *)cell{
@@ -282,12 +281,11 @@
     } andCon:self andView:cell];
 }
 
-//打开相机
+//打开相机  //TypePhotoLibrary > TypeSavedPhotosAlbum
 - (void)openCamera{
     [self openImagePickerController:UIImagePickerControllerSourceTypeCamera];
 }
 //打开相册
-//TypePhotoLibrary > TypeSavedPhotosAlbum
 - (void)openAlbum{
     [self openImagePickerController:UIImagePickerControllerSourceTypePhotoLibrary];
 }
@@ -302,7 +300,6 @@
         [self presentViewController:ipc animated:YES completion:nil];
     }];
 }
-
 #pragma mark -- UIImagePickerControllerDelagate
 - (void)imagePickerController:(UIImagePickerController *)picker
                              didFinishPickingMediaWithInfo:(NSDictionary *)info{

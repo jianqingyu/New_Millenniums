@@ -10,7 +10,7 @@
 #import "NakedDriLibCustomView.h"
 #import "NakedDriListOrderVc.h"
 @interface NakedDriLibViewController ()
-
+@property (nonatomic,weak)NakedDriLibCustomView *NakedDri;
 @end
 
 @implementation NakedDriLibViewController
@@ -24,6 +24,9 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    if (self.isRef) {
+        self.NakedDri.isRef = self.isRef;
+    }
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
@@ -46,7 +49,6 @@
     NakedDriLibCustomView *NakedDriView = [NakedDriLibCustomView creatCustomView];
     NakedDriView.isCus = self.isCus;
     NakedDriView.isPro = self.isPro;
-    NakedDriView.driweight = self.seaDic;
     NakedDriView.supNav = self.navigationController;
     [self.view addSubview:NakedDriView];
     [NakedDriView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -55,6 +57,7 @@
         make.right.equalTo(self.view).offset(0);
         make.bottom.equalTo(self.view).offset(0);
     }];
+    self.NakedDri = NakedDriView;
 }
 
 @end

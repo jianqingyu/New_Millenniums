@@ -13,6 +13,6 @@ typedef void (^NakedHBack)(id mess);
 @property (nonatomic,strong)NakedDriLiblistInfo *info;
 @property (nonatomic,  copy)NSArray *topArr;
 @property (nonatomic,  copy)NakedHBack back;
-@property (nonatomic,  copy)NSString *driWei;
+@property (nonatomic,assign)BOOL isRef;
 - (void)setAllNoChoose;
 @end
