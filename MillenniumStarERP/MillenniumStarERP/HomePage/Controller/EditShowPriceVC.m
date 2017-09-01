@@ -26,7 +26,7 @@
 }
 
 - (void)setBaseViewData{
-    self.textArr = @[@"是否显示价格",@"是否高级定制"];
+    self.textArr = @[@"是否显示戒托价格",@"是否显示裸钻价格",@"是否高级定制"];
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -55,7 +55,7 @@
                 int master = [response.data[@"isMasterAccount"]intValue];
                 self.masterInfo = [MasterCountInfo objectWithKeyValues:response.data];
                 if (master) {
-                    self.textArr = @[@"是否显示价格",@"是否高级定制",@"是否显示成本价"];
+                    self.textArr = @[@"是否显示戒托价格",@"是否显示裸钻价格",@"是否高级定制",@"是否显示成本价"];
                 }
                 [self.tableView reloadData];
             }
@@ -102,7 +102,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row==2) {
+    if (indexPath.row==3) {
         return 145;
     }
     return 44;
@@ -125,6 +125,12 @@
             forControlEvents:UIControlEventTouchUpInside];
     }else if(indexPath.row==1){
         UISwitch *switchBtn = [[UISwitch alloc]initWithFrame:CGRectMake(0, 0, 50, 20)];
+        [switchBtn setOn:![[AccountTool account].isNoDriShow intValue]];
+        tableCell.accessoryView = switchBtn;
+        [switchBtn addTarget:self action:@selector(showDriClick:)
+            forControlEvents:UIControlEventTouchUpInside];
+    }else if(indexPath.row==2){
+        UISwitch *switchBtn = [[UISwitch alloc]initWithFrame:CGRectMake(0, 0, 50, 20)];
         [switchBtn setOn:[[AccountTool account].isNorm intValue]];
         tableCell.accessoryView = switchBtn;
         [switchBtn addTarget:self action:@selector(easyClick:)
@@ -137,20 +143,6 @@
     return tableCell;
 }
 
-- (void)easyClick:(UISwitch *)btn{
-    NSMutableDictionary *params = [NSMutableDictionary new];
-    params[@"userName"] = [AccountTool account].userName;
-    params[@"password"] = [AccountTool account].password;
-    params[@"phone"] = [AccountTool account].phone;
-    params[@"tokenKey"] = [AccountTool account].tokenKey;
-    params[@"isNoShow"] = [AccountTool account].isNoShow;
-    params[@"isNorm"] = @(btn.on);
-    Account *account = [Account accountWithDict:params];
-    //自定义类型存储用NSKeyedArchiver
-    [AccountTool saveAccount:account];
-    [MBProgressHUD showSuccess:@"修改成功"];
-}
-
 - (void)showPriceClick:(UISwitch *)btn{
     NSMutableDictionary *params = [NSMutableDictionary new];
     params[@"userName"] = [AccountTool account].userName;
@@ -158,7 +150,38 @@
     params[@"phone"] = [AccountTool account].phone;
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"isNorm"] = [AccountTool account].isNorm;
+    params[@"isNoDriShow"] = [AccountTool account].isNoDriShow;
     params[@"isNoShow"] = @(!btn.on);
+    Account *account = [Account accountWithDict:params];
+    //自定义类型存储用NSKeyedArchiver
+    [AccountTool saveAccount:account];
+    [MBProgressHUD showSuccess:@"修改成功"];
+}
+
+- (void)showDriClick:(UISwitch *)btn{
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    params[@"userName"] = [AccountTool account].userName;
+    params[@"password"] = [AccountTool account].password;
+    params[@"phone"] = [AccountTool account].phone;
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[@"isNorm"] = [AccountTool account].isNorm;
+    params[@"isNoShow"] = [AccountTool account].isNoShow;
+    params[@"isNoDriShow"] = @(!btn.on);
+    Account *account = [Account accountWithDict:params];
+    //自定义类型存储用NSKeyedArchiver
+    [AccountTool saveAccount:account];
+    [MBProgressHUD showSuccess:@"修改成功"];
+}
+
+- (void)easyClick:(UISwitch *)btn{
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    params[@"userName"] = [AccountTool account].userName;
+    params[@"password"] = [AccountTool account].password;
+    params[@"phone"] = [AccountTool account].phone;
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[@"isNoShow"] = [AccountTool account].isNoShow;
+    params[@"isNoDriShow"] = [AccountTool account].isNoDriShow;
+    params[@"isNorm"] = @(btn.on);
     Account *account = [Account accountWithDict:params];
     //自定义类型存储用NSKeyedArchiver
     [AccountTool saveAccount:account];

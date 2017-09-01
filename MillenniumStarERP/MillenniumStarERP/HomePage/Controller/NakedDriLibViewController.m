@@ -18,7 +18,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"裸钻库";
-    [self setRightNaviBar];
+    if (![[AccountTool account].isNoDriShow intValue]) {
+        [self setRightNaviBar];
+    }
     [self creatNakedDriView];
 }
 

@@ -40,7 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"搜索结果";
-    self.isShow = ![[AccountTool account].isNoShow intValue];
+    self.isShow = ![[AccountTool account].isNoDriShow intValue];
     self.dataArray = @[].mutableCopy;
     [self setupBaseTableView];
     [self setupHeaderRefresh];

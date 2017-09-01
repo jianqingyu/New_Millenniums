@@ -91,7 +91,7 @@
         [self setupHeaderRefresh];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    if (self.editId) {
+    if (self.isOrd) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"icon_return"] style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     }
 }
@@ -262,7 +262,8 @@
         self.colorInfo = info;
         self.headView.colorMes = info.title;
     }
-    [self loadUpOrderPrice];
+    [self editColorAndQuality];
+//    [self loadUpOrderPrice];
 }
 //选择客户
 - (void)setCusInfo:(CustomerInfo *)cusInfo{
@@ -281,7 +282,7 @@
         self.headView.addInfo = _addressInfo;
     }
 }
-
+//更新价格
 - (void)loadUpOrderPrice{
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
@@ -631,6 +632,35 @@
     params[@"orderId"] = @(self.editId);
     params[@"customerId"] = @(_cusInfo.customerID);
     [self editOrderWithDic:params andStr:str];
+}
+
+- (void)editColorAndQuality{
+    if (!self.editId) {
+        return;
+    }
+    [SVProgressHUD show];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    NSString *httpStr = @"ModelOrderWaitCheckModifyGetOrderPricePageListDo";
+    params[@"orderId"] = @(self.editId);
+    NSString *regiUrl = [NSString stringWithFormat:@"%@%@",baseUrl,httpStr];
+    if (self.qualityInfo){
+        params[@"qualityId"] = @(_qualityInfo.id);
+    }
+    if (self.colorInfo) {
+        params[@"purityId"] = @(_colorInfo.id);
+    }
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            [MBProgressHUD showSuccess:@"更新信息成功"];
+            if (self.boolBack) {
+                self.boolBack(NO);
+            }
+        }else{
+            [MBProgressHUD showError:response.message];
+        }
+        [SVProgressHUD dismiss];
+    } requestURL:regiUrl params:params];
 }
 
 - (void)editWord{
@@ -984,6 +1014,7 @@
     }else{
         if ([dic[@"isErpOrder"]intValue]==0) {
             ConfirmOrderVC *oDetailVc = [ConfirmOrderVC new];
+            oDetailVc.isOrd = YES;
             oDetailVc.editId = [dic[@"id"] intValue];
             [self.navigationController pushViewController:oDetailVc animated:YES];
         }else{

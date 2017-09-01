@@ -62,9 +62,11 @@
 }
 
 - (void)resetText:(UITextField *)fie{
+    BOOL isHave = [fie.text containsString:@"❤️"];
+    int count = isHave?6:5;
     //如果输入框中的文字大于5，就截取前5个作为输入框的文字
-    if (fie.text.length > 5) {
-        fie.text = [fie.text substringToIndex:5];
+    if (fie.text.length > count) {
+        fie.text = [fie.text substringToIndex:count];
     }
     if (self.back) {
         self.back(YES,fie.text);
@@ -72,6 +74,7 @@
 }
 
 - (IBAction)lookWord:(id)sender {
+    [self.wordFie resignFirstResponder];
     if (self.back) {
         self.back(NO,@"");
     }

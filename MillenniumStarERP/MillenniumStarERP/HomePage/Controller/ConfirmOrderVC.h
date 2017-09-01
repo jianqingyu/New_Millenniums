@@ -11,6 +11,7 @@ typedef void (^ EditOrderBack)(id orderInfo);
 typedef void (^ EditBoolBack)(BOOL isDel);
 @interface ConfirmOrderVC : BaseViewController
 @property (nonatomic,assign)BOOL isSel;
+@property (nonatomic,assign)BOOL isOrd;
 @property (nonatomic,assign)int editId;
 @property (nonatomic,copy)EditOrderBack orderBack;
 @property (nonatomic,copy)EditBoolBack boolBack;

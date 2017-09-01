@@ -254,7 +254,12 @@
 - (void)openClick:(UIView *)btn{
     if (btn.tag==0) {
         if ([[AccountTool account].isNorm intValue]==1) {
-            [MBProgressHUD showSuccess:@"高级定制不能定制钻石"];
+            [MBProgressHUD showSuccess:@"高级定制不能定制"];
+            return;
+        }
+        if ([[AccountTool account].isNoShow intValue]==1||
+            [[AccountTool account].isNoDriShow intValue]==1) {
+            [MBProgressHUD showSuccess:@"不显示价格不能定制"];
             return;
         }
         if (self.cusView) {
