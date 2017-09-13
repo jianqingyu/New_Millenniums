@@ -28,9 +28,10 @@
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
-            self.citys = [Citys objectArrayWithKeyValuesArray:response.data[@"provinceList"]];
-            [SVProgressHUD dismiss];
-            [self.tableView reloadData];
+            if ([YQObjectBool boolForObject:response.data[@"provinceList"]]) {
+                self.citys = [Citys objectArrayWithKeyValuesArray:response.data[@"provinceList"]];
+                [self.tableView reloadData];
+            }
         }
         [SVProgressHUD dismiss];
     } requestURL:regiUrl params:params];

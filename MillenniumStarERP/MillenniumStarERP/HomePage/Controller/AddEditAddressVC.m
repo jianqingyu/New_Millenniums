@@ -42,8 +42,10 @@
     params[@"id"] = @(self.addId);
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
-            self.info = [AddressInfo objectWithKeyValues:response.data[@"address"]];
-            [self setupBaseData];
+            if ([YQObjectBool boolForObject:response.data[@"address"]]) {
+                self.info = [AddressInfo objectWithKeyValues:response.data[@"address"]];
+                [self setupBaseData];
+            }
         }else{
             [MBProgressHUD showError:response.message];
         }

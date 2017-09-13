@@ -113,6 +113,7 @@
     if (tableCell == nil){
         tableCell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1
                                           reuseIdentifier:@"myCell"];
+        tableCell.selectionStyle = UITableViewCellSelectionStyleNone;
         tableCell.textLabel.font = [UIFont systemFontOfSize:15];
     }
     NSString *key = self.textArr[indexPath.row];

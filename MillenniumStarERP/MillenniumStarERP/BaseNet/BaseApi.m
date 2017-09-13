@@ -7,14 +7,16 @@
 //
 
 #import "BaseApi.h"
+#import "OrderNumTool.h"
 #import "RequestClient.h"
 #import "ShowLoginViewTool.h"
 #import "LoginViewController.h"
 @implementation BaseApi
-
+//自定义接口版本
+#define ApiVersion @"1.7"
 + (void)getNoLogGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
                 params:(NSMutableDictionary*)params{
-    params[@"QxVersion"] = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
+    params[@"QxVersion"] = ApiVersion;
     [[RequestClient sharedClient] GET:requestURL parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         BaseResponse*result = [[BaseResponse alloc]init];
         result.error = responseObject[@"error"];
@@ -32,7 +34,7 @@
 }
 //更新数据接口
 + (void)upData:(REQUEST_CALLBACK)callback URL:(NSString*)URL params:(NSMutableDictionary*)params{
-    params[@"QxVersion"] = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
+    params[@"QxVersion"] = ApiVersion;
     [[RequestClient sharedClient] GET:URL parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         BaseResponse*result = [[BaseResponse alloc]init];
         result.error = responseObject[@"error"];
@@ -52,7 +54,8 @@
  */
 + (void)getGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
                                              params:(NSMutableDictionary*)params{
-    params[@"QxVersion"] = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
+    params[@"QxVersion"] = ApiVersion;
+//    [OrderNumTool NSLoginWithStr:requestURL andDic:params];
     [[RequestClient sharedClient] GET:requestURL parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         BaseResponse*result = [[BaseResponse alloc]init];
         result.error = responseObject[@"error"];
@@ -80,8 +83,27 @@
  */
 + (void)postGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
                                             params:(NSMutableDictionary*)params{
-    params[@"QxVersion"] = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
+    params[@"QxVersion"] = ApiVersion;
     [[RequestClient sharedClient] POST:requestURL parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        BaseResponse*result = [[BaseResponse alloc]init];
+        result.error = responseObject[@"error"];
+        result.data = responseObject[@"data"];
+        result.message = responseObject[@"message"];
+        callback(result,nil);
+        [SVProgressHUD dismiss];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [MBProgressHUD showError:@"网络错误"];
+        [SVProgressHUD dismiss];
+        if(callback){
+            callback(nil,error);
+        }
+    }];
+}
+/*版本检查接口
+ */
++ (void)getNewVerData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
+                 params:(NSMutableDictionary*)params{
+    [[RequestClient sharedClient] GET:requestURL parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         BaseResponse*result = [[BaseResponse alloc]init];
         result.error = responseObject[@"error"];
         result.data = responseObject[@"data"];

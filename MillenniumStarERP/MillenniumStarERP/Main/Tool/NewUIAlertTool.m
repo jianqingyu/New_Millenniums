@@ -7,7 +7,7 @@
 //
 
 #import "NewUIAlertTool.h"
-
+#import "ShowLoginViewTool.h"
 @implementation NewUIAlertTool
 + (void)creatActionSheetPhoto:(void (^)(void))PhotoBlock
                     andCamera:(void (^)(void))CameraBlock
@@ -37,20 +37,36 @@
     }
 }
 
-+ (void)show:(NSString *)title with:(id)con{
++ (void)show:(NSString *)title okBack:(void (^)(void))okBlock
+     andView:(UIView *)view yes:(BOOL)isYes{
     // 初始化 添加 提示内容
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"温馨提示"
                     message:title preferredStyle:UIAlertControllerStyleAlert];
     // 添加 AlertAction 事件回调（三种类型：默认，取消，警告）
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault
                                     handler:^(UIAlertAction * _Nonnull action) {
-        // 移除
-        [alertController dismissViewControllerAnimated:YES completion:nil];
+                    if (okBlock) {
+                        okBlock();
+                    }
     }];
     // cancel类自动变成最后一个，警告类推荐放上面
-    [alertController addAction:okAction];
+    [alert addAction:okAction];
+    if (isYes) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel
+                         handler:^(UIAlertAction * _Nonnull action){
+                [alert dismissViewControllerAnimated:YES completion:nil];
+        }]];
+    }
     // 出现
-    [con presentViewController:alertController animated:YES completion:nil];
+    UIViewController *vc = [ShowLoginViewTool getCurrentVC];
+    if(IsPhone){
+        [vc presentViewController:alert animated:YES completion:nil];
+    }else{
+        UIPopoverPresentationController *popPresenter = alert.popoverPresentationController;
+        popPresenter.sourceView = view;
+        popPresenter.sourceRect = view.bounds;
+        [vc presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 @end

@@ -101,27 +101,33 @@
 
 - (void)btnClick{
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    for (ScreeningInfo *info in self.goods) {
-        params[info.groupKey] = @[].mutableCopy;
-    }
-    for (ScreeningInfo *info in self.goods) {
-        NSMutableArray *mutA = params[info.groupKey];
-        for (ScreenDetailInfo *dInfo in info.attributeList) {
-            if (dInfo.isSelect) {
-                [mutA addObject:dInfo.value];
+    if (self.goods.count>0) {
+        for (ScreeningInfo *info in self.goods) {
+            params[info.groupKey] = @[].mutableCopy;
+        }
+        for (ScreeningInfo *info in self.goods) {
+            NSMutableArray *mutA = params[info.groupKey];
+            for (ScreenDetailInfo *dInfo in info.attributeList) {
+                if (dInfo.isSelect) {
+                    [mutA addObject:dInfo.value];
+                }
             }
         }
     }
-    [params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if ([obj count]>0) {
-            params[key] = [StrWithIntTool strWithArr:obj];
-        }else{
-            [params removeObjectForKey:key];
-        }
-    }];
+    if (params.count>0) {
+        [params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if ([obj count]>0) {
+                params[key] = [StrWithIntTool strWithArr:obj];
+            }else{
+                [params removeObjectForKey:key];
+            }
+        }];
+    }
     [_dictB addEntriesFromDictionary:params];
-    for (WeightInfo *info in self.values) {
-        _dictB[info.name] = info.value;
+    if (self.values.count>0) {
+        for (WeightInfo *info in self.values) {
+            _dictB[info.name] = info.value;
+        }
     }
     if (self.tableBack) {
         self.tableBack(_dictB,params.count);
@@ -132,13 +138,20 @@
 }
 
 - (void)cancelClick{
-    [_sildeTableView reloadData];
-    if (self.tableBack) {
-        self.tableBack(@{},NO);
+    if (self.goods.count>0) {
+        for (ScreeningInfo *info in self.goods) {
+            for (ScreenDetailInfo *dInfo in info.attributeList) {
+                dInfo.isSelect = NO;
+            }
+        }
     }
-    if (self.rightSideBar) {
-        [self.rightSideBar dismiss];
+    if (self.values.count>0) {
+        for (WeightInfo *info in self.values) {
+            info.value = @"";
+            info.txt = @"";
+        }
     }
+    [self setGoods:_goods];
 }
 
 - (void)setGoods:(NSArray *)goods{

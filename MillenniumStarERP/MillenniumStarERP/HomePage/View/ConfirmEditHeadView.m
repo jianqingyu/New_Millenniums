@@ -32,9 +32,11 @@
     if (staueInfo) {
         _staueInfo = staueInfo;
         self.orderNum.text = _staueInfo.orderNum;
-        self.orderStaue.text = _staueInfo.orderStatus;
         self.orderDate.text = _staueInfo.orderDate;
-        self.orderKing.text = [OrderNumTool strWithPrice:_staueInfo.goldPrice];
+        self.orderStaue.text = _staueInfo.orderStatus;
+        BOOL isYes = _staueInfo.goldPrice==0;
+        self.orderKing.hidden = isYes;
+        self.orderKing.text = [NSString stringWithFormat:@"金   价:%@",[OrderNumTool strWithPrice:_staueInfo.goldPrice]];
     }
 }
 

@@ -43,6 +43,7 @@
     //    NSLog(@"phoneTest is %@",phoneTest);
     return [NSNumber numberWithBool:[phoneTest evaluateWithObject:mobile]];
 }
+
 +(NSNumber*) isValidateVerifyCode:(NSString *)code
 {
     if(code.length>=4){

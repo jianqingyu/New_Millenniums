@@ -12,20 +12,16 @@
 
 @implementation NetworkDetermineTool
 NetworkView *_networkView;
-+ (void)isSView:(BOOL)isYes andNav:(UINavigationController *)supNav{
++ (void)isSView:(BOOL)isYes{
     UIWindow *netWindow = [[UIApplication sharedApplication].windows lastObject];
+    netWindow.backgroundColor = [UIColor clearColor];
     _networkView = [NetworkView creatSmallNetView];
-    _networkView.superNav = supNav;
     _networkView.frame = CGRectMake(0, 64, SDevWidth, 44);
     if (!isYes) {
         [netWindow addSubview:_networkView];
     }else{
         [_networkView removeFromSuperview];
     }
-}
-
-+ (void)changeSupNaviWithNav:(UINavigationController *)supNav{
-    _networkView.superNav = supNav;
 }
 
 + (BOOL)isExistenceNet{

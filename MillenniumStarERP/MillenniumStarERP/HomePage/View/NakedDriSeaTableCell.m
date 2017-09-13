@@ -115,6 +115,10 @@
 }
 
 - (void)btnClick:(id)sender{
+    if (!self.isShow) {
+        [MBProgressHUD showError:@"不能报价"];
+        return;
+    }
     if (self.back) {
         self.back(YES);
     }
@@ -123,7 +127,7 @@
 - (void)subCateBtnAction:(UIButton *)btn{
     btn.selected = !btn.selected;
     _seaInfo.isSel = btn.selected;
-    if (self.isCus&&self.back) {
+    if (self.back) {
         self.back(NO);
     }
 }

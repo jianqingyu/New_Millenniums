@@ -10,6 +10,7 @@
 #import "ProductionDetailView.h"
 #import "OrderListInfo.h"
 #import "ProduceOrderInfo.h"
+#import "OrderListController.h"
 @interface ProductionOrderVC ()
 @property (nonatomic,  weak) ProductionDetailView *proView;
 @end
@@ -21,6 +22,15 @@
     self.title = @"生产中";
     [self creatProTabView];
     [self loadOrderDataWithBool:YES];
+    if (self.isOrd) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"icon_return"] style:UIBarButtonItemStyleDone target:self action:@selector(back)];
+    }
+}
+
+- (void)back{
+    OrderListController *listVC = [OrderListController new];
+    listVC.isOrd = self.isOrd;
+    [self.navigationController pushViewController:listVC animated:YES];
 }
 
 - (void)creatProTabView{

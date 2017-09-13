@@ -7,6 +7,7 @@
 //
 
 #import "NetworkView.h"
+#import "ShowLoginViewTool.h"
 #import "NoNetViewController.h"
 @implementation NetworkView
 
@@ -34,7 +35,8 @@
     noNetVc.loadBack = ^(BOOL isyes){
         self.hidden = NO;
     };
-    [self.superNav pushViewController:noNetVc animated:YES];
+    UIViewController *cur = [ShowLoginViewTool getCurrentVC];
+    [cur.navigationController pushViewController:noNetVc animated:YES];
 }
 
 @end

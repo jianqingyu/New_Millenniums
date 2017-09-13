@@ -68,14 +68,14 @@
     [self.priceBtn setImage:[UIImage imageNamed:@"icon_sort"] forState:UIControlStateNormal];
     NSString *imgName;
     if ([_string isEqualToString:@"weight_desc"]) {
-        _string = @"weight_asc";
-        imgName = @"icon_sort_u";
-    }else if ([_string isEqualToString:@"weight_asc"]){
         _string = @"";
         imgName = @"icon_sort";
-    }else{
+    }else if ([_string isEqualToString:@"weight_asc"]){
         _string = @"weight_desc";
         imgName = @"icon_sort_d";
+    }else{
+        _string = @"weight_asc";
+        imgName = @"icon_sort_u";
     }
     [self.imgBtn setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
     if (self.back) {
@@ -87,14 +87,15 @@
     [self.imgBtn setImage:[UIImage imageNamed:@"icon_sort"] forState:UIControlStateNormal];
     NSString *imgName;
     if ([_string isEqualToString:@"price_desc"]) {
-        _string = @"price_asc";
-        imgName = @"icon_sort_u";
-    }else if ([_string isEqualToString:@"price_asc"]){
         _string = @"";
         imgName = @"icon_sort";
-    }else{
+        
+    }else if ([_string isEqualToString:@"price_asc"]){
         _string = @"price_desc";
         imgName = @"icon_sort_d";
+    }else{
+        _string = @"price_asc";
+        imgName = @"icon_sort_u";
     }
     [self.priceBtn setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
     if (self.back) {

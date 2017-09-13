@@ -637,6 +637,10 @@
         [self.view addSubview:self.textCView];
     }else{
         NSArray *dictArr = self.chooseArr[inPath.row];
+        if (dictArr.count==0) {
+            [MBProgressHUD showError:@"暂无数据"];
+            return;
+        }
         NSArray *list = self.mutArr[inPath.section];
         DetailTypeInfo *info = list[inPath.row];
         self.pickView.typeList = dictArr;
@@ -649,6 +653,10 @@
 }
 
 - (void)openRemark:(id)sender{
+    if (self.remakeArr.count==0) {
+        [MBProgressHUD showError:@"暂无数据"];
+        return;
+    }
     self.pickView.typeList = self.remakeArr;
     self.pickView.section = [NSIndexPath indexPathForRow:0 inSection:0];
     self.pickView.titleStr = @"备注";

@@ -8,6 +8,8 @@
 
 #import "DetailTextCustomView.h"
 #import "DetailTypeInfo.h"
+@interface DetailTextCustomView()<UITextFieldDelegate>
+@end
 @implementation DetailTextCustomView
 
 - (id)initWithFrame:(CGRect)frame{
@@ -36,6 +38,7 @@
         self.topLab = titleLab;
         
         UITextField *textFie = [[UITextField alloc]init];
+        textFie.delegate = self;
         textFie.borderStyle = UITextBorderStyleRoundedRect;
         textFie.textAlignment = NSTextAlignmentCenter;
         textFie.placeholder = @"规格值";
@@ -101,17 +104,22 @@
 
 - (void)accClick:(id)sender{
     float str = [self.scanfText.text floatValue];
-    if (str==0) {
+    if (str==0.1||str<0.1) {
         return;
     }
     str = str-0.1;
-    self.scanfText.text = [NSString stringWithFormat:@"%0.1f",str];
+    self.scanfText.text = [NSString stringWithFormat:@"%0.2f",str];
 }
 
 - (void)addClick:(id)sender{
     float str = [self.scanfText.text floatValue];
     str = str+0.1;
-    self.scanfText.text = [NSString stringWithFormat:@"%0.1f",str];
+    self.scanfText.text = [NSString stringWithFormat:@"%0.2f",str];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    float str = [textField.text floatValue];
+    textField.text = [NSString stringWithFormat:@"%0.2f",str];
 }
 
 - (void)btnClick:(id)sender{
@@ -124,7 +132,7 @@
 }
 
 - (void)sureClick:(id)sender{
-    if (self.scanfText.text.length==0) {
+    if (self.scanfText.text.length==0||[self.scanfText.text isEqualToString:@"0.00"]) {
         [MBProgressHUD showError:@"请输入规格"];
         return;
     }

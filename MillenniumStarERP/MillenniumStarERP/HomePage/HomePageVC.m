@@ -33,8 +33,8 @@
     [self setHeaderView];
     [self setupFootBtn];
     [self  loadHomeData];
-    //self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
-    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝2/id1244977034?mt=8";
+    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
+//    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝2/id1244977034?mt=8";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeHeadImg:) name:NotificationImg object:nil];
 }
@@ -62,40 +62,6 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.delegate = self;
-    [self loadNewVersion];
-}
-
-#pragma mark -- 检查新版本
-- (void)loadNewVersion{
-    NSString *url = [NSString stringWithFormat:@"%@currentVersion",baseUrl];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"device"] = @"ios";
-    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
-            self.versionDic = response.data;
-            [self loadAlertView];
-        }
-    } requestURL:url params:params];
-}
-
-- (void)loadAlertView{
-    double doubleCurrentVersion = [[NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]doubleValue];
-    if (doubleCurrentVersion<[self.versionDic[@"version"]doubleValue]) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"温馨提示"
-                            message:self.versionDic[@"message"] delegate:self
-                        cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
-    }
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    NSString *str = [self.openUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    UIApplication *application = [UIApplication sharedApplication];
-    [application openURL:[NSURL URLWithString:str]];
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
 }
 
 //- (void)viewWillDisappear:(BOOL)animated{

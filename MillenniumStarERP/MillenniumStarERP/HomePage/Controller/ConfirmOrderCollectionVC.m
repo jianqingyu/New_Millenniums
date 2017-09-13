@@ -86,8 +86,10 @@
         self.title = @"确认订单";
         self.secondView.hidden = YES;
         [self setupHeaderRefresh];
+        [self creatNearNetView:^(BOOL isWifi) {
+            [self.homeCollection.header beginRefreshing];
+        }];
     }
-    [self setupHeaderRefresh];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
@@ -288,19 +290,21 @@
     }
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
-            NSArray *arr = [OrderPriceInfo objectArrayWithKeyValuesArray:response.data[@"priceList"]];
-            if (self.selectDataArray.count) {
-                for (OrderListInfo *selist in self.selectDataArray) {
-                    [self changePriceWithArr:arr andInfo:selist];
-                }
-                [self syncPriceLabel];
-            }else{
-                [self changePriceWithArr:arr andInfo:nil];
-                if (self.editId) {
+            if ([YQObjectBool boolForObject:response.data[@"priceList"]]) {
+                NSArray *arr = [OrderPriceInfo objectArrayWithKeyValuesArray:response.data[@"priceList"]];
+                if (self.selectDataArray.count) {
+                    for (OrderListInfo *selist in self.selectDataArray) {
+                        [self changePriceWithArr:arr andInfo:selist];
+                    }
                     [self syncPriceLabel];
+                }else{
+                    [self changePriceWithArr:arr andInfo:nil];
+                    if (self.editId) {
+                        [self syncPriceLabel];
+                    }
                 }
+                [self.homeCollection reloadData];
             }
-            [self.homeCollection reloadData];
         }else{
             [MBProgressHUD showError:response.message];
         }
@@ -398,6 +402,7 @@
     if (self.colorInfo) {
         params[@"purityId"] = @(self.colorInfo.id);
     }
+    self.view.userInteractionEnabled = NO;
     NSString *url = [NSString stringWithFormat:@"%@OrderListPage",baseUrl];
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         [self.homeCollection.header endRefreshing];
@@ -408,6 +413,7 @@
                 [self setupDataWithDict:response.data];
                 [self setupListDataWithDict:response.data[@"currentOrderlList"]];
                 [self.homeCollection reloadData];
+                self.view.userInteractionEnabled = YES;
             }
             [SVProgressHUD dismiss];
         }
@@ -553,7 +559,7 @@
     params[@"keyword"] = message;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         self.isSelBtn = NO;
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             if ([response.data[@"state"]intValue]==0) {
                 SHOWALERTVIEW(@"没有此客户记录");
                 self.cusInfo.customerID = 0;
@@ -768,7 +774,11 @@
 }
 //编辑
 - (void)editIndex:(NSInteger)index{
-    OrderListInfo *collectInfo = self.dataArray[index];
+    OrderListInfo *collectInfo;
+    if (index < self.dataArray.count)
+    {
+        collectInfo = self.dataArray[index];
+    }
     if ([[AccountTool account].isNorm intValue]==0) {
         NewCustomProDetailVC *newVc = [NewCustomProDetailVC new];
         newVc.isEdit = self.editId?2:1;
@@ -789,7 +799,11 @@
 }
 
 - (void)detailOrderBack:(OrderListInfo *)dict andIdx:(NSInteger)index{
-    OrderListInfo *collectInfo = self.dataArray[index];
+    OrderListInfo *collectInfo;
+    if (index < self.dataArray.count)
+    {
+        collectInfo = self.dataArray[index];
+    }
     if (![dict isKindOfClass:[OrderListInfo class]]) {
         return;
     }
@@ -804,7 +818,11 @@
 }
 //删除
 - (void)deleteIndex:(NSInteger)index{
-    OrderListInfo *collectInfo = [self.dataArray objectAtIndex:index];
+    OrderListInfo *collectInfo;
+    if (index < self.dataArray.count)
+    {
+        collectInfo = self.dataArray[index];
+    }
     NSString *httpStr;
     if (self.editId) {
         httpStr = @"ModelOrderWaitCheckDetailDeleteModelItemDo";

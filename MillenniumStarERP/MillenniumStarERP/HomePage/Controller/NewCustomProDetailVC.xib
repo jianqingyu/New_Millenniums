@@ -49,8 +49,8 @@
                                 <action selector="addOrder:" destination="-1" eventType="touchUpInside" id="2PC-KD-idV"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JyX-pN-znD">
-                            <rect key="frame" x="194" y="8" width="16" height="16"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JyX-pN-znD">
+                            <rect key="frame" x="195" y="7" width="16" height="16"/>
                             <color key="backgroundColor" red="0.91764705879999997" green="0.058823529409999999" blue="0.1529411765" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="AUQ-ax-shF"/>
@@ -81,14 +81,14 @@
                         <constraint firstItem="6Gg-8k-XQE" firstAttribute="width" secondItem="CX5-f1-y8Q" secondAttribute="width" id="LNb-To-G0l"/>
                         <constraint firstAttribute="height" constant="50" id="M7r-jZ-8ew"/>
                         <constraint firstItem="CX5-f1-y8Q" firstAttribute="centerY" secondItem="Bjy-Me-wdq" secondAttribute="centerY" id="MxF-fk-XOk"/>
-                        <constraint firstItem="JyX-pN-znD" firstAttribute="trailing" secondItem="CX5-f1-y8Q" secondAttribute="trailing" id="Nhs-XG-W1p"/>
+                        <constraint firstItem="JyX-pN-znD" firstAttribute="trailing" secondItem="CX5-f1-y8Q" secondAttribute="trailing" constant="1" id="Nhs-XG-W1p"/>
                         <constraint firstItem="XYH-Of-4c8" firstAttribute="leading" secondItem="Bjy-Me-wdq" secondAttribute="leading" constant="15" id="NqV-cd-8Ac"/>
                         <constraint firstItem="6Gg-8k-XQE" firstAttribute="centerY" secondItem="Bjy-Me-wdq" secondAttribute="centerY" id="TRh-gm-Nsj"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="WOO-XH-gUw"/>
                         <constraint firstAttribute="trailing" secondItem="6Gg-8k-XQE" secondAttribute="trailing" constant="10" id="Zub-hf-0eA"/>
                         <constraint firstItem="Tde-Xx-tIw" firstAttribute="centerY" secondItem="Bjy-Me-wdq" secondAttribute="centerY" id="iSQ-Jx-ARN"/>
                         <constraint firstItem="6Gg-8k-XQE" firstAttribute="leading" secondItem="CX5-f1-y8Q" secondAttribute="trailing" constant="10" id="mJh-N8-Vk9"/>
-                        <constraint firstItem="JyX-pN-znD" firstAttribute="top" secondItem="CX5-f1-y8Q" secondAttribute="top" id="sfG-Kc-c5M"/>
+                        <constraint firstItem="JyX-pN-znD" firstAttribute="top" secondItem="CX5-f1-y8Q" secondAttribute="top" constant="-1" id="sfG-Kc-c5M"/>
                     </constraints>
                 </view>
             </subviews>
@@ -98,7 +98,7 @@
                 <constraint firstAttribute="bottom" secondItem="Bjy-Me-wdq" secondAttribute="bottom" id="Tt9-eo-dqc"/>
                 <constraint firstAttribute="trailing" secondItem="Bjy-Me-wdq" secondAttribute="trailing" id="aGM-aQ-fnV"/>
             </constraints>
-            <point key="canvasLocation" x="489" y="300"/>
+            <point key="canvasLocation" x="340" y="278"/>
         </view>
     </objects>
 </document>

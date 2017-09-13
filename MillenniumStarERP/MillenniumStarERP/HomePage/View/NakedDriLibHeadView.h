@@ -11,8 +11,9 @@
 typedef void (^NakedHBack)(id mess);
 @interface NakedDriLibHeadView : UIView
 @property (nonatomic,strong)NakedDriLiblistInfo *info;
+@property (nonatomic,strong)NSDictionary *seaDic;
 @property (nonatomic,  copy)NSArray *topArr;
 @property (nonatomic,  copy)NakedHBack back;
-@property (nonatomic,assign)BOOL isRef;
 - (void)setAllNoChoose;
+
 @end

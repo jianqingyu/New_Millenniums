@@ -73,7 +73,7 @@
 - (void)setList:(NSArray *)list{
     if (list) {
         _list = list;
-        NSArray *titleArr = @[@"类型",@"规格",@"形状",@"颜色",@"净度"];
+        NSArray *titleArr = @[@"类型",@"重量",@"形状",@"颜色",@"净度"];
         NSMutableArray *mutA = [NSMutableArray new];
         if ([self boolWithOneArr]) {
             self.addBtn.hidden = YES;

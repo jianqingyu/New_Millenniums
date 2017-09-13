@@ -69,7 +69,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             self.listArr = [AddressInfo objectArrayWithKeyValuesArray:response.data[@"addressList"]];
             [self.tableView reloadData];
         }else{

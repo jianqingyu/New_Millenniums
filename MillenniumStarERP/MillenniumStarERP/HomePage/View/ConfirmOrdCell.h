@@ -18,5 +18,6 @@
 @property (nonatomic,strong)OrderListInfo *listInfo;
 @property (nonatomic,assign)BOOL isBtnHidden;
 @property (nonatomic,assign)BOOL isTopHidden;
+@property (nonatomic,assign)BOOL isShow;
 @property (nonatomic,  weak)id<ConfirmOrdCellDelegate> delegate;
 @end

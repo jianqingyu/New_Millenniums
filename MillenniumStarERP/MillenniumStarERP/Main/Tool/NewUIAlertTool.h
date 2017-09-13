@@ -12,5 +12,6 @@
 + (void)creatActionSheetPhoto:(void (^)(void))PhotoBlock
                     andCamera:(void (^)(void))CameraBlock
                        andCon:(id)con andView:(UIView *)view;
-+ (void)show:(NSString *)title with:(id)con;
++ (void)show:(NSString *)title okBack:(void (^)(void))okBlock
+     andView:(UIView *)view yes:(BOOL)isYes;
 @end

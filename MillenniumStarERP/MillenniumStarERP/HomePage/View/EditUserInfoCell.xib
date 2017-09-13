@@ -62,6 +62,9 @@
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                        <connections>
+                            <outlet property="delegate" destination="KGk-i7-Jjw" id="CBF-0c-z8G"/>
+                        </connections>
                     </textField>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="裸钻倍率(%)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Elc-qy-Xae">
                         <rect key="frame" x="15" y="113" width="82" height="18"/>
@@ -91,6 +94,9 @@
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                        <connections>
+                            <outlet property="delegate" destination="KGk-i7-Jjw" id="8Wx-nl-wKB"/>
+                        </connections>
                     </textField>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Zeh-Lj-NPh">
                         <rect key="frame" x="255" y="9" width="51" height="31"/>
@@ -149,7 +155,7 @@
                 <outlet property="shopFie" destination="jfx-Ki-VtG" id="ktn-pZ-EVb"/>
                 <outlet property="showBtn" destination="Zeh-Lj-NPh" id="BZF-Vd-FQT"/>
             </connections>
-            <point key="canvasLocation" x="586" y="533.5"/>
+            <point key="canvasLocation" x="591" y="349.5"/>
         </tableViewCell>
     </objects>
     <resources>

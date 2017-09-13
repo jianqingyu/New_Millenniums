@@ -72,13 +72,15 @@
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
-            self.addressArray = [AddressInfo objectArrayWithKeyValuesArray:
-                                                 response.data[@"addressList"]];
-            [self.addressTab reloadData];
-            if (isYes) {
-                for (AddressInfo *addInfo in self.addressArray) {
-                    if (addInfo.isDefault&&self.addBack) {
-                        self.addBack(addInfo);
+            if ([YQObjectBool boolForObject:response.data[@"addressList"]]) {
+                self.addressArray = [AddressInfo objectArrayWithKeyValuesArray:
+                                     response.data[@"addressList"]];
+                [self.addressTab reloadData];
+                if (isYes) {
+                    for (AddressInfo *addInfo in self.addressArray) {
+                        if (addInfo.isDefault&&self.addBack) {
+                            self.addBack(addInfo);
+                        }
                     }
                 }
             }

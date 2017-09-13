@@ -110,7 +110,7 @@
                 <outlet property="orderNumLab" destination="9af-ta-isO" id="2Ny-Op-OJM"/>
                 <outlet property="otherInfoLab" destination="CZR-jL-b5k" id="ECH-4M-XRt"/>
             </connections>
-            <point key="canvasLocation" x="139" y="266"/>
+            <point key="canvasLocation" x="259" y="270"/>
         </view>
     </objects>
 </document>

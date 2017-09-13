@@ -9,14 +9,14 @@
 #import "PassWordViewController.h"
 #import "YQItemTool.h"
 #import "ZBButten.h"
-@interface PassWordViewController ()
+@interface PassWordViewController ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *phoneFie;
 @property (weak, nonatomic) IBOutlet UITextField *codeFie;
 @property (weak, nonatomic) IBOutlet ZBButten *codeBtn;
 @property (weak, nonatomic) IBOutlet UITextField *passWord;
 @property (weak, nonatomic) IBOutlet UITextField *passWord2;
 @property (weak, nonatomic) IBOutlet UIButton *confirmBtn;
-@property (nonatomic,  copy) NSString *code;
+@property (nonatomic, copy) NSString *code;
 @end
 
 @implementation PassWordViewController
@@ -30,10 +30,8 @@
 }
 
 - (void)setBaseView{
-    self.codeBtn.layer.cornerRadius = 5;
-    self.codeBtn.layer.masksToBounds = YES;
-    self.confirmBtn.layer.cornerRadius = 5;
-    self.confirmBtn.layer.masksToBounds = YES;
+    [self.codeBtn setLayerWithW:5 andColor:BordColor andBackW:0.0001];
+    [self.confirmBtn setLayerWithW:5 andColor:BordColor andBackW:0.0001];
     [self.codeBtn setbuttenfrontTitle:@"" backtitle:@"s后获取"];
 }
 
@@ -46,16 +44,16 @@
 }
 
 - (IBAction)getCode:(id)sender {
-    if (self.phoneFie.text.length!=11) {
-        SHOWALERTVIEW(@"您输入的手机号有误");
-        return;
-    }
     //发送命令
     [self requestCheckWord];
 }
 
-- (void)requestCheckWord
-{
+- (void)requestCheckWord{
+    if (self.phoneFie.text.length!=11) {
+        [self.codeBtn resetBtn];
+        SHOWALERTVIEW(@"您输入的手机号有误");
+        return;
+    }
     NSString *codeUrl;
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if (self.isForgot) {
@@ -75,27 +73,45 @@
     } requestURL:codeUrl params:params];
 }
 
-- (IBAction)confirmClick:(id)sender {
-    if (self.codeFie.text==0) {
-        SHOWALERTVIEW(@"验证码输入有误");
-    }else if (![self.passWord.text isEqualToString:self.passWord2.text]||self.passWord.text.length<5){
-        SHOWALERTVIEW(@"密码输入错误");
-    }else{
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        NSString *passUrl;
-        if (self.isForgot) {
-            params[@"password"] = self.passWord.text;
-            params[@"phoneCode"] = self.codeFie.text;
-            params[@"phone"] = self.phoneFie.text;
-            passUrl = [NSString stringWithFormat:@"%@userForgetPasswordDo",baseUrl];
-        }else{
-            params[@"password"] = self.passWord.text;
-            params[@"phoneCode"] = self.codeFie.text;
-            params[@"tokenKey"] = [AccountTool account].tokenKey;
-            passUrl = [NSString stringWithFormat:@"%@userModifyPasswordDo",baseUrl];
-        }
-        [self loadNetEditPassWithDic:params andUrl:passUrl];
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    if (textField.text.length<6) {
+        [MBProgressHUD showError:@"密码不够6位"];
     }
+}
+
+- (IBAction)confirmClick:(id)sender {
+    if (self.phoneFie.text.length!=11) {
+        SHOWALERTVIEW(@"您输入的手机号有误");
+        return;
+    }
+    if (self.codeFie.text.length==0) {
+        SHOWALERTVIEW(@"请输入验证码");
+        return;
+    }
+    if (self.passWord.text.length<6){
+        SHOWALERTVIEW(@"密码不足6位");
+        return;
+    }
+    if (![self.passWord.text isEqualToString:self.passWord2.text]){
+        SHOWALERTVIEW(@"两次密码输入不符");
+        return;
+    }
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    NSString *passUrl;
+    if (self.isForgot) {
+        params[@"password"] = self.passWord.text;
+        params[@"phoneCode"] = self.codeFie.text;
+        params[@"phone"] = self.phoneFie.text;
+        passUrl = [NSString stringWithFormat:@"%@userForgetPasswordDo",baseUrl];
+    }else{
+        params[@"password"] = self.passWord.text;
+        params[@"phoneCode"] = self.codeFie.text;
+        params[@"tokenKey"] = [AccountTool account].tokenKey;
+        passUrl = [NSString stringWithFormat:@"%@userModifyPasswordDo",baseUrl];
+    }
+    [self loadNetEditPassWithDic:params andUrl:passUrl];
+
 }
 //修改密码与忘记密码
 - (void)loadNetEditPassWithDic:(NSMutableDictionary*)params andUrl:(NSString *)passUrl{

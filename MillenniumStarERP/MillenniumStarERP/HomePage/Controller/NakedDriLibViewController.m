@@ -26,10 +26,16 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    if (self.isRef) {
-        self.NakedDri.isRef = self.isRef;
-    }
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (void)setSeaDic:(NSDictionary *)seaDic{
+    if (seaDic) {
+        _seaDic = seaDic;
+        if (_NakedDri) {
+            _NakedDri.seaDic = _seaDic;
+        };
+    }
 }
 
 - (void)setRightNaviBar{
@@ -51,6 +57,9 @@
     NakedDriLibCustomView *NakedDriView = [NakedDriLibCustomView creatCustomView];
     NakedDriView.isCus = self.isCus;
     NakedDriView.isPro = self.isPro;
+    if (self.seaDic) {
+        NakedDriView.seaDic = self.seaDic;
+    }
     NakedDriView.supNav = self.navigationController;
     [self.view addSubview:NakedDriView];
     [NakedDriView mas_makeConstraints:^(MASConstraintMaker *make) {

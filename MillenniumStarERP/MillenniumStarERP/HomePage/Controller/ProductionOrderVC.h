@@ -10,4 +10,5 @@
 
 @interface ProductionOrderVC : BaseViewController
 @property (nonatomic,copy)NSString *orderNum;
+@property (nonatomic,assign)BOOL isOrd;
 @end

@@ -7,10 +7,11 @@
 //
 
 #import "BaseViewController.h"
+
 typedef void (^chooseDriBack)(id model);
 @interface ChooseNakedDriVC : BaseViewController
 @property (nonatomic,assign)int isCan;
-@property (nonatomic,assign)BOOL isCus;
+@property (nonatomic,strong)NSDictionary *seaDic;
 @property (nonatomic,  copy)NSString *number;
 @property (nonatomic,  copy)NSArray *dataArr;
 @property (nonatomic,  copy)chooseDriBack eidtBack;

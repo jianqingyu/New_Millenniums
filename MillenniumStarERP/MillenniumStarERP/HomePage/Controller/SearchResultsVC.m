@@ -68,6 +68,7 @@
 #pragma mark - 网络数据
 - (void)getCommodityData{
     [SVProgressHUD show];
+    self.view.userInteractionEnabled = NO;
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"cpage"] = @(self.curPage);
@@ -81,6 +82,7 @@
             if ([YQObjectBool boolForObject:response.data]){
                 [self setListData:response.data[@"orderList"]and:response.data[@"list_count"]];
                 [self.resultTable reloadData];
+                self.view.userInteractionEnabled = YES;
             }
             [SVProgressHUD dismiss];
         }
@@ -136,7 +138,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    SearchResultInfo *info = self.dataArray[indexPath.section];
+    SearchResultInfo *info;
+    if (self.dataArray.count>indexPath.section) {
+        info = self.dataArray[indexPath.section];
+    }
     SearchResultDetailVC *detailVc = [SearchResultDetailVC new];
     detailVc.orderNum = info.orderNum;
     [self.navigationController pushViewController:detailVc animated:YES];

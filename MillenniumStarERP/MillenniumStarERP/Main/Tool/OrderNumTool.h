@@ -11,4 +11,5 @@
 @interface OrderNumTool : NSObject
 + (void)orderWithNum:(int)number andView:(UILabel *)sLab;
 + (NSString *)strWithPrice:(float)price;
++ (void)NSLoginWithStr:(NSString *)str andDic:(NSDictionary *)dic;
 @end

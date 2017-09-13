@@ -44,7 +44,7 @@
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"cpage"] = @1;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             self.listArr = [MessageInfo objectArrayWithKeyValuesArray:response.data[@"messageList"]];
             [self.tableView reloadData];
         }else{

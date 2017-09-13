@@ -32,6 +32,8 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
+    BOOL isW = [textField.text containsString:@"."];
+    [self backText:[textField.text floatValue] isWei:isW andFie:textField];
     self.number = self.numfie.text;
     self.weight = self.weightFie.text;
     [self chooseBack];
@@ -53,10 +55,10 @@
 
 - (IBAction)accWeiClick:(id)sender {
     float str = [self.weightFie.text floatValue];
-    if (str==0) {
+    if (str<0.1||str==0.1) {
         return;
     }
-    str--;
+    str = str-0.1;
     [self backText:str isWei:YES andFie:self.weightFie];
     self.weight = self.weightFie.text;
     [self chooseBack];
@@ -64,7 +66,7 @@
 
 - (IBAction)addWeiClick:(id)sender {
     float str = [self.weightFie.text floatValue];
-    str++;
+    str = str+0.1;
     [self backText:str isWei:YES andFie:self.weightFie];
     self.weight = self.weightFie.text;
     [self chooseBack];
@@ -77,12 +79,18 @@
     }else{
         string = [NSString stringWithFormat:@"%0.0f",str];
     }
+    if ([string isEqualToString:@"0.00"]) {
+        string = @"0.1";
+    }
+    if ([string isEqualToString:@"0"]) {
+        string = @"1";
+    }
     fie.text = string;
 }
 
 - (IBAction)accNumClick:(id)sender {
     float str = [self.numfie.text floatValue];
-    if (str==1) {
+    if (str==1||str<1) {
         return;
     }
     str--;

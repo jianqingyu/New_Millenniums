@@ -106,6 +106,7 @@
     }
     isFir = YES;
     [SVProgressHUD show];
+    self.userInteractionEnabled = NO;
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"cpage"] = @(curPage);
@@ -135,6 +136,7 @@
                     [self listNotifacation:arr];
                 }
                 [_mTableView reloadData];
+                self.userInteractionEnabled = YES;
             }
             [SVProgressHUD dismiss];
         }
@@ -254,19 +256,25 @@
             [_mTableView reloadData];
         });
     };
-    OrderListNewInfo *newInfo = _dataArray[indexPath.section];
+    OrderListNewInfo *newInfo;
+    if (indexPath.section<_dataArray.count) {
+        newInfo = _dataArray[indexPath.section];
+    }
     oDetailVc.editId = newInfo.id;
     [self.superNav pushViewController:oDetailVc animated:YES];
 }
 
 - (void)updataIndexOrder:(NSInteger)section{
-    OrderListNewInfo *newInfo = _dataArray[section];
+    OrderListNewInfo *newInfo;
+    if (section<_dataArray.count) {
+        newInfo = _dataArray[section];
+    }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"orderId"] = @(newInfo.id);
     NSString *url = [NSString stringWithFormat:@"%@ModelOrderWaitCheckItem",baseUrl];
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             OrderListNewInfo *info = [OrderListNewInfo objectWithKeyValues:response.data[@"orderInfo"]];
             _dataArray[section] = info;
         }
@@ -274,21 +282,30 @@
 }
 //生产中
 - (void)loadProduceVcWithIndex:(NSIndexPath *)indexPath{
-    OrderListNewInfo *newInfo = _dataArray[indexPath.section];
+    OrderListNewInfo *newInfo;
+    if (indexPath.section<_dataArray.count) {
+        newInfo = _dataArray[indexPath.section];
+    }
     ProductionOrderVC *orderVc = [ProductionOrderVC new];
     orderVc.orderNum = newInfo.orderNum;
     [self.superNav pushViewController:orderVc animated:YES];
 }
 //已发货
 - (void)loadDeliveryWithIndex:(NSIndexPath *)indexPath{
+    OrderListNewInfo *newInfo;
+    if (indexPath.section<_dataArray.count) {
+        newInfo = _dataArray[indexPath.section];
+    }
     SettlementListVC *listVc = [SettlementListVC new];
-    OrderListNewInfo *newInfo = _dataArray[indexPath.section];
     listVc.orderNumber = newInfo.orderNum;
     [self.superNav pushViewController:listVc animated:YES];
 }
 //已完成
 - (void)loadSettlementWithIndex:(NSIndexPath *)indexPath{
-    
+//    OrderListNewInfo *newInfo;
+//    if (indexPath.section<_dataArray.count) {
+//        newInfo = _dataArray[indexPath.section];
+//    }
 }
 
 @end

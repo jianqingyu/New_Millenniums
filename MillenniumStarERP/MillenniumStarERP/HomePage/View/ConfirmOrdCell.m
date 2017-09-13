@@ -46,7 +46,7 @@
         [self.picImg sd_setImageWithURL:[ NSURL URLWithString:_listInfo.pic] placeholderImage:DefaultImage];
         self.titleLab.text = _listInfo.title;
         self.baseLab.text = _listInfo.baseInfo;
-        self.priceLab.hidden = [[AccountTool account].isNoShow intValue];
+        
         self.priceLab.text = [OrderNumTool strWithPrice:_listInfo.price];
         self.numLab.text = [NSString stringWithFormat:@"%@件",_listInfo.number];
         self.infoLab.text = _listInfo.info;
@@ -64,6 +64,13 @@
     if (isTopHidden) {
         _isTopHidden = isTopHidden;
         [self.topView removeFromSuperview];
+    }
+}
+
+- (void)setIsShow:(BOOL)isShow{
+    if (isShow) {
+        _isShow = isShow;
+        self.priceLab.hidden = _isShow;
     }
 }
 

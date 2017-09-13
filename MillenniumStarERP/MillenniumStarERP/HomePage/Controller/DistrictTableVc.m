@@ -28,7 +28,7 @@
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"id"] = @(self.subCity.id);
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             self.Districts = [Citys objectArrayWithKeyValuesArray:response.data];
             [SVProgressHUD dismiss];
             [self.tableView reloadData];

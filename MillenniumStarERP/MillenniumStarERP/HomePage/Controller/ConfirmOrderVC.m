@@ -55,6 +55,7 @@
 @property (nonatomic,strong)CustomerInfo *cusInfo;
 @property (nonatomic,strong)AddressInfo *addressInfo;
 @property (nonatomic,  weak)CustomPickView *pickView;
+@property (nonatomic,assign)BOOL isShow;
 @property (nonatomic,assign)BOOL isSelBtn;
 @property (nonatomic,assign)CGFloat headH;
 @end
@@ -63,12 +64,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.isShow = [[AccountTool account].isNoShow intValue]||
+    [[AccountTool account].isNoDriShow intValue];
     [self creatConfirmOrder];
 }
 
 - (void)creatConfirmOrder{
-    self.priceLab.hidden = [[AccountTool account].isNoShow intValue];
-    self.conBtn.enabled = ![[AccountTool account].isNoShow intValue];
+    self.priceLab.hidden = self.isShow;
+    self.conBtn.enabled = !self.isShow;
     [self changeHeightWithDev];
     [self setupTableView];
     [self creatHeadView];
@@ -89,6 +92,9 @@
         self.title = @"确认订单";
         self.secondView.hidden = YES;
         [self setupHeaderRefresh];
+        [self creatNearNetView:^(BOOL isWifi) {
+            [self.tableView.header beginRefreshing];
+        }];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     if (self.isOrd) {
@@ -98,6 +104,7 @@
 
 - (void)back{
     OrderListController *listVC = [OrderListController new];
+    listVC.isOrd = self.isOrd;
     [self.navigationController pushViewController:listVC animated:YES];
 }
 
@@ -255,6 +262,9 @@
 - (void)chooseHeadView:(NSDictionary *)dict{
     NSIndexPath *path = [dict allKeys][0];
     DetailTypeInfo *info = [dict allValues][0];
+    if (info.title.length==0) {
+        return;
+    }
     if (path.section==2) {
         self.qualityInfo = info;
         self.headView.qualityMes = info.title;
@@ -306,7 +316,7 @@
         params[@"purityId"] = @(_colorInfo.id);
     }
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             NSArray *arr = [OrderPriceInfo objectArrayWithKeyValuesArray:response.data[@"priceList"]];
             if (self.selectDataArray.count) {
                 for (OrderListInfo *selist in self.selectDataArray) {
@@ -417,6 +427,7 @@
     if (self.colorInfo) {
         params[@"purityId"] = @(self.colorInfo.id);
     }
+    self.view.userInteractionEnabled = NO;
     NSString *url = [NSString stringWithFormat:@"%@OrderListPage",baseUrl];
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         [self.tableView.header endRefreshing];
@@ -427,6 +438,7 @@
                 [self setupDataWithDict:response.data];
                 [self setupListDataWithDict:response.data[@"currentOrderlList"]];
                 [self.tableView reloadData];
+                self.view.userInteractionEnabled = YES;
             }
             [SVProgressHUD dismiss];
         }
@@ -449,12 +461,16 @@
         self.qualityArr = dict[@"modelQuality"];
     }
     if ([YQObjectBool boolForObject:dict[@"defaultValue"]]) {
-        self.qualityInfo = [DetailTypeInfo objectWithKeyValues:
-                            dict[@"defaultValue"][@"modelColor"]];
-        self.colorInfo = [DetailTypeInfo objectWithKeyValues:
-                          dict[@"defaultValue"][@"modelQuality"]];
-        self.headView.qualityMes = self.qualityInfo.title;
-        self.headView.colorMes = self.colorInfo.title;
+        if (!self.qualityInfo) {
+            self.qualityInfo = [DetailTypeInfo objectWithKeyValues:
+                                dict[@"defaultValue"][@"modelQuality"]];
+            self.headView.qualityMes = self.qualityInfo.title;
+        }
+        if (!self.colorInfo) {
+            self.colorInfo = [DetailTypeInfo objectWithKeyValues:
+                              dict[@"defaultValue"][@"modelColor"]];
+            self.headView.colorMes = self.colorInfo.title;
+        }
     }
     if (self.editId&&dict[@"orderInfo"]&&dict[@"totalPrice"]&&dict[@"totalNeedPayPrice"]) {
         OrderNewInfo *orderInfo = [OrderNewInfo objectWithKeyValues:dict[@"orderInfo"]];
@@ -580,7 +596,7 @@
     params[@"keyword"] = message;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         self.isSelBtn = NO;
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             if ([response.data[@"state"]intValue]==0) {
                 SHOWALERTVIEW(@"没有此客户记录");
                 self.cusInfo.customerID = 0;
@@ -598,10 +614,18 @@
 
 - (void)openPopTableWithInPath:(NSInteger)index{
     if (index==2) {
+        if (self.qualityArr.count==0) {
+            [MBProgressHUD showError:@"暂无数据"];
+            return;
+        }
         self.pickView.titleStr = @"质量等级";
         self.pickView.typeList = self.qualityArr;
         self.pickView.selTitle = self.qualityInfo.title;
     }else{
+        if (self.colorArr.count==0) {
+            [MBProgressHUD showError:@"暂无数据"];
+            return;
+        }
         self.pickView.titleStr = @"成色";
         self.pickView.typeList = self.colorArr;
         self.pickView.selTitle = self.colorInfo.title;
@@ -749,6 +773,7 @@
     }
     ordCell.isBtnHidden = self.editId;
     ordCell.listInfo = listI;
+    ordCell.isShow = self.isShow;
     return ordCell;
 }
 
@@ -798,18 +823,25 @@
 }
 
 - (BOOL)isAllYes {
-    for (OrderListInfo *OrderListInfo in _dataArray) {
-        if (!OrderListInfo.isSel) {
-            return NO;
+    if (_dataArray.count>0) {
+        for (OrderListInfo *OrderListInfo in _dataArray) {
+            if (!OrderListInfo.isSel) {
+                return NO;
+            }
         }
     }
     return YES;
 }
 //编辑
 - (void)editIndex:(NSInteger)index{
-    OrderListInfo *collectInfo = self.dataArray[index];
+    OrderListInfo *collectInfo;
+    if (index < self.dataArray.count)
+    {
+        collectInfo = self.dataArray[index];
+    }
     if ([[AccountTool account].isNorm intValue]==0) {
         NewCustomProDetailVC *newVc = [NewCustomProDetailVC new];
+        newVc.isCus = NO;
         newVc.isEdit = self.editId?2:1;
         newVc.proId = collectInfo.id;
         newVc.orderBack = ^(OrderListInfo *dict){
@@ -828,7 +860,11 @@
 }
 
 - (void)detailOrderBack:(OrderListInfo *)dict andIdx:(NSInteger)index{
-    OrderListInfo *collectInfo = self.dataArray[index];
+    OrderListInfo *collectInfo;
+    if (index < self.dataArray.count)
+    {
+        collectInfo = self.dataArray[index];
+    }
     if (![dict isKindOfClass:[OrderListInfo class]]) {
         return;
     }
@@ -844,7 +880,11 @@
 }
 //删除
 - (void)deleteIndex:(NSInteger)index{
-    OrderListInfo *collectInfo = [self.dataArray objectAtIndex:index];
+    OrderListInfo *collectInfo;
+    if (index < self.dataArray.count)
+    {
+        collectInfo = self.dataArray[index];
+    }
     NSString *httpStr;
     if (self.editId) {
         httpStr = @"ModelOrderWaitCheckDetailDeleteModelItemDo";
@@ -941,10 +981,15 @@
     if (self.editId) {
         [self cancelOrder];
     }else{
+        self.conBtn.enabled = NO;
+        [self performSelector:@selector(changeButtonStatus)withObject:nil afterDelay:1.0f];//防止重复点击
         [self confirmOrder];
     }
 }
-//提交订单
+
+- (void)changeButtonStatus{
+    self.conBtn.enabled =YES;
+}//提交订单
 - (void)confirmOrder{
     if (!self.addressInfo) {
         [MBProgressHUD showError:@"请选择地址"];
@@ -953,8 +998,22 @@
         }
         return;
     }
-    if (!(self.colorInfo&&self.qualityInfo&&self.cusInfo.customerID)) {
-        [MBProgressHUD showError:@"请选择相关数据"];
+    if (self.cusInfo.customerID==0) {
+        [MBProgressHUD showError:@"请客户信息"];
+        if (self.topBtn.selected) {
+            [self showHeadView];
+        }
+        return;
+    }
+    if (self.qualityInfo.id==0) {
+        [MBProgressHUD showError:@"请选择质量等级"];
+        if (self.topBtn.selected) {
+            [self showHeadView];
+        }
+        return;
+    }
+    if (self.colorInfo.id==0) {
+        [MBProgressHUD showError:@"请选择成色"];
         if (self.topBtn.selected) {
             [self showHeadView];
         }
@@ -1019,6 +1078,7 @@
             [self.navigationController pushViewController:oDetailVc animated:YES];
         }else{
             ProductionOrderVC *proVc = [ProductionOrderVC new];
+            proVc.isOrd = YES;
             proVc.orderNum = dic[@"orderNum"];
             [self.navigationController pushViewController:proVc animated:YES];
         }

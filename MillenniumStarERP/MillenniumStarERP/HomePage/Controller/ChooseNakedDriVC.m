@@ -124,8 +124,9 @@
 - (void)creatNakedDriView{
     NakedDriLibCustomView *NakedDriView = [NakedDriLibCustomView creatCustomView];
     NakedDriView.isSel = YES;
-    NakedDriView.isCus = self.isCus;
+    NakedDriView.isCus = NO;
     NakedDriView.supNav = self.navigationController;
+    NakedDriView.seaDic = self.seaDic;
     [self.view addSubview:NakedDriView];
     [NakedDriView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(0);

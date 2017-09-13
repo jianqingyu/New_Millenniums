@@ -38,6 +38,8 @@
 @property (weak, nonatomic) IBOutlet UIView *myView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *line1H;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *line2H;
+@property (weak, nonatomic) IBOutlet UILabel *proPic;
+@property (weak, nonatomic) IBOutlet UILabel *driPic;
 @property (weak, nonatomic) IBOutlet UIButton *sureBtn;
 @property (weak, nonatomic) IBOutlet UILabel *handsLab;
 @property (weak, nonatomic) IBOutlet UIButton *reBtn;
@@ -157,10 +159,12 @@
     if (data.BaseInfo) {
         self.image.hidden = NO;
         self.title.hidden = NO;
+        self.proPic.hidden = NO;
         [self.image sd_setImageWithURL:[NSURL URLWithString:data.BaseInfo.pic]
                       placeholderImage:DefaultImage];
         self.title.text = data.BaseInfo.title;
         float price = data.BaseInfo.price;
+        self.proPic.text = [NSString stringWithFormat:@"价格:%0.0f元",price];
         if (data.BaseSeaInfo) {
             price = price+[data.BaseSeaInfo.Price floatValue];
         }
@@ -171,6 +175,7 @@
 - (void)reSetNakedInfo:(StorageDataTool *)data{
     if (data.BaseSeaInfo) {
         self.infoLab.hidden = NO;
+        self.driPic.hidden = NO;
         NSArray *infoArr = @[@"钻石",data.BaseSeaInfo.Weight,data.BaseSeaInfo.Shape,
          data.BaseSeaInfo.Color,data.BaseSeaInfo.Purity,@"1粒",data.BaseSeaInfo.CertCode];
         NSArray *titleArr = @[@"类型",@"规格",@"形状",@"颜色",@"净度",@"数量",@"证书编号"];
@@ -184,6 +189,7 @@
         }
         self.infoLab.text = [StrWithIntTool strWithArr:mutA With:@","];
         float price = [data.BaseSeaInfo.Price floatValue];
+        self.driPic.text = [NSString stringWithFormat:@"价格:%0.0f元",price];
         if (data.BaseInfo) {
             price = price+data.BaseInfo.price;
         }
@@ -328,36 +334,10 @@
     BOOL isYes = data.BaseInfo==nil;
     [self gotoNakedLibVC:cur and:!isYes];
 }
-//有戒托直接跳转裸石
-//- (void)gotoNakedSeaVC:(UIViewController *)cur and:(StorageDataTool *)data{
-//    if ([cur isKindOfClass:[NakedDriSearchVC class]]) {
-//        return;
-//    }
-//    NakedDriSearchVC *driVc;
-//    for (UIViewController *vc in cur.navigationController.viewControllers) {
-//        if ([vc isKindOfClass:[NakedDriSearchVC class]]) {
-//            driVc = (NakedDriSearchVC *)vc;
-//        }
-//    }
-//    NSMutableDictionary *mutB = @{}.mutableCopy;
-//    if (data.BaseInfo) {
-//        NSDictionary *dic = data.BaseInfo.stoneWeightRange;
-//        mutB[dic[@"key"]] = dic[@"value"];
-//    }
-//    if (driVc) {
-//        driVc.isCus = YES;
-//        driVc.seaDic = mutB.copy;
-//        driVc.isRef = YES;
-//        [cur.navigationController popToViewController:driVc animated:YES];
-//    }else{
-//        driVc = [NakedDriSearchVC new];
-//        driVc.isCus = YES;
-//        driVc.seaDic = mutB.copy;
-//        [cur.navigationController pushViewController:driVc animated:YES];
-//    }
-//}
+
 //跳转搜索裸钻页面
 - (void)gotoNakedLibVC:(UIViewController *)cur and:(BOOL)isYes{
+    StorageDataTool *data = [StorageDataTool shared];
     if ([cur isKindOfClass:[NakedDriLibViewController class]]) {
         return;
     }
@@ -368,12 +348,18 @@
         }
     }
     if (driVc) {
+        
         driVc.isCus = YES;
-        driVc.isRef = isYes;
+        if (data.BaseInfo) {
+            driVc.seaDic = data.BaseInfo.stoneWeightRange;
+        }
         [cur.navigationController popToViewController:driVc animated:YES];
     }else{
         driVc = [NakedDriLibViewController new];
         driVc.isCus = YES;
+        if (data.BaseInfo) {
+            driVc.seaDic = data.BaseInfo.stoneWeightRange;
+        }
         [cur.navigationController pushViewController:driVc animated:YES];
     }
 }
@@ -405,8 +391,14 @@
     [cur.navigationController pushViewController:list animated:YES];
 }
 //确认定制
-- (IBAction)confirmClick:(id)sender {
+- (IBAction)confirmClick:(id)sender{
+    self.conBtn.enabled = NO;
+    [self performSelector:@selector(changeButtonStatus)withObject:nil afterDelay:1.0f];//防止重复点击
     [self openConfirmOrder];
+}
+
+- (void)changeButtonStatus{
+    self.conBtn.enabled =YES;
 }
 
 - (void)openConfirmOrder{
@@ -461,6 +453,7 @@
 }
 //是否需要付款 是否下单ERP
 - (void)gotoNextViewConter:(id)dic{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     UIViewController *cur = [ShowLoginViewTool getCurrentVC];
     if ([dic[@"isNeetPay"]intValue]==1) {
         PayViewController *payVc = [PayViewController new];
@@ -469,10 +462,12 @@
     }else{
         if ([dic[@"isErpOrder"]intValue]==0) {
             ConfirmOrderVC *oDetailVc = [ConfirmOrderVC new];
+            oDetailVc.isOrd = YES;
             oDetailVc.editId = [dic[@"id"] intValue];
             [cur.navigationController pushViewController:oDetailVc animated:YES];
         }else{
             ProductionOrderVC *proVc = [ProductionOrderVC new];
+            proVc.isOrd = YES;
             proVc.orderNum = dic[@"orderNum"];
             [cur.navigationController pushViewController:proVc animated:YES];
         }
@@ -490,6 +485,9 @@
     self.staueLab.hidden = YES;
     self.handsLab.hidden = YES;
     self.infoLab.hidden = YES;
+    self.proPic.hidden = YES;
+    self.driPic.hidden = YES;
+    self.priceLab.text = @"合计:";
 }
 
 - (void)setDataEmpty{

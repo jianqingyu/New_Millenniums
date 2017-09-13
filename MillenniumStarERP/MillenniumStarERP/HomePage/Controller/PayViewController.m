@@ -56,7 +56,7 @@
     params[@"orderId"] = self.orderId;
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             self.titleLab.text = response.data[@"title"];
             double price = [response.data[@"needPayPrice"]doubleValue];
             self.totalLab.text = [NSString stringWithFormat:@"￥%.2f",price];
@@ -210,7 +210,7 @@
     params[@"orderId"] = self.orderId;
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             NSString *strUrl = response.data;
             NSString *orderString = [strUrl stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
             [self openAliPayWith:orderString];

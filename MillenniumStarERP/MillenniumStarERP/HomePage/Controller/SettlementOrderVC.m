@@ -78,7 +78,7 @@
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"recNum"] = self.orderNum;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             if ([YQObjectBool boolForObject:response.data[@"recItem"]]) {
                 SettlementHeadInfo *info = [SettlementHeadInfo
                                  objectWithKeyValues:response.data[@"recItem"]];

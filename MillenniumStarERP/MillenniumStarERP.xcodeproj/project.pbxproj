@@ -41,6 +41,7 @@
 		7915BCEB1E7A833E00407927 /* SearchResultTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7915BCE91E7A833E00407927 /* SearchResultTableCell.xib */; };
 		791B01601F3D817800CA96CB /* CustomShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 791B015F1F3D817800CA96CB /* CustomShowView.m */; };
 		791B01621F3D818E00CA96CB /* CustomShowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 791B01611F3D818E00CA96CB /* CustomShowView.xib */; };
+		792125AE1F629DA2005F129B /* UIButton+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 792125AD1F629DA2005F129B /* UIButton+Extension.m */; };
 		7922F2971DCADD88003E0C8F /* CusTomLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7922F2961DCADD88003E0C8F /* CusTomLoginView.m */; };
 		7922F29C1DCAEF72003E0C8F /* ShowLoginViewTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 7922F29B1DCAEF72003E0C8F /* ShowLoginViewTool.m */; };
 		7924C55E1DF8ED1E005B89FA /* BaseCusLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7924C55D1DF8ED1E005B89FA /* BaseCusLoginView.m */; };
@@ -478,6 +479,8 @@
 		791B015E1F3D817700CA96CB /* CustomShowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomShowView.h; sourceTree = "<group>"; };
 		791B015F1F3D817800CA96CB /* CustomShowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomShowView.m; sourceTree = "<group>"; };
 		791B01611F3D818E00CA96CB /* CustomShowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomShowView.xib; sourceTree = "<group>"; };
+		792125AC1F629DA2005F129B /* UIButton+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Extension.h"; sourceTree = "<group>"; };
+		792125AD1F629DA2005F129B /* UIButton+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Extension.m"; sourceTree = "<group>"; };
 		7922F2951DCADD88003E0C8F /* CusTomLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CusTomLoginView.h; sourceTree = "<group>"; };
 		7922F2961DCADD88003E0C8F /* CusTomLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CusTomLoginView.m; sourceTree = "<group>"; };
 		7922F29A1DCAEF72003E0C8F /* ShowLoginViewTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowLoginViewTool.h; sourceTree = "<group>"; };
@@ -1328,6 +1331,8 @@
 			children = (
 				79655DB61D7D0AAA006B90FC /* UIView+Extension.h */,
 				79655DB71D7D0AAA006B90FC /* UIView+Extension.m */,
+				792125AC1F629DA2005F129B /* UIButton+Extension.h */,
+				792125AD1F629DA2005F129B /* UIButton+Extension.m */,
 				79655DB81D7D0AAA006B90FC /* UIWindow+Extension.h */,
 				79655DB91D7D0AAA006B90FC /* UIWindow+Extension.m */,
 				797556401EE6457E004BD417 /* UIAlertController+supportedinterface.h */,
@@ -2523,6 +2528,7 @@
 				794EDBE91DDD38CD0018DDF3 /* IQUIView+Hierarchy.m in Sources */,
 				79EC14C61F27421F0057586E /* EditUserInfoVC.m in Sources */,
 				794F289F1EDEC5EE003EC54D /* CustomPickView.m in Sources */,
+				792125AE1F629DA2005F129B /* UIButton+Extension.m in Sources */,
 				7948B34A1E79143400909601 /* SearchResultDetailVC.m in Sources */,
 				7962BEAC1DB5D7C500459245 /* DetailStone.m in Sources */,
 				794B71911E7F8D9200A8BCE7 /* SearchHeadBtnView.m in Sources */,
@@ -2861,7 +2867,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/MillenniumStarERP/ERPfile.pch";
 				INFOPLIST_FILE = MillenniumStarERP/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2872,7 +2878,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.millenniumStar.mStar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "69b946ea-883f-46b9-8f39-0b41c31f1df2";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2899,7 +2905,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/MillenniumStarERP/ERPfile.pch";
 				INFOPLIST_FILE = MillenniumStarERP/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2910,7 +2916,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.millenniumStar.mStar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "69b946ea-883f-46b9-8f39-0b41c31f1df2";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

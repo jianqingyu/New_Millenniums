@@ -93,7 +93,8 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.isShowPrice = ![[AccountTool account].isNoShow intValue];
-    self.hisBtn.enabled = ![[AccountTool account].isNoShow intValue];
+    self.hisBtn.enabled = !([[AccountTool account].isNoShow intValue]||
+                            [[AccountTool account].isNoDriShow intValue]);
     App;
     [OrderNumTool orderWithNum:app.shopNum andView:self.orderNumLab];
 }
@@ -150,7 +151,7 @@
     self.numLab = lab;
 }
 
-- (void) scrollViewDidScroll:(UIScrollView *)sender {
+- (void)scrollViewDidScroll:(UIScrollView *)sender {
     if (totalCount==0) {
         return;
     }
@@ -158,9 +159,8 @@
     CGFloat pageHei = sender.frame.size.height;
     // 根据当前的x坐标和页宽度计算出当前页数
     int currentPage = (floor((sender.contentOffset.y - pageHei/2)/pageHei) + 1)+1;
-//    NSLog(@"%d",currentPage);
     int toPage = totalCount%12==0?totalCount/12:totalCount/12+1;
-    if (self.idxPage!=currentPage&&totalCount!=0) {
+    if (self.idxPage!=currentPage) {
         self.idxPage = currentPage;
         int num = self.idxPage/3+1;
         if (num>toPage) {
@@ -203,8 +203,11 @@
     self.navigationItem.titleView = titleView;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    [self searchClick];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [self searchClick];
     return YES;
 }
@@ -346,7 +349,7 @@
         }
         [_backDict removeAllObjects];
         _titleLab.text = [dict allValues][0];
-        _backDict[@"category"] = [dict allKeys][0];
+        _backDict[@"custom"] = [dict allKeys][0];
         [self changeTextFieKeyWord:@""];
     };
     self.popClassView = allPop;
@@ -409,6 +412,8 @@
 #pragma mark - 信息查找
 //通过搜索关键词查找信息
 - (void)getCommodityData:(NSMutableDictionary *)params{
+    [BaseApi cancelAllOperation];
+    self.view.userInteractionEnabled = NO;
     [SVProgressHUD show];
     NSString *url = [NSString stringWithFormat:@"%@modelListPage",baseUrl];
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
@@ -426,6 +431,7 @@
                     [OrderNumTool orderWithNum:app.shopNum andView:self.orderNumLab];
                 }
             }
+            self.view.userInteractionEnabled = YES;
             [SVProgressHUD dismiss];
         }
     } requestURL:url params:params];
@@ -498,9 +504,12 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    ProductInfo *info = self.dataArray[indexPath.row];
+    ProductInfo *info;
+    if (indexPath.row<self.dataArray.count) {
+        info = self.dataArray[indexPath.row];
+    }
     if ([[AccountTool account].isNorm intValue]==0) {
-        if (self.isCus) {
+        if (self.isCus&&info) {
             [[NSNotificationCenter defaultCenter]postNotificationName:NotificationRingName
                                       object:nil userInfo:@{UserInfoRingName:info}];
         }

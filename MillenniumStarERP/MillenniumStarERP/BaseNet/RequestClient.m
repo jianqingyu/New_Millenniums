@@ -21,6 +21,7 @@
     });
     return _sharedClient;
 }
+
 - (BOOL)checkNetwork:(AFHTTPRequestOperationManager*)manager{
     NSOperationQueue *operationQueue = manager.operationQueue;
     
@@ -39,4 +40,5 @@
     [manager.reachabilityManager startMonitoring];
     return true;
 }
+
 @end

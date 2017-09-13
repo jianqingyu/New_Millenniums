@@ -70,7 +70,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             self.invoArr = [DetailTypeInfo objectArrayWithKeyValuesArray:response.data[@"invoiceType"]];
             [self.tableFView mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.height.mas_equalTo(@(40+self.invoArr.count*40));

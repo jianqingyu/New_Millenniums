@@ -52,18 +52,11 @@
     return self;
 }
 
-- (void)setIsRef:(BOOL)isRef{
-    if (isRef) {
-        _isRef = isRef;
-        [self setDriFieText];
-    }
-}
 //更新搜索条件
-- (void)setDriFieText{
-    StorageDataTool *data = [StorageDataTool shared];
-    if (data.BaseInfo) {
-        NSDictionary *dic = data.BaseInfo.stoneWeightRange;
-        NSString *str = dic[@"value"];
+- (void)setSeaDic:(NSDictionary *)seaDic{
+    if (seaDic) {
+        _seaDic = seaDic;
+        NSString *str = _seaDic[@"value"];
         NSArray *arr;
         if ([str containsString:@","]) {
             arr = [str componentsSeparatedByString:@","];
@@ -103,7 +96,6 @@
             NSDictionary *dict2 = _topArr[1];
             _priceArr = [SearchDateInfo objectArrayWithKeyValuesArray:dict2[@"list"]];
             [self creatBaseView:_priceArr isYes:NO];
-            [self setDriFieText];
         }
     }
 }
@@ -214,9 +206,15 @@
     }
     sender.selected = !sender.selected;
     SearchDateInfo *info = _weightArr[sender.tag];
-    NSArray *arr = [info.key componentsSeparatedByString:@","];
-    self.driFie1.text = arr[0];
-    self.driFie2.text = arr[1];
+    if (sender.selected) {
+        NSArray *arr = [info.key componentsSeparatedByString:@","];
+        self.driFie1.text = arr[0];
+        BOOL isZero = [arr[1] isEqualToString:@"0"];
+        self.driFie2.text = isZero?@"":arr[1];
+    }else{
+        self.driFie1.text = @"";
+        self.driFie2.text = @"";
+    }
     NSDictionary *dic = _topArr[0];
     NSString *key = sender.selected?info.key:@"";
     self.mutDic[dic[@"keyword"]] = key;
@@ -234,10 +232,15 @@
     }
     sender.selected = !sender.selected;
     SearchDateInfo *info = _priceArr[sender.tag];
-    NSArray *arr = [info.key componentsSeparatedByString:@","];
-    self.priceFie1.text = arr[0];
-    BOOL isZero = [arr[1] isEqualToString:@"0"];
-    self.priceFie2.text = isZero?@"":arr[1];
+    if (sender.selected) {
+        NSArray *arr = [info.key componentsSeparatedByString:@","];
+        self.priceFie1.text = arr[0];
+        BOOL isZero = [arr[1] isEqualToString:@"0"];
+        self.priceFie2.text = isZero?@"":arr[1];
+    }else{
+        self.priceFie1.text = @"";
+        self.priceFie2.text = @"";
+    }
     NSDictionary *dic = _topArr[1];
     NSString *key = sender.selected?info.key:@"";
     self.mutDic[dic[@"keyword"]] = key;

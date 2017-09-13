@@ -60,6 +60,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 @property (nonatomic,  copy)NSArray *puritys;
 @property (nonatomic,  copy)NSArray *chooseArr;
 
+@property (nonatomic,  strong)NSDictionary*stoneDic;
 @property (nonatomic,  strong)NSMutableArray*bools;
 @property (nonatomic,  strong)NSMutableArray*mutArr;
 @property (nonatomic,  strong)NSMutableArray*nums;
@@ -296,6 +297,9 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                                                        response.data[@"model"]];
                 [self setupBaseListData:modelIn];
                 [self creatCusTomHeadView];
+                if (([YQObjectBool boolForObject:response.data[@"model"][@"stoneWeightRange"]]) ) {
+                    self.stoneDic = response.data[@"model"][@"stoneWeightRange"];
+                }
                 [self.tableView reloadData];
             }
             if ([YQObjectBool boolForObject:response.data[@"stoneType"]]) {
@@ -331,7 +335,9 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     self.lastMess = modelIn.remark;
     if (self.isEdit) {
         self.proNum = modelIn.number;
-        self.handStr = modelIn.handSize;
+        if (![modelIn.handSize isEqualToString:@"0"]) {
+            self.handStr = modelIn.handSize;
+        }
     }
     [self setupNumbers:@[modelIn.stone,modelIn.stoneA,
                          modelIn.stoneB,modelIn.stoneC]];
@@ -607,6 +613,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
             firstCell.MessBack = ^(BOOL isSel,NSString *messArr){
                 if (isSel) {
                     self.proNum = messArr;
+                    [self updateBottomPrice];
                 }else{
                     [self openNumberAndhandSize:2 and:indexPath];
                 }
@@ -682,6 +689,10 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         self.pickView.titleStr = @"手寸";
         self.pickView.selTitle = title;
     }else{
+        if (self.puritys.count==0) {
+            [MBProgressHUD showError:@"暂无数据"];
+            return;
+        }
         self.pickView.titleStr = @"成色";
         self.pickView.typeList = self.puritys;
         self.pickView.selTitle = self.colorInfo.title;
@@ -693,7 +704,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 
 - (void)openRemark:(id)sender{
     if (self.remakeArr.count==0) {
-        [MBProgressHUD showError:@"没有备注可选"];
+        [MBProgressHUD showError:@"暂无数据"];
         return;
     }
     self.pickView.typeList = self.remakeArr;
@@ -713,10 +724,10 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 
 - (void)gotoNakedDriLib{
     ChooseNakedDriVC *libVc = [ChooseNakedDriVC new];
-    libVc.isCus = self.isCus;
-    libVc.isCan = self.isCus?1:self.isCan;
+    libVc.isCan = self.isCan;
     libVc.number = self.nums[0];
     libVc.infoArr = self.mutArr[0];
+    libVc.seaDic = self.stoneDic;
     libVc.dataArr = [self arrWithDataArr];
     libVc.eidtBack = ^(NSDictionary *dic){
         NSString *num = [dic allKeys][0];
@@ -818,13 +829,14 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     NSString *regiUrl = [NSString stringWithFormat:@"%@%@",baseUrl,detail];
     NSString *proId = self.isEdit?@"itemId":@"productId";
     params[@"tokenKey"] = [AccountTool account].tokenKey;
-    params[proId] = @(self.proId);
+    params[proId] = @(_proId);
     params[@"number"] = self.proNum;
     if ([self.handStr length]>0) {
         params[@"handSize"] = self.handStr;
     }
     if (self.driId.length>0) {
         params[@"jewelStoneId"] = self.driId;
+        params[@"stone"] = @"";
     }
     if (!self.isEdit) {
         params[@"categoryId"] = @(self.modelInfo.categoryId);
@@ -867,7 +879,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 }
 
 - (void)updateBottomPrice{
-    float price = _modelInfo.price;
+    float price = [self.proNum floatValue]*_modelInfo.price;
     if (self.driPrice.length>0) {
         price = price + [self.driPrice floatValue];
     }else{

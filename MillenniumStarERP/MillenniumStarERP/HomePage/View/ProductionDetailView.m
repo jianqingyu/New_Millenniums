@@ -152,7 +152,7 @@
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"orderNum"] = self.dict[@"orderNum"];
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             if ([YQObjectBool boolForObject:response.data[@"modelList"]]) {
                 NSArray *arr = [OrderListInfo objectArrayWithKeyValuesArray:response.data[@"modelList"]];
                 mutDic[@"orderList"] = arr;

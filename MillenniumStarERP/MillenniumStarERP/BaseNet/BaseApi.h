@@ -21,6 +21,8 @@
  */
 + (void)getGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL params:(NSMutableDictionary*)params;
 + (void)postGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL params:(NSMutableDictionary*)params;
++ (void)getNewVerData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
+               params:(NSMutableDictionary*)params;
 /*
 取消所有队列
  */

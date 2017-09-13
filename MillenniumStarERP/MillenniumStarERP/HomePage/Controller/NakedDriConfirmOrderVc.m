@@ -185,7 +185,7 @@
     params[@"keyword"] = message;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         self.isSelBtn = NO;
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             if ([response.data[@"state"]intValue]==0) {
                 SHOWALERTVIEW(@"没有此客户记录");
                 self.cusInfo.customerID = 0;

@@ -102,7 +102,7 @@
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
-            if ([response.data[@"typeList"]count]>0) {
+            if ([YQObjectBool boolForObject:response.data[@"typeList"]]) {
                 self.typeList = [ScreenDetailInfo objectArrayWithKeyValuesArray:
                                                     response.data[@"typeList"]];
                 ScreenDetailInfo *info = self.typeList[0];
@@ -113,7 +113,7 @@
                 [self.tableView selectRowAtIndexPath:first animated:YES
                                     scrollPosition:UITableViewScrollPositionTop];
             }
-            if ([response.data[@"typeFiler"]count]>0) {
+            if ([YQObjectBool boolForObject:response.data[@"typeFiler"]]) {
                 NSArray *arr = [ScreeningInfo objectArrayWithKeyValuesArray:
                                       response.data[@"typeFiler"]];
                 self.classList = arr;

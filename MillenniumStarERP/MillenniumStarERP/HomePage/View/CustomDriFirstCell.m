@@ -38,12 +38,37 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
-    if (![textField.text isEqualToString:@"0.5"]&&[textField.text containsString:@"."]) {
-        [MBProgressHUD showError:@"请填写正确件数"];
-        textField.text = @"";
+    [self backText:[textField.text floatValue]];
+}
+
+- (IBAction)accClick:(id)sender {
+    float str = [self.fie1.text floatValue];
+    if (str==0.5||str==1) {
+        return;
+    }
+    str--;
+    [self backText:str];
+}
+
+- (IBAction)addClick:(id)sender {
+    float str = [self.fie1.text floatValue];
+    str++;
+    [self backText:str];
+}
+
+- (void)backText:(float)str{
+    NSString *string = [NSString stringWithFormat:@"%0.1f",str];
+    if (![string isEqualToString:@"0.5"]&&!(fmodf(str, 1)!=0.5)) {
+        [MBProgressHUD showError:@"只能填整数或者x.5"];
+        self.fie1.text = @"";
+    }
+    if ([string rangeOfString:@".5"].location != NSNotFound) {
+        self.fie1.text = string;
+    }else{
+        self.fie1.text = [NSString stringWithFormat:@"%0.0f",str];
     }
     if (self.MessBack) {
-        self.MessBack(YES,textField.text);
+        self.MessBack(YES,self.fie1.text);
     }
 }
 
@@ -61,33 +86,6 @@
 //        self.fie1.userInteractionEnabled = !_certCode.length;
 //    }
 //}
-
-- (IBAction)accClick:(id)sender {
-    float str = [self.fie1.text floatValue];
-    if (str==0) {
-        return;
-    }
-    str--;
-    [self backText:str];
-}
-
-- (IBAction)addClick:(id)sender {
-    float str = [self.fie1.text floatValue];
-    str++;
-    [self backText:str];
-}
-
-- (void)backText:(float)str{
-    NSString *string = [NSString stringWithFormat:@"%0.1f",str];
-    if ([string rangeOfString:@".5"].location != NSNotFound) {
-        self.fie1.text = string;
-    }else{
-        self.fie1.text = [NSString stringWithFormat:@"%0.0f",str];
-    }
-    if (self.MessBack) {
-        self.MessBack(YES,self.fie1.text);
-    }
-}
 
 - (void)setModelInfo:(DetailModel *)modelInfo{
     if (modelInfo) {

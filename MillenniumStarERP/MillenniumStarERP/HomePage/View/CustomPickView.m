@@ -102,26 +102,17 @@
 - (void)setSelTitle:(NSString *)selTitle{
     if (selTitle) {
         _selTitle = selTitle;
+        int idex = 0;
         for (int i=0; i<_typeList.count; i++) {
             NSDictionary *info = _typeList[i];
             if ([_selTitle isEqualToString:info[@"title"]]) {
-                [self.pickView selectRow:i inComponent:0 animated:YES];
+                idex = i;
             }
         }
+        [self.pickView selectRow:idex inComponent:0 animated:YES];
     }
 }
-//选中
-//- (void)setSelInfo:(DetailTypeInfo *)selInfo{
-//    if (selInfo) {
-//        _selInfo = selInfo;
-//        for (int i=0; i<_typeList.count; i++) {
-//            NSDictionary *info = _typeList[i];
-//            if ([_selInfo.title isEqualToString:info[@"title"]]) {
-//                [self.pickView selectRow:i inComponent:0 animated:YES];
-//            }
-//        }
-//    }
-//}
+
 // 返回多少列
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     return 1;

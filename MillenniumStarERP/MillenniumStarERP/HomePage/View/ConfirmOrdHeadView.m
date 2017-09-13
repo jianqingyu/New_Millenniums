@@ -64,16 +64,24 @@
 }
 
 - (void)setQualityMes:(NSString *)qualityMes{
-    if (qualityMes.length>0) {
+    if (qualityMes) {
         _qualityMes = qualityMes;
-        [self setupBtn:2 andTitle:_qualityMes];
+        if (_qualityMes.length>0) {
+            [self setupBtn:2 andTitle:_qualityMes];
+        }else{
+            [self resetBtn:2 andTitle:@"选择质量等级"];
+        }
     }
 }
 
 - (void)setColorMes:(NSString *)colorMes{
-    if (colorMes.length>0) {
+    if (colorMes) {
         _colorMes = colorMes;
-        [self setupBtn:3 andTitle:_colorMes];
+        if (_colorMes.length>0) {
+            [self setupBtn:3 andTitle:_colorMes];
+        }else{
+            [self resetBtn:3 andTitle:@"选择成色"];
+        }
     }
 }
 
@@ -95,6 +103,14 @@
         btn.selected = YES;
     }
     [btn setTitle:str forState:UIControlStateSelected];
+}
+
+- (void)resetBtn:(int)idx andTitle:(NSString *)str{
+    UIButton *btn = self.allBtns[idx];
+    if (btn.selected) {
+        btn.selected = NO;
+    }
+    [btn setTitle:str forState:UIControlStateNormal];
 }
 
 - (void)setOrderInfo:(OrderNewInfo *)orderInfo{

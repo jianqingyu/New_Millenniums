@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment version="1792" identifier="iOS"/>
+        <deployment version="2048" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
@@ -35,7 +35,7 @@
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="金       价:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hGV-OF-n8T">
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="金       价:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hGV-OF-n8T">
                     <rect key="frame" x="176" y="71" width="63" height="18"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -49,12 +49,6 @@
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无数据" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UEp-4B-kn9">
                     <rect key="frame" x="85" y="43" width="60" height="18"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无数据" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dfu-EQ-1Ib">
-                    <rect key="frame" x="244" y="71" width="60" height="18"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -73,7 +67,6 @@
                 <constraint firstItem="3ya-7h-INt" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="BRK-EA-f1n"/>
                 <constraint firstItem="hGV-OF-n8T" firstAttribute="centerY" secondItem="4Xa-Eg-qCi" secondAttribute="centerY" id="DLo-LD-gsO"/>
                 <constraint firstItem="4Xa-Eg-qCi" firstAttribute="top" secondItem="yxP-s0-Ydn" secondAttribute="bottom" constant="10" id="GNJ-fT-Lmk"/>
-                <constraint firstItem="Dfu-EQ-1Ib" firstAttribute="leading" secondItem="hGV-OF-n8T" secondAttribute="trailing" constant="5" id="MqP-Fj-uJd"/>
                 <constraint firstItem="yxP-s0-Ydn" firstAttribute="top" secondItem="3ya-7h-INt" secondAttribute="bottom" constant="10" id="NlJ-Wz-ksa"/>
                 <constraint firstItem="o4d-q1-Zkv" firstAttribute="leading" secondItem="gOj-x8-FJx" secondAttribute="leading" id="U2K-Wh-CJA"/>
                 <constraint firstItem="gOj-x8-FJx" firstAttribute="leading" secondItem="3ya-7h-INt" secondAttribute="trailing" constant="5" id="VsA-hd-DN3"/>
@@ -87,16 +80,15 @@
                 <constraint firstItem="jQj-Zx-8uo" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="x8i-Bz-Cx9"/>
                 <constraint firstItem="gOj-x8-FJx" firstAttribute="centerY" secondItem="3ya-7h-INt" secondAttribute="centerY" id="xM4-IX-pUC"/>
                 <constraint firstItem="3ya-7h-INt" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="xf3-Cr-na4"/>
-                <constraint firstItem="Dfu-EQ-1Ib" firstAttribute="centerY" secondItem="4Xa-Eg-qCi" secondAttribute="centerY" id="zln-gw-UDy"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="orderDate" destination="UEp-4B-kn9" id="L8Y-hF-sNx"/>
-                <outlet property="orderKing" destination="Dfu-EQ-1Ib" id="6EB-iu-tXI"/>
+                <outlet property="orderKing" destination="hGV-OF-n8T" id="ibN-Tj-rvl"/>
                 <outlet property="orderNum" destination="gOj-x8-FJx" id="U56-XL-qad"/>
                 <outlet property="orderStaue" destination="o4d-q1-Zkv" id="OGX-cK-hcF"/>
             </connections>
-            <point key="canvasLocation" x="116" y="300"/>
+            <point key="canvasLocation" x="247" y="300"/>
         </view>
     </objects>
 </document>

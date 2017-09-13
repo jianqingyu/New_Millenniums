@@ -10,4 +10,5 @@
 
 @interface OrderListController : BaseViewController
 @property (nonatomic, assign) int index;
+@property (nonatomic, assign) BOOL isOrd;
 @end

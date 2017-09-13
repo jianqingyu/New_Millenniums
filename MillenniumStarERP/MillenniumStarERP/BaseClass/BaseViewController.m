@@ -27,7 +27,7 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
     App;
     app.loadBack = ^(BOOL isYes){
-        [NetworkDetermineTool isSView:isYes andNav:self.navigationController];
+        [NetworkDetermineTool isSView:isYes];
         [self.delegate netBack:self andNet:isYes];
     };
 }

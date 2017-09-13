@@ -31,16 +31,13 @@
     [self initCustomView];
     [self setNaviBtn];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"icon_return"] style:UIBarButtonItemStyleDone target:self action:@selector(back)];
+    if (self.isOrd) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"icon_return"] style:UIBarButtonItemStyleDone target:self action:@selector(back)];
+    }
 }
 
 - (void)back{
-    BaseViewController *baseVc = self.navigationController.viewControllers[1];
-    if ([baseVc isKindOfClass:[ConfirmOrderVC class]]) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-        return;
-    }
-    [self.navigationController popToViewController:baseVc animated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)orientChange:(NSNotification *)notification{

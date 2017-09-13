@@ -17,8 +17,10 @@
 #import "NakedDriLibImgInfo.h"
 #import "StrWithIntTool.h"
 #import "NakedDriSearchVC.h"
+#import "NetworkDetermineTool.h"
 @interface NakedDriLibCustomView()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)NSArray *dataArray;
+@property (nonatomic, strong)NSArray *headArr;
 @property (nonatomic, strong)NSDictionary *dict;
 @property (nonatomic, strong)UITableView *tableView;
 @property (nonatomic, strong)NSMutableArray *NakedArr;
@@ -56,10 +58,12 @@
     }
 }
 
-- (void)setIsRef:(BOOL)isRef{
-    if (isRef) {
-        _isRef = isRef;
-        self.headView.isRef = _isRef;
+- (void)setSeaDic:(NSDictionary *)seaDic{
+    if (seaDic) {
+        _seaDic = seaDic;
+        if (self.headArr.count>0) {
+            _headView.seaDic = _seaDic;
+        };
     }
 }
 
@@ -144,6 +148,10 @@
                 [mutH addObject:response.data[@"price"]];
             }
             self.headView.topArr = mutH.copy;
+            self.headArr = mutH.copy;
+            if (self.seaDic) {
+                self.headView.seaDic = self.seaDic;
+            }
             NSMutableArray *mut = [NSMutableArray new];
             if ([YQObjectBool boolForObject:response.data[@"shape"]]) {
                 NakedDriLiblistInfo *info = [NakedDriLiblistInfo objectWithKeyValues:response.data[@"shape"]];
@@ -255,36 +263,46 @@
 }
 
 - (void)searchClick:(id)sender {
+    if (![NetworkDetermineTool isExistenceNet]) {
+        [MBProgressHUD showError:@"网络断开、请联网"];
+        return;
+    }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     NSMutableArray *mutA = @[].mutableCopy;
-    for (id info in _hedInfo.values) {
-        BOOL isSel = [[info valueForKey:@"isSel"]boolValue];
-        NSString *name = [info valueForKey:@"name"];
-        if (isSel) {
-            [mutA addObject:name];
-        }
-    }
-    params[_hedInfo.keyword] = mutA.copy;
-    for (NSArray *arr in self.NakedArr) {
-        for (NakedDriLiblistInfo *linfo in arr) {
-            NSMutableArray *mutA = @[].mutableCopy;
-            for (id info in linfo.values) {
-                BOOL isSel = [[info valueForKey:@"isSel"]boolValue];
-                NSString *name = [info valueForKey:@"name"];
-                if (isSel) {
-                    [mutA addObject:name];
-                }
+    if (_hedInfo.values.count>0) {
+        for (id info in _hedInfo.values) {
+            BOOL isSel = [[info valueForKey:@"isSel"]boolValue];
+            NSString *name = [info valueForKey:@"name"];
+            if (isSel) {
+                [mutA addObject:name];
             }
-            params[linfo.keyword] = mutA.copy;
+        }
+        params[_hedInfo.keyword] = mutA.copy;
+    }
+    if (self.NakedArr.count>0) {
+        for (NSArray *arr in self.NakedArr) {
+            for (NakedDriLiblistInfo *linfo in arr) {
+                NSMutableArray *mutA = @[].mutableCopy;
+                for (id info in linfo.values) {
+                    BOOL isSel = [[info valueForKey:@"isSel"]boolValue];
+                    NSString *name = [info valueForKey:@"name"];
+                    if (isSel) {
+                        [mutA addObject:name];
+                    }
+                }
+                params[linfo.keyword] = mutA.copy;
+            }
         }
     }
-    [params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if ([obj count]>0) {
-            params[key] = [StrWithIntTool strWithArr:obj With:@","];
-        }else{
-            [params removeObjectForKey:key];
-        }
-    }];
+    if (params.count>0) {
+        [params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if ([obj count]>0) {
+                params[key] = [StrWithIntTool strWithArr:obj With:@","];
+            }else{
+                [params removeObjectForKey:key];
+            }
+        }];
+    }
     [params addEntriesFromDictionary:self.dict];
     NakedDriSearchVC *seaVc = [NakedDriSearchVC new];
     seaVc.isPro = self.isPro;

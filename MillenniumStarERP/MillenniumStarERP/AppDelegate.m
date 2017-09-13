@@ -9,16 +9,17 @@
 #import "AppDelegate.h"
 #import "CommonUtils.h"
 #import "Reachability.h"
+#import "WXApi.h"
+#import "WeiboSDK.h"
 #import "ShowLoginViewTool.h"
 #import "UIWindow+Extension.h"
 #import <AlipaySDK/AlipaySDK.h>
-#import <LocalAuthentication/LocalAuthentication.h>
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <TencentOpenAPI/QQApiInterface.h>
-#import "WXApi.h"
-#import "WeiboSDK.h"
+#import <LocalAuthentication/LocalAuthentication.h>
+
 @interface AppDelegate ()<WXApiDelegate>{
     Reachability *hostReach;
 }
@@ -122,7 +123,7 @@
                 NSArray *resultArr = [result componentsSeparatedByString:@"&"];
                 for (NSString *subResult in resultArr) {
                     if (subResult.length > 10 && [subResult hasPrefix:@"auth_code="]) {
-                        authCode = [subResult substringFromIndex:10];
+//                        authCode = [subResult substringFromIndex:10];
                         break;
                     }
                 }
@@ -157,7 +158,7 @@
                 NSArray *resultArr = [result componentsSeparatedByString:@"&"];
                 for (NSString *subResult in resultArr) {
                     if (subResult.length > 10 && [subResult hasPrefix:@"auth_code="]) {
-                        authCode = [subResult substringFromIndex:10];
+//                        authCode = [subResult substringFromIndex:10];
                         break;
                     }
                 }

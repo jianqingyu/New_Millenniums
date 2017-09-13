@@ -14,8 +14,7 @@
 @property(nonatomic,strong)NSString *backstr;
 @end
 @implementation ZBButten
-- (instancetype)initWithFrame:(CGRect)frame
-{
+- (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
         [self setsouce];
@@ -33,8 +32,7 @@
     return self;
 }
 
-- (void)setsouce
-{
+- (void)setsouce{
     _Timer = 30;
     _normaltext = @"获取验证码";
     _oldtimer = _Timer;
@@ -42,8 +40,7 @@
     self.backstr = @"";
 }
 
-- (void)AddTimerFormesage
-{
+- (void)AddTimerFormesage{
     NSTimer *timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(ChangeTimer) userInfo:nil repeats:YES];
     self.zbtimer = timer;
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
@@ -51,23 +48,19 @@
     [self setTitle:_normaltext forState:UIControlStateNormal];
 }
 
-- (void)setTimer:(int)Timer
-{
+- (void)setTimer:(int)Timer{
     _Timer = Timer;
     _oldtimer=_Timer;
 }
 
-- (void)setNormaltext:(NSString *)normaltext
-{
+- (void)setNormaltext:(NSString *)normaltext{
     _normaltext = normaltext;
 }
 /**
  定时器的每一秒的跳动
  */
-- (void)ChangeTimer
-{
+- (void)ChangeTimer{
     if (_Timer>0) {
-        
         [self setTitle:[NSString stringWithFormat:@"%@%d%@",self.frontstr,_Timer,self.backstr] forState:UIControlStateNormal];
         _Timer = _Timer-1;
     }else{
@@ -79,22 +72,23 @@
 }
 
 - (void)resetBtn{
-    [self setTitle:_normaltext forState:UIControlStateNormal];
-    [self.zbtimer setFireDate:[NSDate distantFuture]];
-    self.userInteractionEnabled = YES;
-    _Timer = _oldtimer;
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0/*延迟执行时间*/* NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [self setTitle:_normaltext forState:UIControlStateNormal];
+        [self.zbtimer setFireDate:[NSDate distantFuture]];
+        self.userInteractionEnabled = YES;
+        _Timer = _oldtimer;
+    });
 }
 
-- (void)sendAction:(SEL)action to:(nullable id)target forEvent:(nullable UIEvent *)event
-{
+- (void)sendAction:(SEL)action to:(nullable id)target forEvent:(nullable UIEvent *)event{
     [super sendAction:action to:target forEvent:event];
     [self setTitle:[NSString stringWithFormat:@"%@%d%@",self.frontstr,_Timer,self.backstr] forState:UIControlStateNormal];
     [self.zbtimer setFireDate:[NSDate distantPast]];
     self.userInteractionEnabled = NO;
 }
 
-- (void)setbuttenfrontTitle:(NSString *)frontstr backtitle:(NSString *)backstr
-{
+- (void)setbuttenfrontTitle:(NSString *)frontstr backtitle:(NSString *)backstr{
     self.frontstr = frontstr;
     self.backstr = backstr;
 }

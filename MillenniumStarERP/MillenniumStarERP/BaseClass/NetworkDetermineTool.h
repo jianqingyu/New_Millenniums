@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 @interface NetworkDetermineTool : NSObject
-+ (void)isSView:(BOOL)isYes andNav:(UINavigationController *)supNav;
++ (void)isSView:(BOOL)isYes;
 + (BOOL)isExistenceNet;
-+ (void)changeSupNaviWithNav:(UINavigationController *)supNav;
 @end

@@ -46,7 +46,7 @@
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"orderNum"] = self.orderNum;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             [self setupListDataWith:response.data];
             if (titleArray.count>0) {
                 [self initCustomView];

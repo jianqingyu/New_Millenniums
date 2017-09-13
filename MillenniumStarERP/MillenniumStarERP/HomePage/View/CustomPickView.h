@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DetailTypeInfo.h"
 typedef void (^CustomBtmPickBack)(int staue,id model);
 @interface CustomPickView : UIView
 @property (nonatomic,assign)int staue;

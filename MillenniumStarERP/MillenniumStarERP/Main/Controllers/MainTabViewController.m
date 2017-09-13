@@ -61,24 +61,23 @@
     [self addChildViewController:nav];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change
-                       context:(void *)context{
-    if([keyPath isEqualToString:@"tabCount"]){
-        if (homePage.tabCount!=0){
-            infoVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",homePage.tabCount];
-        }else{
-            infoVC.tabBarItem.badgeValue = nil;
-        }
-    }
-}
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change
+//                       context:(void *)context{
+//    if([keyPath isEqualToString:@"tabCount"]){
+//        if (homePage.tabCount!=0){
+//            infoVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",homePage.tabCount];
+//        }else{
+//            infoVC.tabBarItem.badgeValue = nil;
+//        }
+//    }
+//}
 
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
-    if (![NetworkDetermineTool isExistenceNet]) {
-        [NetworkDetermineTool changeSupNaviWithNav:(MainNavViewController *)viewController];
-    }
-    return YES;
-}
-
+//- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
+//    if (![NetworkDetermineTool isExistenceNet]) {
+//        [NetworkDetermineTool changeSupNaviWithNav:(MainNavViewController *)viewController];
+//    }
+//    return YES;
+//}
 - (BOOL)shouldAutorotate {
     return [self.selectedViewController shouldAutorotate];
 }

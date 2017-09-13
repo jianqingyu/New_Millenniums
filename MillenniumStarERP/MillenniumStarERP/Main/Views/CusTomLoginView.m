@@ -9,7 +9,7 @@
 #import "CusTomLoginView.h"
 #import "ZBButten.h"
 #import "NetworkDetermineTool.h"
-@interface CusTomLoginView()<UITextFieldDelegate>
+@interface CusTomLoginView()
 @property (weak, nonatomic) UITextField *codeField;
 @property (weak, nonatomic) UIView *loginView;
 @property (weak, nonatomic) UIButton *loginBtn;
@@ -110,7 +110,7 @@
     
     UIButton *loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     loginBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    [loginBtn setBackgroundImage:[UIImage imageNamed:@"logbtn"] forState:UIControlStateNormal];
+    [loginBtn setBackgroundImage:[UIImage imageNamed:@"login_btn"] forState:UIControlStateNormal];
     [loginBtn setTitle:@"登  陆" forState:UIControlStateNormal];
     [loginBtn addTarget:self action:@selector(loginClick:)
                                forControlEvents:UIControlEventTouchUpInside];
@@ -216,6 +216,7 @@
             image.image = [UIImage imageNamed:@"icon_code"];
             fie.keyboardType = UIKeyboardTypeNumberPad;
             self.codeField = fie;
+            
             ZBButten *btn = [ZBButten buttonWithType:UIButtonTypeCustom];
             btn.backgroundColor = [UIColor lightGrayColor];
             [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -226,12 +227,12 @@
             [btn addTarget:self action:@selector(getCode:)
                                   forControlEvents:UIControlEventTouchUpInside];
             [view addSubview:btn];
-            self.getCodeBtn = btn;
             [btn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(line1.mas_bottom).with.offset(heightMar);
                 make.right.equalTo(view).offset(0);
                 make.size.mas_equalTo(CGSizeMake(80, fieH));
             }];
+            self.getCodeBtn = btn;
         }
             break;
     }
@@ -265,38 +266,27 @@
     return line;
 }
 
-- (void)getCode:(UIButton *)btn {
+- (void)getCode:(ZBButten *)btn {
     [self resignViewResponder];
-    if (self.nameFie.text.length==0||self.passWordFie.text==0){
-        [NewUIAlertTool show:@"请输入用户名和密码" with:self];
-        return;
-    }
     [self requestCheckWord];
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField{
-    [self.loginView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(SDevWidth/1.2-35);
-    }];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField{
-    [self.loginView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(SDevWidth/1.2);
-    }];
-}
-
 - (void)requestCheckWord{
+    if (self.nameFie.text.length==0||self.passWordFie.text==0){
+        [self.getCodeBtn resetBtn];
+        [NewUIAlertTool show:@"请输入用户名和密码" okBack:nil andView:self yes:NO];
+        return;
+    }
     NSString *codeUrl = [NSString stringWithFormat:@"%@GetLoginVerifyCodeDo",baseUrl];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"userName"] = self.nameFie.text;
     params[@"password"] = self.passWordFie.text;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
-            [MBProgressHUD showSuccess:response.message];
+            [MBProgressHUD showMessage:response.message];
         }else{
             [self.getCodeBtn resetBtn];
-            SHOWALERTVIEW(response.message);
+            [NewUIAlertTool show:response.message okBack:nil andView:self yes:NO];
         }
     } requestURL:codeUrl params:params];
 }

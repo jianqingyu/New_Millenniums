@@ -9,6 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface NetworkView : UIView
-@property(strong,nonatomic)UINavigationController*superNav;
 + (NetworkView *)creatSmallNetView;
 @end

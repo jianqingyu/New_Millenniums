@@ -38,13 +38,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
-    if (![textField.text isEqualToString:@"0.5"]&&[textField.text containsString:@"."]) {
-        [MBProgressHUD showError:@"请填写正确件数"];
-        textField.text = @"";
-    }
-    if (self.MessBack) {
-        self.MessBack(YES,textField.text);
-    }
+    [self backText:[textField.text floatValue]];
 }
 
 - (IBAction)handClick:(id)sender {
@@ -55,7 +49,7 @@
 
 - (IBAction)accClick:(id)sender {
     float str = [self.fie1.text floatValue];
-    if (str==0) {
+    if (str==0.5||str==1) {
         return;
     }
     str--;
@@ -70,6 +64,14 @@
 
 - (void)backText:(float)str{
     NSString *string = [NSString stringWithFormat:@"%0.1f",str];
+    if (!(fmodf(str, 1)==0.5||fmodf(str, 1)==0)||str<0||str==0) {
+        [MBProgressHUD showError:@"只能填整数或者x.5"];
+        self.fie1.text = @"1";
+        if (self.MessBack) {
+            self.MessBack(YES,self.fie1.text);
+        }
+        return;
+    }
     if ([string rangeOfString:@".5"].location != NSNotFound) {
         self.fie1.text = string;
     }else{
