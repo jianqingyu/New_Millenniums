@@ -7,15 +7,15 @@
 //
 
 #import "LoginViewController.h"
+#import "CusTomLoginView.h"
+#import "NewHomeBannerVC.h"
+#import "NewUIAlertTool.h"
+#import "IQKeyboardManager.h"
+#import "NetworkDetermineTool.h"
 #import "MainTabViewController.h"
 #import "MainNavViewController.h"
 #import "RegisterViewController.h"
 #import "PassWordViewController.h"
-#import "IQKeyboardManager.h"
-#import "CusTomLoginView.h"
-#import "NewHomeBannerVC.h"
-#import "NewUIAlertTool.h"
-#import "NetworkDetermineTool.h"
 #import <LocalAuthentication/LocalAuthentication.h>
 @interface LoginViewController ()
 @property (nonatomic,  weak)CusTomLoginView *loginView;
@@ -50,14 +50,14 @@
     [BaseApi getNewVerData:^(BaseResponse *response, NSError *error) {
         if ([YQObjectBool boolForObject:response.data]&&[response.error intValue]==0) {
             if ([response.data[@"value"]intValue]==0) {
-                static dispatch_once_t onceToken;
-                dispatch_once(&onceToken, ^{
-                    NSString *token = [AccountTool account].tokenKey;
-                    if (token.length>0&&!_noLogin) {
+                NSString *token = [AccountTool account].tokenKey;
+                if (token.length>0&&!_noLogin) {
+                    static dispatch_once_t onceToken;
+                    dispatch_once(&onceToken, ^{
                         //指纹验证
                         [self authenticateUser];
-                    }
-                });
+                    });
+                }
             }else{
                 self.versionDic = response.data;
                 [self loadAlertView:response.data];
@@ -99,12 +99,7 @@
                         [MBProgressHUD showMessage:@"网络断开、请联网"];
                         return;
                     }
-//                    UIWindow *window = [UIApplication sharedApplication].keyWindow;
-//                    window.rootViewController = [[MainTabViewController alloc]init];
-                    UIWindow *window = [UIApplication sharedApplication].keyWindow;
-                    NewHomeBannerVC *newVc = [NewHomeBannerVC new];
-                    MainNavViewController *nav = [[MainNavViewController alloc]initWithRootViewController:newVc];
-                    window.rootViewController = nav;
+                    [self changeHomeViewCon];
                  }];
                 return;
             }
@@ -127,12 +122,7 @@
                 [MBProgressHUD showMessage:self.versionDic[@"message"]];
                 return;
             }
-//            UIWindow *window = [UIApplication sharedApplication].keyWindow;
-//            window.rootViewController = [[MainTabViewController alloc]init];
-            UIWindow *window = [UIApplication sharedApplication].keyWindow;
-            NewHomeBannerVC *newVc = [NewHomeBannerVC new];
-            MainNavViewController *nav = [[MainNavViewController alloc]initWithRootViewController:newVc];
-            window.rootViewController = nav;
+            [self  changeHomeViewCon];
         }else if (staue==2){
             [self registerClick];
         }else{
@@ -145,6 +135,15 @@
         make.right.equalTo(self.view).offset(0);
         make.bottom.equalTo(self.view).offset(0);
     }];
+}
+
+- (void)changeHomeViewCon{
+//    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+//    window.rootViewController = [[MainTabViewController alloc]init];
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    NewHomeBannerVC *newVc = [NewHomeBannerVC new];
+    MainNavViewController *nav = [[MainNavViewController alloc]initWithRootViewController:newVc];
+    window.rootViewController = nav;
 }
 
 - (void)registerClick{

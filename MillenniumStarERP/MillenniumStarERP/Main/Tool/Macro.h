@@ -91,7 +91,7 @@
 #define ListNum @"UserinfoList"
 
 //默认图片
-#define DefaultImage  [UIImage imageNamed:@"anios"]
+#define DefaultImage  [UIImage imageNamed:@"iosDefalut"]
 typedef enum{
     UIImageSplitType80 = 80,
     UIImageSplitType160 = 160,

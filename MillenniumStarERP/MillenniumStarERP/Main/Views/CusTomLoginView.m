@@ -103,6 +103,7 @@
         make.centerX.mas_equalTo(loginV.mas_centerX);
         make.size.mas_equalTo(CGSizeMake(80, 103));
     }];
+    imageV.hidden = YES;
     
     [self creatListView:loginV isC:1];
     [self creatListView:loginV isC:2];
@@ -302,8 +303,12 @@
 }
 
 - (void)loginClick:(UIButton *)sender {
+    if (self.codeField.text.length==0){
+        [MBProgressHUD showMessage:@"请输入验证码"];
+        return;
+    }
     if (![NetworkDetermineTool isExistenceNet]) {
-        [MBProgressHUD showMessage:@"网络断开、请联网"];
+        
         return;
     }
     [SVProgressHUD show];

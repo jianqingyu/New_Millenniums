@@ -94,6 +94,7 @@
     [SVProgressHUD show];
     NSString *url = [NSString stringWithFormat:@"%@IndexPageForQxzx",baseUrl];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             if ([YQObjectBool boolForObject:response.data[@"horizontal"]]) {
@@ -152,70 +153,13 @@
         right.frame = CGRectMake(i*(60+mar), 0, 60, 80);
         [bottomV addSubview:right];
     }
-//    [self creatCustomDriView];
 }
-
-//- (void)creatCustomDriView{
-//    UIView *backView = [UIView new];
-//    backView.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
-//    backView.hidden = YES;
-//    [self.view addSubview:backView];
-//    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.view).offset(0);
-//        make.left.equalTo(self.view).offset(0);
-//        make.right.equalTo(self.view).offset(0);
-//        make.bottom.equalTo(self.view).offset(0);
-//    }];
-//    self.baView = backView;
-//    
-//    CGFloat btnWid = MIN(200, SDevWidth*0.667);
-//    UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-//    btn1.tag = 5;
-//    [btn1 setBackgroundImage:[UIImage imageNamed:@"jt_05"] forState:
-//     UIControlStateNormal];
-//    [btn1 addTarget:self action:@selector(customClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.baView addSubview:btn1];
-//    [btn1 mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerX.mas_equalTo(self.baView.mas_centerX);
-//        make.bottom.equalTo(self.baView).with.offset(-100);
-//        make.size.mas_equalTo(CGSizeMake(btnWid, btnWid*0.61));
-//    }];
-//    
-//    UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
-//    btn2.tag = 6;
-//    [btn2 setBackgroundImage:[UIImage imageNamed:@"jt_03"] forState:
-//     UIControlStateNormal];
-//    [btn2 addTarget:self action:@selector(customClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.baView addSubview:btn2];
-//    [btn2 mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerX.mas_equalTo(self.baView.mas_centerX);
-//        make.bottom.equalTo(btn1.mas_top).with.offset(-15);
-//        make.size.mas_equalTo(CGSizeMake(btnWid, btnWid*0.61));
-//    }];
-//}
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     if (self.baView.hidden==NO) {
         self.baView.hidden = YES;
     }
 }
-
-//- (void)customClick:(UIView *)btn{
-//    if ([[AccountTool account].isNorm intValue]==1) {
-//        [MBProgressHUD showSuccess:@"高级定制不能定制钻石"];
-//        return;
-//    }
-//    if(btn.tag==5){
-//        ProductListVC *list = [ProductListVC new];
-//        list.isCus = YES;
-//        [self.navigationController pushViewController:list animated:YES];
-//    }else if(btn.tag==6){
-//        NakedDriLibViewController *list = [NakedDriLibViewController new];
-//        list.isCus = YES;
-//        [self.navigationController pushViewController:list animated:YES];
-//    }
-//    [self openWindowCusHuateView];
-//}
 
 - (void)openClick:(UIView *)btn{
     if (btn.tag==0) {

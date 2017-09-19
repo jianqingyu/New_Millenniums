@@ -242,9 +242,10 @@
             }else if(indexPath.row==5){
                 [self clearTmpPics];
             }else{
-                UITableViewCell *cell = [self tableView:tableView
-                                  cellForRowAtIndexPath:indexPath];
-                [self setShare:cell];
+                [MBProgressHUD showSuccess:@"功能暂未开放"];
+//                UITableViewCell *cell = [self tableView:tableView
+//                                  cellForRowAtIndexPath:indexPath];
+//                [self setShare:cell];
             }
             break;
         default:
