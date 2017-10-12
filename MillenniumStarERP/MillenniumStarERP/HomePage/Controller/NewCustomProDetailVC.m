@@ -69,7 +69,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 @property (nonatomic,  strong)DetailModel *modelInfo;
 @property (nonatomic,  strong)DetailTypeInfo *colorInfo;
 @property (nonatomic,  strong)CustomPickView *pickView;
-@property (nonatomic,  weak) CustomShowView *wordView;
+@property (nonatomic,    weak)CustomShowView *wordView;
 @end
 
 @implementation NewCustomProDetailVC
@@ -260,6 +260,9 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 
 #pragma mark -- loadData 初始化数据
 - (void)setupDetailData{
+    if (self.mutArr.count>0) {
+        [self.mutArr removeAllObjects];
+    }
     [SVProgressHUD show];
     NSString *detail;
     if (self.isEdit==1) {
@@ -615,9 +618,16 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                     self.proNum = messArr;
                     [self updateBottomPrice];
                 }else{
-                    [self openNumberAndhandSize:2 and:indexPath];
+                    if (messArr.length==0) {
+                        [self openNumberAndhandSize:2 and:indexPath];
+                    }else{
+                        self.proId = [messArr intValue];
+                        [self clearNakedDri];
+                        [self setupDetailData];
+                    }
                 }
             };
+            firstCell.editId = self.isEdit;
             firstCell.isNew = YES;
             if (self.driCode) {
                 firstCell.certCode = self.driCode;
@@ -631,9 +641,12 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         CustomLastCell *lastCell = [CustomLastCell cellWithTableView:tableView];
         [lastCell.btn addTarget:self action:@selector(openRemark:)
                forControlEvents:UIControlEventTouchUpInside];
-        lastCell.messBack = ^(id message){
+        lastCell.messBack = ^(id message,BOOL isYes){
             if ([message isKindOfClass:[NSString class]]) {
                 self.lastMess = message;
+            }
+            if (isYes) {
+                [self addOrder:message];
             }
         };
         lastCell.message = self.lastMess;
@@ -722,6 +735,12 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     self.pickView.hidden = YES;
 }
 
+- (void)clearNakedDri{
+    self.driPrice = @"";
+    self.driCode = @"";
+    self.driId = @"";
+}
+
 - (void)gotoNakedDriLib{
     ChooseNakedDriVC *libVc = [ChooseNakedDriVC new];
     libVc.isCan = self.isCan;
@@ -734,9 +753,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         [self.nums setObject:num atIndexedSubscript:0];
         NSMutableArray *arr = [dic allValues][0];
         [self.mutArr setObject:arr atIndexedSubscript:0];
-        self.driPrice = @"";
-        self.driCode = @"";
-        self.driId = @"";
+        [self clearNakedDri];
         [self.tableView reloadData];
     };
     [self.navigationController pushViewController:libVc animated:YES];
@@ -879,6 +896,9 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 }
 
 - (void)updateBottomPrice{
+    if (!_modelInfo) {
+        return;
+    }
     float price = [self.proNum floatValue]*_modelInfo.price;
     if (self.driPrice.length>0) {
         price = price + [self.driPrice floatValue];

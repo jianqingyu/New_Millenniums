@@ -17,7 +17,7 @@
         self.font = [UIFont systemFontOfSize:14];
         self.borderStyle = UITextBorderStyleRoundedRect;
         self.returnKeyType = UIReturnKeySearch;
-        self.clearButtonMode = UITextFieldViewModeAlways;
+        self.clearButtonMode = UITextFieldViewModeWhileEditing;
     }
     return self;
 }

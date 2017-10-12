@@ -7,17 +7,17 @@
 //
 
 #import "AppDelegate.h"
-#import "CommonUtils.h"
-#import "Reachability.h"
 #import "WXApi.h"
 #import "WeiboSDK.h"
+#import "CommonUtils.h"
+#import "Reachability.h"
 #import "ShowLoginViewTool.h"
 #import "UIWindow+Extension.h"
-#import <AlipaySDK/AlipaySDK.h>
 #import <ShareSDK/ShareSDK.h>
-#import <ShareSDKConnector/ShareSDKConnector.h>
+#import <AlipaySDK/AlipaySDK.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <TencentOpenAPI/QQApiInterface.h>
+#import <ShareSDKConnector/ShareSDKConnector.h>
 #import <LocalAuthentication/LocalAuthentication.h>
 
 @interface AppDelegate ()<WXApiDelegate>{

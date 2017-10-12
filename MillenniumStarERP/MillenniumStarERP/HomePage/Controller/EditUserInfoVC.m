@@ -65,7 +65,7 @@
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }
     
-    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SDevWidth, 80)];
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SDevWidth, 100)];
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     CGFloat width = MIN(SDevWidth, SDevHeight)*0.8;
     cancelBtn.backgroundColor = MAIN_COLOR;
@@ -77,6 +77,16 @@
     [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(footView);
         make.size.mas_equalTo(CGSizeMake(width, 44));
+    }];
+    
+    UILabel *lab = [UILabel new];
+    lab.textColor = CUSTOM_COLOR(40, 40, 40);
+    lab.font = [UIFont systemFontOfSize:14];
+    lab.text = appVer;
+    [footView addSubview:lab];
+    [lab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(footView).offset(-10);
+        make.bottom.equalTo(footView).offset(-3);
     }];
     self.tableView.tableFooterView = footView;
     

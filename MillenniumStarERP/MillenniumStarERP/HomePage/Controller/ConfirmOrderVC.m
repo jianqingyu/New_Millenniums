@@ -599,6 +599,7 @@
         if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             if ([response.data[@"state"]intValue]==0) {
                 SHOWALERTVIEW(@"没有此客户记录");
+                self.headView.customerFie.text = @"";
                 self.cusInfo.customerID = 0;
             }else if([response.data[@"state"]intValue]==1){
                 self.cusInfo = [CustomerInfo objectWithKeyValues:response.data[@"customer"]];

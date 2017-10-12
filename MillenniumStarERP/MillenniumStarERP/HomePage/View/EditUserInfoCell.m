@@ -9,8 +9,8 @@
 #import "EditUserInfoCell.h"
 @interface EditUserInfoCell()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UISwitch *showBtn;
-
 @end
+
 @implementation EditUserInfoCell
 
 + (id)cellWithTableView:(UITableView *)tableView{

@@ -348,7 +348,6 @@
         }
     }
     if (driVc) {
-        
         driVc.isCus = YES;
         if (data.BaseInfo) {
             driVc.seaDic = data.BaseInfo.stoneWeightRange;

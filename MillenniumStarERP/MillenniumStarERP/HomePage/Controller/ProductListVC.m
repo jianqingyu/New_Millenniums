@@ -30,13 +30,13 @@
     int pageCount;
     int totalCount;//商品总数量
 }
-@property (weak, nonatomic) UITextField *searchFie;
+@property (weak,  nonatomic) UITextField *searchFie;
 @property (strong,nonatomic) UICollectionView *rightCollection;
-@property (weak, nonatomic) IBOutlet UILabel *titleLab;
-@property (weak, nonatomic) IBOutlet UIButton *titleBtn;
-@property (weak, nonatomic) IBOutlet UILabel *orderNumLab;
-@property (weak, nonatomic) IBOutlet UIButton *hisBtn;
-@property (copy, nonatomic) NSString *keyWord;
+@property (weak,  nonatomic) IBOutlet UILabel *titleLab;
+@property (weak,  nonatomic) IBOutlet UIButton *titleBtn;
+@property (weak,  nonatomic) IBOutlet UILabel *orderNumLab;
+@property (weak,  nonatomic) IBOutlet UIButton *hisBtn;
+@property (copy,  nonatomic) NSString *keyWord;
 @property (nonatomic,assign) int index;
 @property (nonatomic,assign) int idxPage;
 @property (nonatomic,  weak) UIView *baView;
@@ -181,6 +181,7 @@
     CustomTextField *titleFie = [[CustomTextField alloc]initWithFrame:CGRectZero];
     [titleView addSubview:titleFie];
     titleFie.borderStyle = UITextBorderStyleNone;
+    titleFie.keyboardType = UIKeyboardTypeASCIICapable;
     [titleFie mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(titleView).offset(10);
         make.top.equalTo(titleView).offset(0);
@@ -203,6 +204,9 @@
     self.navigationItem.titleView = titleView;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    [textField selectAll:nil];
+}
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     [self searchClick];
 }

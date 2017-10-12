@@ -9,7 +9,7 @@
 #import "CusTomLoginView.h"
 #import "ZBButten.h"
 #import "NetworkDetermineTool.h"
-@interface CusTomLoginView()
+@interface CusTomLoginView()<UITextFieldDelegate>
 @property (weak, nonatomic) UITextField *codeField;
 @property (weak, nonatomic) UIView *loginView;
 @property (weak, nonatomic) UIButton *loginBtn;
@@ -17,6 +17,7 @@
 @property (weak, nonatomic) UIImageView *backImg;
 @property (weak, nonatomic) UIView *logView;
 @property (copy, nonatomic) NSString *code;
+@property (copy, nonatomic) NSString *verson;
 @end
 
 @implementation CusTomLoginView
@@ -83,6 +84,16 @@
         make.bottom.equalTo(self).offset(SDevWidth*5/6-SDevHeight);  
     }];
     self.backImg = imageB;
+    
+    UILabel *lab = [UILabel new];
+    lab.textColor = [UIColor whiteColor];
+    lab.font = [UIFont systemFontOfSize:14];
+    lab.text = appVer;
+    [self addSubview:lab];
+    [lab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(20);
+        make.left.equalTo(self).offset(15);
+    }];
     
     //底部登录页面
     UIView *loginV = [[UIView alloc]init];
@@ -216,6 +227,7 @@
             fie.placeholder = @"请输入验证码";
             image.image = [UIImage imageNamed:@"icon_code"];
             fie.keyboardType = UIKeyboardTypeNumberPad;
+            fie.delegate = self;
             self.codeField = fie;
             
             ZBButten *btn = [ZBButten buttonWithType:UIButtonTypeCustom];
@@ -302,18 +314,28 @@
     [self.passWordFie resignFirstResponder];
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self loginHome];
+    return YES;
+}
+
 - (void)loginClick:(UIButton *)sender {
+    sender.enabled = NO;
+    [self loginHome];
+    sender.enabled = YES;
+}
+
+- (void)loginHome{
     if (self.codeField.text.length==0){
         [MBProgressHUD showMessage:@"请输入验证码"];
         return;
     }
     if (![NetworkDetermineTool isExistenceNet]) {
-        
+        [MBProgressHUD showMessage:@"没有网络"];
         return;
     }
     [SVProgressHUD show];
     [self resignViewResponder];
-    sender.enabled = NO;
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"userName"] = self.nameFie.text;
     params[@"password"] = self.passWordFie.text;
@@ -335,7 +357,6 @@
             NSString *str = response.message?response.message:@"登录失败";
             SHOWALERTVIEW(str);
         }
-        sender.enabled = YES;
     } requestURL:logUrl params:params];
 }
 

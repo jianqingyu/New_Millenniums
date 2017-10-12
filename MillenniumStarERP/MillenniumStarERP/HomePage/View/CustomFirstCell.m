@@ -8,7 +8,8 @@
 
 #import "CustomFirstCell.h"
 @interface CustomFirstCell()<UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet UILabel *titleLab;
+
+@property (weak, nonatomic) IBOutlet UITextField *titleFie;
 @property (weak, nonatomic) IBOutlet UILabel *ptLab;
 @property (weak, nonatomic) IBOutlet UIButton *btn;
 @property (weak, nonatomic) IBOutlet UIView *driView;
@@ -33,12 +34,48 @@
     if (self) {
         self = [[NSBundle mainBundle]loadNibNamed:@"CustomFirstCell" owner:nil options:nil][0];
         self.fie1.delegate = self;
+        self.fie1.tag = 1;
+        self.titleFie.delegate = self;
+        self.titleFie.tag = 2;
     }
     return self;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    [textField selectAll:nil];
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField{
-    [self backText:[textField.text floatValue]];
+    if (textField.tag==1) {
+        [self backText:[textField.text floatValue]];
+        return;
+    }
+    if (textField.tag==2&&![textField.text isEqualToString:_modelInfo.title]) {
+        [self loadSearchProduct:textField.text];
+        return;
+    }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)loadSearchProduct:(NSString *)search{
+    NSString *url = [NSString stringWithFormat:@"%@ModelDetailPageGetInfoByModelNum",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"modelNum"] = search;
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
+            if (self.MessBack) {
+                self.MessBack(NO,response.data[@"id"]);
+            }
+        }else{
+            self.titleFie.text = _modelInfo.title;
+            [MBProgressHUD showError:response.message];
+        }
+    } requestURL:url params:params];
 }
 
 - (IBAction)handClick:(id)sender {
@@ -100,7 +137,8 @@
 - (void)setModelInfo:(DetailModel *)modelInfo{
     if (modelInfo) {
         _modelInfo = modelInfo;
-        self.titleLab.text = _modelInfo.title;
+        self.titleFie.text = _modelInfo.title;
+        self.titleFie.userInteractionEnabled = !self.editId;
         self.ptLab.text = _modelInfo.weight;
         [self.btn setTitle:_modelInfo.categoryTitle forState:UIControlStateNormal];
     }

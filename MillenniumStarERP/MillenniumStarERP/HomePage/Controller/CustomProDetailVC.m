@@ -68,8 +68,7 @@
 
 - (void)loadCustomProBaseView{
     self.proNum = @"1";
-    self.numLab.layer.cornerRadius = 8;
-    self.numLab.layer.masksToBounds = YES;
+    [self.numLab setLayerWithW:8 andColor:BordColor andBackW:0.0001];
     [self.numLab setAdjustsFontSizeToFitWidth:YES];
     if (self.isEdit) {
         [self.lookBtn setTitle:@"取消" forState:UIControlStateNormal];
@@ -78,8 +77,6 @@
     self.typeArr = @[@"主   石",@"副石A",@"副石B",@"副石C"];
     self.typeSArr = @[@"stone",@"stoneA",@"stoneB",@"stoneC"];
     self.mutArr = @[].mutableCopy;
-    self.nums = @[@"",@"",@"",@""].mutableCopy;
-    self.bools = @[@YES,@NO,@NO,@NO].mutableCopy;
     [self setBaseTableView];
     [self setupPopView];
     [self setupTextView];
@@ -194,6 +191,11 @@
 
 #pragma mark -- loadData 初始化数据
 - (void)setupDetailData{
+    self.nums = @[@"",@"",@"",@""].mutableCopy;
+    self.bools = @[@YES,@NO,@NO,@NO].mutableCopy;
+    if (self.mutArr.count>0) {
+        [self.mutArr removeAllObjects];
+    }
     [SVProgressHUD show];
     NSString *detail;
     if (self.isEdit==1) {
@@ -517,12 +519,18 @@
             if (isSel) {
                 self.proNum = messArr;
             }else{
-                [self openNumberAndhandSize:2 and:indexPath];
+                if (messArr.length==0) {
+                    [self openNumberAndhandSize:2 and:indexPath];
+                }else{
+                    self.proId = [messArr intValue];
+                    [self setupDetailData];
+                }
             }
         };
         firstCell.modelInfo = self.modelInfo;
         firstCell.messArr = self.proNum;
         firstCell.handSize = self.handStr;
+        firstCell.editId = self.isEdit;
         return firstCell;
     }else if (indexPath.row==self.mutArr.count+1){
         CustomEditTableCell *editCell = [CustomEditTableCell cellWithTableView:tableView];
@@ -534,9 +542,12 @@
         CustomLastCell *lastCell = [CustomLastCell cellWithTableView:tableView];
         [lastCell.btn addTarget:self action:@selector(openRemark:)
                                   forControlEvents:UIControlEventTouchUpInside];
-        lastCell.messBack = ^(id message){
+        lastCell.messBack = ^(id message,BOOL isYes){
             if ([message isKindOfClass:[NSString class]]) {
                 self.lastMess = message;
+            }
+            if (isYes) {
+                [self addOrder:message];
             }
         };
         lastCell.message = self.lastMess;

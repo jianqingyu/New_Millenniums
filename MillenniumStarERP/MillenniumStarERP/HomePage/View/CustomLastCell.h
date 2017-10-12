@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "YQTextView.h"
-typedef void (^CustomLastBack)(id message);
+typedef void (^CustomLastBack)(id message,BOOL isYes);
 @interface CustomLastCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIButton *btn;
 @property (weak, nonatomic) IBOutlet YQTextView *textView;

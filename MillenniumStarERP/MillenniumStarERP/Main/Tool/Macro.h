@@ -89,7 +89,8 @@
 /**信息条数通知*/
 #define NotificationList @"NotificationList"
 #define ListNum @"UserinfoList"
-
+//版本号
+#define appVer [NSString stringWithFormat:@"%@ 001",[NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]]
 //默认图片
 #define DefaultImage  [UIImage imageNamed:@"iosDefalut"]
 typedef enum{
