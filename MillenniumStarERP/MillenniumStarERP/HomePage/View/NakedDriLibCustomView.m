@@ -192,7 +192,9 @@
             if (mutB.count>0) {
                 [self.NakedArr addObject:mutB];
             }
-            [self.tableView reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
         }else{
             [MBProgressHUD showError:response.message];
         }

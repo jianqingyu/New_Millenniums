@@ -39,6 +39,8 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 @property (nonatomic,assign)int isCan;
 @property (nonatomic,assign)int idx;
 @property (nonatomic,assign)float wid;
+@property (nonatomic,assign)BOOL isResh;
+@property (nonatomic,assign)BOOL isNote;
 
 @property (nonatomic,  copy)NSString*proNum;
 @property (nonatomic,  copy)NSString*handStr;
@@ -303,7 +305,9 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                 if (([YQObjectBool boolForObject:response.data[@"model"][@"stoneWeightRange"]]) ) {
                     self.stoneDic = response.data[@"model"][@"stoneWeightRange"];
                 }
-                [self.tableView reloadData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
             }
             if ([YQObjectBool boolForObject:response.data[@"stoneType"]]) {
                 self.chooseArr = @[[self arrWithModel:response.data[@"stoneType"]],
@@ -555,6 +559,8 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
             if (self.isCus) {
                 StorageDataTool *data = [StorageDataTool shared];
                 data.handSize = info.title;
+            }else if(info.id==12){
+                self.isNote = YES;
             }
         }else if (staue==4){
             self.lastMess = [NSString stringWithFormat:@"%@%@",self.lastMess,info.title];
@@ -562,6 +568,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         [self.tableView reloadData];
         [self dismissCustomPopView];
     };
+    popV.isCus = self.isCus;
     [self.view addSubview:popV];
     [popV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(0);
@@ -623,10 +630,15 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                     }else{
                         self.proId = [messArr intValue];
                         [self clearNakedDri];
+                        self.isResh = YES;
                         [self setupDetailData];
                     }
                 }
             };
+            firstCell.dBack = ^(BOOL isYes){
+                [self dismissCustomPopView];
+            };
+            firstCell.refresh = self.isResh;
             firstCell.editId = self.isEdit;
             firstCell.isNew = YES;
             if (self.driCode) {
@@ -635,6 +647,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
             firstCell.modelInfo = self.modelInfo;
             firstCell.messArr = self.proNum;
             firstCell.handSize = self.handStr;
+            self.isResh = NO;
             return firstCell;
         }
     }else if (indexPath.row==self.mutArr.count+self.idx-1){
@@ -649,7 +662,9 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                 [self addOrder:message];
             }
         };
+        lastCell.isNote = self.isNote;
         lastCell.message = self.lastMess;
+        self.isNote = NO;
         return lastCell;
     }else{
         NSInteger index = indexPath.row-self.idx+1;
@@ -698,7 +713,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 - (void)openNumberAndhandSize:(int)staue and:(NSIndexPath *)index{
     if (staue==2) {
         self.pickView.typeList = self.handArr;
-        NSString *title = self.handStr?self.handStr:@"12";
+        NSString *title = self.handStr.length>0?self.handStr:@"12";
         self.pickView.titleStr = @"手寸";
         self.pickView.selTitle = title;
     }else{

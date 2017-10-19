@@ -39,17 +39,21 @@
     [super viewDidLoad];
     self.title = @"我的";
     self.mutDic = [NSMutableDictionary new];
-    NSString *url = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
-    NSString *str = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    self.shareDic = @{@"image":@"http://appapi1.fanerweb.com/images/other/AppleApp.png",
-                      @"url":str,
-                      @"title":@"千禧之星珠宝",@"des":@"下载地址"};
     [self setBaseViewData];
 }
 
+//- (void)setShareDicData{
+//    NSString *url = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
+//    NSString *str = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    self.shareDic = @{@"image":@"http://appapi1.fanerweb.com/images/other/AppleApp.png",
+//                      @"url":str,
+//                      @"title":@"千禧之星珠宝",@"des":@"下载地址"};
+//}
+
 - (void)setBaseViewData{
-    self.textArr = @[@[@"用户名",@"修改头像"],@[@"设置",@"版本详情",@"修改密码",
-                            @"修改手机号码",@"管理地址",@"清理缓存",@"分享该应用"]];
+//    self.textArr = @[@[@"用户名",@"修改头像"],@[@"设置",@"版本详情",@"修改密码",
+//                          @"修改手机号码",@"管理地址",@"清理缓存",@"分享该应用"]];
+    self.textArr = @[@[@"用户名",@"修改头像"],@[@"设置",@"修改密码",@"管理地址",@"清理缓存"]];
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -92,9 +96,9 @@
     
     CustomInputPassView *pass = [CustomInputPassView new];
     pass.hidden = YES;
-    pass.clickBlock = ^(NSString *mess){
-        self.putView.hidden = YES;
-        if ([mess isEqualToString:[AccountTool account].password]) {
+    pass.clickBlock = ^(BOOL isYes){
+        if (isYes) {
+            self.putView.hidden = YES;
             EditShowPriceVC *priceVc = [EditShowPriceVC new];
             [self.navigationController pushViewController:priceVc animated:YES];
         }else{
@@ -233,29 +237,16 @@
         case 1:
             if (indexPath.row==0){
                 self.putView.hidden = NO;
-            }else if (indexPath.row==1) {
-                [MBProgressHUD showSuccess:@"功能暂未开放"];
-//                AppDownViewC *appVc = [[AppDownViewC alloc]init];
-//                [self.navigationController pushViewController:appVc animated:YES];
-            }else if (indexPath.row==2) {
+            }else if (indexPath.row==1){
                 PassWordViewController *passVc = [[PassWordViewController alloc]init];
                 passVc.title = @"修改密码";
                 passVc.isForgot = NO;
                 [self.navigationController pushViewController:passVc animated:YES];
-            }else if(indexPath.row==3){
-                [MBProgressHUD showSuccess:@"功能暂未开放"];
-//                EditPhoneNumVc *editNum = [EditPhoneNumVc new];
-//                [self.navigationController pushViewController:editNum animated:YES];
-            }else if(indexPath.row==4){
+            }else if(indexPath.row==2){
                 EditAddressVC *addVc = [EditAddressVC new];
                 [self.navigationController pushViewController:addVc animated:YES];
-            }else if(indexPath.row==5){
+            }else if(indexPath.row==3){
                 [self clearTmpPics];
-            }else{
-                [MBProgressHUD showSuccess:@"功能暂未开放"];
-//                UITableViewCell *cell = [self tableView:tableView
-//                                  cellForRowAtIndexPath:indexPath];
-//                [self setShare:cell];
             }
             break;
         default:
@@ -263,25 +254,67 @@
     }
 }
 
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    switch (indexPath.section) {
+//        case 0:{
+//            if (indexPath.row==1) {
+//                UITableViewCell *cell = [self tableView:tableView
+//                                  cellForRowAtIndexPath:indexPath];
+//                [self creatUIAlertView:cell];
+//            }
+//        }
+//            break;
+//        case 1:
+//            if (indexPath.row==0){
+//                self.putView.hidden = NO;
+//            }else if (indexPath.row==1) {
+//                AppDownViewC *appVc = [[AppDownViewC alloc]init];
+//                [self.navigationController pushViewController:appVc animated:YES];
+//            }else if (indexPath.row==2) {
+//                PassWordViewController *passVc = [[PassWordViewController alloc]init];
+//                passVc.title = @"修改密码";
+//                passVc.isForgot = NO;
+//                [self.navigationController pushViewController:passVc animated:YES];
+//            }else if(indexPath.row==3){
+//                EditPhoneNumVc *editNum = [EditPhoneNumVc new];
+//                [self.navigationController pushViewController:editNum animated:YES];
+//            }else if(indexPath.row==4){
+//                EditAddressVC *addVc = [EditAddressVC new];
+//                [self.navigationController pushViewController:addVc animated:YES];
+//            }else if(indexPath.row==5){
+//                [self clearTmpPics];
+//            }else{
+////                [MBProgressHUD showSuccess:@"功能暂未开放"];
+//                UITableViewCell *cell = [self tableView:tableView
+//                                  cellForRowAtIndexPath:indexPath];
+//                [self setShare:cell];
+//            }
+//            break;
+//        default:
+//            break;
+//    }
+//}
+
+//- (void)setShare:(UITableViewCell *)cell{
+//    //创建分享参数（必要）
+//    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+//    NSArray *arr = @[@(SSDKPlatformTypeSinaWeibo),
+//                     @(SSDKPlatformTypeWechat),
+//                     @(SSDKPlatformTypeQQ)];
+//    [shareParams SSDKSetupShareParamsByText:self.shareDic[@"des"]
+//                                     images:[NSURL URLWithString:self.shareDic[@"image"]]
+//                                        url:[NSURL URLWithString:self.shareDic[@"url"]]
+//                                      title:self.shareDic[@"title"]
+//                                       type:SSDKContentTypeAuto];
+//    [ShareSDK showShareActionSheet:cell items:arr shareParams:shareParams onShareStateChanged:nil];
+//}
+
 - (void)clearTmpPics{
     float tmpSize = [[SDImageCache sharedImageCache] getSize]/1024.0/1024.0;
     NSString *clearCacheName = tmpSize >= 1 ? [NSString stringWithFormat:@"清理缓存(%.2fM)",tmpSize] : [NSString stringWithFormat:@"清理缓存(%.2fK)",tmpSize * 1024];
     [[SDImageCache sharedImageCache] clearDisk];
     [MBProgressHUD showSuccess:clearCacheName];
-}
-
-- (void)setShare:(UITableViewCell *)cell{
-    //创建分享参数（必要）
-    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-    NSArray *arr = @[@(SSDKPlatformTypeSinaWeibo),
-                     @(SSDKPlatformTypeWechat),
-                     @(SSDKPlatformTypeQQ)];
-    [shareParams SSDKSetupShareParamsByText:self.shareDic[@"des"]
-                                     images:[NSURL URLWithString:self.shareDic[@"image"]]
-                                        url:[NSURL URLWithString:self.shareDic[@"url"]]
-                                      title:self.shareDic[@"title"]
-                                       type:SSDKContentTypeAuto];
-    [ShareSDK showShareActionSheet:cell items:arr shareParams:shareParams onShareStateChanged:nil];
 }
 
 - (void)creatUIAlertView:(UITableViewCell *)cell{
@@ -291,8 +324,7 @@
         [self openCamera];
     } andCon:self andView:cell];
 }
-
-//打开相机  //TypePhotoLibrary > TypeSavedPhotosAlbum
+//打开相机 TypePhotoLibrary > TypeSavedPhotosAlbum
 - (void)openCamera{
     [self openImagePickerController:UIImagePickerControllerSourceTypeCamera];
 }

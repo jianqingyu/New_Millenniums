@@ -436,7 +436,6 @@
                 }
             }
             self.view.userInteractionEnabled = YES;
-            [SVProgressHUD dismiss];
         }
     } requestURL:url params:params];
 }

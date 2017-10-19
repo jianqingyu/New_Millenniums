@@ -7,10 +7,10 @@
 //
 
 #import "CustomPickView.h"
-
-@interface CustomPickView()<UIPickerViewDelegate,UIPickerViewDataSource>
-@property (nonatomic, weak)UILabel *titleLab;
-@property (nonatomic, weak)UIPickerView *pickView;
+#import "YQTextView.h"
+@interface CustomPickView()<UITextViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+@property (nonatomic,  weak)YQTextView *titleLab;
+@property (nonatomic,  weak)UIPickerView *pickView;
 @end
 @implementation CustomPickView
 
@@ -28,10 +28,15 @@
             make.height.mas_equalTo(@256);
         }];
         
-        UILabel *title = [[UILabel alloc]init];
+        YQTextView *title = [[YQTextView alloc]init];
         title.font = [UIFont systemFontOfSize:18];
         title.textAlignment = NSTextAlignmentCenter;
         title.text = @"请选择类型";
+        title.userInteractionEnabled = NO;
+        title.keyboardType = UIKeyboardTypeNumberPad;
+        title.delegate = self;
+        title.inputView = [[UIView alloc]initWithFrame:CGRectZero];
+        title.inputAccessoryView = [[UIView alloc]init];
         [backV addSubview:title];
         [title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(backV).offset(0);
@@ -40,6 +45,24 @@
             make.width.mas_equalTo(@(SDevWidth*0.6));
         }];
         self.titleLab = title;
+        
+//        UITextField *title = [[UITextField alloc]init];
+//        title.font = [UIFont systemFontOfSize:18];
+//        title.textAlignment = NSTextAlignmentCenter;
+//        title.text = @"请选择类型";
+//        title.userInteractionEnabled = NO;
+//        title.keyboardType = UIKeyboardTypeNumberPad;
+//        title.delegate = self;
+//        title.inputView = [[UIView alloc]initWithFrame:CGRectZero];
+//        title.inputAccessoryView = [[UIView alloc]init];
+//        [backV addSubview:title];
+//        [title mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(backV).offset(0);
+//            make.centerX.mas_equalTo(backV.mas_centerX);
+//            make.height.mas_equalTo(@44);
+//            make.width.mas_equalTo(@(SDevWidth*0.6));
+//        }];
+//        self.titleLab = title;
         
         UIButton *cancel = [UIButton buttonWithType:UIButtonTypeCustom];
         [cancel setTitle:@"取消" forState:UIControlStateNormal];
@@ -70,6 +93,24 @@
     return self;
 }
 
+- (void)textViewDidBeginEditing:(UITextView *)textView{
+    [textView selectAll:nil];
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@"\n"]||[text isEqualToString:@"	"]){ //判断输入的字是否是回车，即按下return
+        [self.titleLab resignFirstResponder];
+        //在这里做你响应return键的代码
+        DetailTypeInfo *info = [DetailTypeInfo new];
+        info.id = 12;
+        info.title = textView.text;
+        [self backWithInfo:info];
+        return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
+    }
+    return YES;
+}
+
 - (void)setPickerView:(UIView *)backV{
     UIPickerView *pickView = [[UIPickerView alloc]init];
     pickView.backgroundColor = DefaultColor;
@@ -88,7 +129,17 @@
 - (void)setTitleStr:(NSString *)titleStr{
     if (titleStr) {
         _titleStr = titleStr;
-        self.titleLab.text = [NSString stringWithFormat:@"请选择%@",_titleStr];
+        BOOL isHi = [titleStr isEqualToString:@"手寸"]&&!_isCus;
+        self.titleLab.userInteractionEnabled = isHi;
+        if (isHi) {
+            self.titleLab.text = @"";
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                [self.titleLab becomeFirstResponder];
+            });
+        }else{
+            self.titleLab.text = [NSString stringWithFormat:@"请选择%@",_titleStr];
+        }
     }
 }
 //数据
@@ -107,12 +158,14 @@
             NSDictionary *info = _typeList[i];
             if ([_selTitle isEqualToString:info[@"title"]]) {
                 idex = i;
+                if ([_titleStr isEqualToString:@"手寸"]&&!_isCus) {
+                    _titleLab.text = info[@"title"];
+                }
             }
         }
         [self.pickView selectRow:idex inComponent:0 animated:YES];
     }
 }
-
 // 返回多少列
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     return 1;
@@ -132,20 +185,34 @@
     return title;
 }
 
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
+    if ([_titleStr isEqualToString:@"手寸"]&&!_isCus) {
+        NSDictionary *info = self.typeList[row];
+        _titleLab.text = info[@"title"];
+    }
+}
+
 - (void)cancelBtnClick:(id)sender{
+    [self.titleLab resignFirstResponder];
     DetailTypeInfo *info = [DetailTypeInfo new];
     info.title = @"";
     [self backWithInfo:info];
 }
 
 - (void)sureBtnClick:(id)sender{
+    [self.titleLab resignFirstResponder];
     NSInteger row = [self.pickView selectedRowInComponent:0];
     NSDictionary *infoD = self.typeList[row];
     DetailTypeInfo *info = [DetailTypeInfo new];
     if (self.staue==1||self.staue==4) {
         info.id = [infoD[@"id"]intValue];
     }
-    info.title = infoD[@"title"];
+    BOOL isHi = [_titleStr isEqualToString:@"手寸"]&&[self.titleLab.text intValue]>0;
+    if (isHi) {
+        info.title = self.titleLab.text;
+    }else{
+        info.title = infoD[@"title"];
+    }
     [self backWithInfo:info];
 }
 

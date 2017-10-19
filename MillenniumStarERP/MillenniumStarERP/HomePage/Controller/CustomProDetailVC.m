@@ -32,6 +32,9 @@
 @property (nonatomic,  weak) IBOutlet UIButton *addBtn;
 @property (nonatomic,  weak) IBOutlet UILabel *numLab;
 @property (nonatomic,assign)float wid;
+@property (nonatomic,assign)BOOL isResh;
+@property (nonatomic,assign)BOOL isNote;
+
 @property (nonatomic,  copy)NSArray *typeArr;
 @property (nonatomic,  copy)NSArray *typeTArr;
 @property (nonatomic,  copy)NSArray *typeSArr;
@@ -44,12 +47,13 @@
 @property (nonatomic,  copy)NSArray*headImg;
 @property (nonatomic,  copy)NSArray*photos;
 @property (nonatomic,  copy)NSArray*specTitles;
+@property (nonatomic,  copy)NSArray *handArr;
+@property (nonatomic,  copy)NSArray *numArr;
 @property (nonatomic,  copy)NSString*lastMess;
+
 @property (nonatomic,  strong)NSMutableArray*mutArr;
 @property (nonatomic,  strong)NSMutableArray*nums;
 @property (nonatomic,  strong)NSMutableArray*bools;
-@property (nonatomic,  copy)NSArray *handArr;
-@property (nonatomic,  copy)NSArray *numArr;
 @property (nonatomic,  strong)DetailModel *modelInfo;
 @property (nonatomic,  strong)CustomPickView *pickView;
 @property (nonatomic,  strong)DetailTextCustomView *textCView;
@@ -217,7 +221,9 @@
                                                        response.data[@"model"]];
                 [self setupBaseListData:modelIn];
                 [self creatCusTomHeadView];
-                [self.tableView reloadData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
             }
             if ([YQObjectBool boolForObject:response.data[@"stoneType"]]) {
                 self.chooseArr = @[response.data[@"stoneType"],
@@ -439,6 +445,9 @@
             [self chooseType:dict];
         }else if (staue==2){
             self.handStr = info.title;
+            if(info.id==12){
+                self.isNote = YES;
+            }
         }else if (staue==3){
             [self.nums setObject:info.title atIndexedSubscript:path.section];
         }else if (staue==4){
@@ -523,14 +532,17 @@
                     [self openNumberAndhandSize:2 and:indexPath];
                 }else{
                     self.proId = [messArr intValue];
+                    self.isResh = YES;
                     [self setupDetailData];
                 }
             }
         };
+        firstCell.refresh = self.isResh;
         firstCell.modelInfo = self.modelInfo;
         firstCell.messArr = self.proNum;
         firstCell.handSize = self.handStr;
         firstCell.editId = self.isEdit;
+        self.isResh = NO;
         return firstCell;
     }else if (indexPath.row==self.mutArr.count+1){
         CustomEditTableCell *editCell = [CustomEditTableCell cellWithTableView:tableView];
@@ -550,7 +562,9 @@
                 [self addOrder:message];
             }
         };
+        lastCell.isNote = self.isNote;
         lastCell.message = self.lastMess;
+        self.isNote = NO;
         return lastCell;
     }else{
         CustomProCell *proCell = [CustomProCell cellWithTableView:tableView];
@@ -587,7 +601,7 @@
 - (void)openNumberAndhandSize:(int)staue and:(NSIndexPath *)index{
     if (staue==2) {
         self.pickView.typeList = self.handArr;
-        NSString *title = self.handStr?self.handStr:@"12";
+        NSString *title = self.handStr.length>0?self.handStr:@"12";
         self.pickView.titleStr = @"手寸";
         self.pickView.selTitle = title;
     }else{

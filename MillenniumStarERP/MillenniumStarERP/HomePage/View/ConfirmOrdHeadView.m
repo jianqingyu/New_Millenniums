@@ -54,6 +54,11 @@
     }
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
+
 - (void)setAddInfo:(AddressInfo *)addInfo{
     if (addInfo) {
         _addInfo = addInfo;

@@ -7,7 +7,7 @@
 //
 
 #import "CustomInputPassView.h"
-@interface CustomInputPassView()
+@interface CustomInputPassView()<UITextFieldDelegate>
 @property (nonatomic,strong)UITextField *message;
 @end
 @implementation CustomInputPassView
@@ -54,6 +54,7 @@
     }];
     
     _message = [UITextField new];
+    _message.delegate = self;
     _message.borderStyle = UITextBorderStyleNone;
     _message.secureTextEntry = YES;
     _message.font = [UIFont systemFontOfSize:14];
@@ -100,14 +101,21 @@
 
 - (void)buttonClick:(UIButton *)sender{
     [_message resignFirstResponder];
-    self.clickBlock(_message.text);
-    _message.text = @"";
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [_message resignFirstResponder];
-    self.clickBlock(_message.text);
-    _message.text = @"";
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    BOOL isYes = [textField.text isEqualToString:[AccountTool account].password];
+    self.clickBlock(isYes);
+    textField.text = @"";
 }
 
 @end

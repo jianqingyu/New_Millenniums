@@ -28,18 +28,52 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadHomeView];
+    [self createHomeView];
     [IQKeyboardManager sharedManager].shouldResignOnTouchOutside = YES;
-    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
     NSString *name = [AccountTool account].userName;
     NSString *password = [AccountTool account].password;
     self.loginView.nameFie.text = name;
     self.loginView.passWordFie.text = password;
+    if (_noLogin) {
+        return;
+    }
     [self loadNewVersion];
+}
+#pragma mark -- 加载登录页面
+- (void)createHomeView{
+    CusTomLoginView *loginV = [CusTomLoginView createLoginView];
+    [self.view addSubview:loginV];
+    loginV.btnBack = ^(int staue){
+        if (staue==1) {
+            if (_noLogin) {
+                [self dismissViewControllerAnimated:YES completion:nil];
+                if (self.back) {
+                    self.back(YES);
+                }
+                return;
+            }
+            if (self.isVer) {
+                [MBProgressHUD showMessage:self.versionDic[@"message"]];
+                return;
+            }
+            [self  changeHomeViewCon];
+        }else if (staue==2){
+            [self registerClick];
+        }else{
+            [self forgotKeyClick];
+        }
+    };
+    [loginV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(0);
+        make.top.equalTo(self.view).offset(0);
+        make.right.equalTo(self.view).offset(0);
+        make.bottom.equalTo(self.view).offset(0);
+    }];
 }
 #pragma mark -- 检查新版本
 - (void)loadNewVersion{
@@ -107,34 +141,6 @@
     }else{
         //不支持指纹识别，LOG出错误详情
     }
-}
-
-- (void)loadHomeView{
-    CusTomLoginView *loginV = [CusTomLoginView createLoginView];
-    [self.view addSubview:loginV];
-    loginV.btnBack = ^(int staue){
-        if (staue==1) {
-            if (_noLogin) {
-                [self dismissViewControllerAnimated:YES completion:nil];
-                return;
-            }
-            if (self.isVer) {
-                [MBProgressHUD showMessage:self.versionDic[@"message"]];
-                return;
-            }
-            [self  changeHomeViewCon];
-        }else if (staue==2){
-            [self registerClick];
-        }else{
-            [self forgotKeyClick];
-        }
-    };
-    [loginV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(0);
-        make.top.equalTo(self.view).offset(0);
-        make.right.equalTo(self.view).offset(0);
-        make.bottom.equalTo(self.view).offset(0);
-    }];
 }
 
 - (void)changeHomeViewCon{

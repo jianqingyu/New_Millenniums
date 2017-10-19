@@ -233,10 +233,11 @@
             if ([YQObjectBool boolForObject:response.data]){
                 [self setupDataWithData:response.data];
                 [self setupListDataWithDict:response.data];
-                [self.tableView reloadData];
-                self.view.userInteractionEnabled = YES;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
             }
-            [SVProgressHUD dismiss];
+            self.view.userInteractionEnabled = YES;
         }
     } requestURL:url params:params];
 }

@@ -34,14 +34,14 @@
     [self setupFootBtn];
     [self  loadHomeData];
     self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
-//    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝2/id1244977034?mt=8";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeHeadImg:) name:NotificationImg object:nil];
 }
 
 - (void)changeHeadImg:(NSNotification *)notification{
     NSString *imgUrl = notification.userInfo[UserInfoImg];
-    [self.headView.titleImg sd_setImageWithURL:[NSURL URLWithString:imgUrl] placeholderImage:DefaultImage];
+    [self.headView.titleImg sd_setImageWithURL:[NSURL URLWithString:imgUrl]
+                              placeholderImage:DefaultImage];
 }
 
 - (void)orientChange:(NSNotification *)notification{
@@ -79,7 +79,8 @@
     HomeHeadView *headView = [HomeHeadView view];
     [self.view addSubview:headView];
     self.headView = headView;
-    [headView.setBtn addTarget:self action:@selector(setClick:) forControlEvents:UIControlEventTouchUpInside];
+    [headView.setBtn addTarget:self action:@selector(setClick:)
+                                forControlEvents:UIControlEventTouchUpInside];
     [headView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(0);
         make.left.equalTo(self.view).offset(0);
@@ -91,7 +92,8 @@
     flowLayout.minimumInteritemSpacing = 5.0f;//左右间隔
     flowLayout.minimumLineSpacing = 5.0f;//上下间隔
     flowLayout.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);//边距距
-    self.rightCollection = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+    self.rightCollection = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                              collectionViewLayout:flowLayout];
     self.rightCollection.backgroundColor = DefaultColor;
     self.rightCollection.delegate = self;
     self.rightCollection.dataSource = self;
@@ -114,7 +116,8 @@
     footBtn.backgroundColor = DefaultColor;
     [footBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [footBtn setTitle:@"重新加载" forState:UIControlStateNormal];
-    [footBtn addTarget:self action:@selector(btnClick) forControlEvents:UIControlEventTouchUpInside];
+    [footBtn addTarget:self action:@selector(btnClick)
+                                  forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:footBtn];
     [footBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.headView.mas_bottom).with.offset(20);

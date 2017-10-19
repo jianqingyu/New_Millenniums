@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void (^CPutcallBack)(NSString *message);
+typedef void (^CPutcallBack)(BOOL isYes);
 @interface CustomInputPassView : UIView
 @property (nonatomic, copy)CPutcallBack clickBlock;
 @end

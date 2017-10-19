@@ -7,6 +7,7 @@
 //
 
 #import "CustomFirstCell.h"
+
 @interface CustomFirstCell()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *titleFie;
@@ -33,25 +34,40 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self = [[NSBundle mainBundle]loadNibNamed:@"CustomFirstCell" owner:nil options:nil][0];
-        self.fie1.delegate = self;
-        self.fie1.tag = 1;
+        self.titleFie.tag = 1;
         self.titleFie.delegate = self;
-        self.titleFie.tag = 2;
+        
+        self.fie1.tag = 2;
+        self.fie1.delegate = self;
+        
+        self.handFie.tag = 3;
+        self.handFie.delegate = self;
+        self.handFie.inputView = [[UIView alloc]initWithFrame:CGRectZero];
+        self.handFie.inputAccessoryView = [[UIView alloc] init];
     }
     return self;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
+    if (textField.tag==3) {
+        [self handClick];
+        return;
+    }
+    if (textField.tag==1) {
+        if (self.dBack) {
+            self.dBack(YES);
+        }
+    }
     [textField selectAll:nil];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
-    if (textField.tag==1) {
-        [self backText:[textField.text floatValue]];
+    if (textField.tag==1&&![textField.text isEqualToString:_modelInfo.title]) {
+        [self loadSearchProduct:textField.text];
         return;
     }
-    if (textField.tag==2&&![textField.text isEqualToString:_modelInfo.title]) {
-        [self loadSearchProduct:textField.text];
+    if (textField.tag==2) {
+        [self backText:[textField.text floatValue]];
         return;
     }
 }
@@ -78,7 +94,7 @@
     } requestURL:url params:params];
 }
 
-- (IBAction)handClick:(id)sender {
+- (void)handClick{
     if (self.MessBack) {
         self.MessBack(NO,@"");
     }
@@ -141,6 +157,13 @@
         self.titleFie.userInteractionEnabled = !self.editId;
         self.ptLab.text = _modelInfo.weight;
         [self.btn setTitle:_modelInfo.categoryTitle forState:UIControlStateNormal];
+
+        if (self.refresh) {
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                [self.fie1 becomeFirstResponder];
+            });
+        }
     }
 }
 
@@ -155,10 +178,7 @@
     if (handSize) {
         _handSize = handSize;
         if (_handSize.length>0&&![_handSize isEqualToString:@"0"]) {
-            self.handbtn.selected = YES;
-            [self.handbtn setTitle:_handSize forState:UIControlStateSelected];
-        }else{
-            self.handbtn.selected = NO;
+            self.handFie.text = _handSize;
         }
     }
 }

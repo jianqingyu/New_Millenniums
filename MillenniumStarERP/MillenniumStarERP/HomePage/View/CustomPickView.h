@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YQTextView.h"
 typedef void (^CustomBtmPickBack)(int staue,id model);
 @interface CustomPickView : UIView
 @property (nonatomic,assign)int staue;
+@property (nonatomic,assign)BOOL isCus;
 @property (nonatomic,  copy)NSString *titleStr;
 @property (nonatomic,  copy)NSString *selTitle;
 @property (nonatomic,  copy)NSArray *typeList;

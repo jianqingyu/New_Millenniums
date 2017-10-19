@@ -29,6 +29,7 @@
     if (self) {
         self = [[NSBundle mainBundle]loadNibNamed:@"CustomLastCell" owner:nil options:nil][0];
         self.textView.delegate = self;
+        self.textView.returnKeyType = UIReturnKeyNext;
     }
     return self;
 }
@@ -62,6 +63,12 @@
     if (message) {
         _message = message;
         self.textView.text = _message;
+        if (self.isNote) {
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                [self.textView becomeFirstResponder];
+            });
+        }
     }
 }
 
