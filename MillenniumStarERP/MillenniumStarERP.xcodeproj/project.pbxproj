@@ -66,6 +66,8 @@
 		792C01C21D890682005943AE /* ConfirmOrdHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 792C01C11D890682005943AE /* ConfirmOrdHeadView.xib */; };
 		792C01C61D891FB3005943AE /* ConfirmOrdCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 792C01C41D891FB3005943AE /* ConfirmOrdCell.m */; };
 		792C01C71D891FB3005943AE /* ConfirmOrdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 792C01C51D891FB3005943AE /* ConfirmOrdCell.xib */; };
+		792CEB251F99D0E000BB81B7 /* OrderPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 792CEB231F99D0E000BB81B7 /* OrderPassVC.m */; };
+		792CEB261F99D0E000BB81B7 /* OrderPassVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 792CEB241F99D0E000BB81B7 /* OrderPassVC.xib */; };
 		792DF4BB1E021B7E00128456 /* ChooseInvoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 792DF4B91E021B7E00128456 /* ChooseInvoiceCell.m */; };
 		792DF4BC1E021B7E00128456 /* ChooseInvoiceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 792DF4BA1E021B7E00128456 /* ChooseInvoiceCell.xib */; };
 		792E2B7E1DC9E0A10050C6D0 /* OrderPriceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 792E2B7D1DC9E0A10050C6D0 /* OrderPriceInfo.m */; };
@@ -523,6 +525,9 @@
 		792C01C31D891FB3005943AE /* ConfirmOrdCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmOrdCell.h; sourceTree = "<group>"; };
 		792C01C41D891FB3005943AE /* ConfirmOrdCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmOrdCell.m; sourceTree = "<group>"; };
 		792C01C51D891FB3005943AE /* ConfirmOrdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmOrdCell.xib; sourceTree = "<group>"; };
+		792CEB221F99D0E000BB81B7 /* OrderPassVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderPassVC.h; sourceTree = "<group>"; };
+		792CEB231F99D0E000BB81B7 /* OrderPassVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderPassVC.m; sourceTree = "<group>"; };
+		792CEB241F99D0E000BB81B7 /* OrderPassVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderPassVC.xib; sourceTree = "<group>"; };
 		792DF4B81E021B7E00128456 /* ChooseInvoiceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseInvoiceCell.h; sourceTree = "<group>"; };
 		792DF4B91E021B7E00128456 /* ChooseInvoiceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseInvoiceCell.m; sourceTree = "<group>"; };
 		792DF4BA1E021B7E00128456 /* ChooseInvoiceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseInvoiceCell.xib; sourceTree = "<group>"; };
@@ -1772,6 +1777,9 @@
 				7933D9221D9CA879006C0356 /* SubCityTableVc.m */,
 				7933D91F1D9CA879006C0356 /* DistrictTableVc.h */,
 				7933D9201D9CA879006C0356 /* DistrictTableVc.m */,
+				792CEB221F99D0E000BB81B7 /* OrderPassVC.h */,
+				792CEB231F99D0E000BB81B7 /* OrderPassVC.m */,
+				792CEB241F99D0E000BB81B7 /* OrderPassVC.xib */,
 				796218EE1D98F53200FE01D6 /* FinishedProInfoVC.h */,
 				796218EF1D98F53200FE01D6 /* FinishedProInfoVC.m */,
 				796218F01D98F53200FE01D6 /* FinishedProInfoVC.xib */,
@@ -2344,6 +2352,7 @@
 				79B254941EE6946300BBD7A5 /* ShareSDKUI.bundle in Resources */,
 				796BFF8D1DE28F73008D78A4 /* ProduceHeadView.xib in Resources */,
 				796FD1811E6E3CDE00A50DDC /* SettlementListVC.xib in Resources */,
+				792CEB261F99D0E000BB81B7 /* OrderPassVC.xib in Resources */,
 				794F289C1EDEB6B1003EC54D /* NakedDriListOrderVc.xib in Resources */,
 				7948B3461E79138100909601 /* SearchResultsVC.xib in Resources */,
 				7948B33B1E78DEB200909601 /* CustomDatePick.xib in Resources */,
@@ -2699,6 +2708,7 @@
 				793B9F551D9112DF00DCFB6E /* ScreeningRightView.m in Sources */,
 				7930F59F1E6D0862008549C3 /* SettlementFootView.m in Sources */,
 				79E8B23F1D800279009D7296 /* EditAddressCell.m in Sources */,
+				792CEB251F99D0E000BB81B7 /* OrderPassVC.m in Sources */,
 				79FCA3AF1D990CA0001BC8BC /* FinishedFootView.m in Sources */,
 				7940ACE11E84C5E400216916 /* SearchOrderView.m in Sources */,
 				79FF7A8D1E6D3A81003EF5E7 /* OrderSettlementTableCell.m in Sources */,

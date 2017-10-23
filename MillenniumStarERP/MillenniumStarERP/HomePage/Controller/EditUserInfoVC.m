@@ -15,6 +15,7 @@
 #import "CommonUsedTool.h"
 #import "MasterCountInfo.h"
 #import "EditShowPriceVC.h"
+#import "OrderPassVC.h"
 #import <ShareSDK/ShareSDK.h>
 #import "CustomInputPassView.h"
 #import "LoginViewController.h"
@@ -53,7 +54,7 @@
 - (void)setBaseViewData{
 //    self.textArr = @[@[@"用户名",@"修改头像"],@[@"设置",@"版本详情",@"修改密码",
 //                          @"修改手机号码",@"管理地址",@"清理缓存",@"分享该应用"]];
-    self.textArr = @[@[@"用户名",@"修改头像"],@[@"设置",@"修改密码",@"管理地址",@"清理缓存"]];
+    self.textArr = @[@[@"用户名",@"修改头像"],@[@"设置",@"修改密码",@"管理地址",@"清理缓存",@"订单审核"]];
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -247,6 +248,9 @@
                 [self.navigationController pushViewController:addVc animated:YES];
             }else if(indexPath.row==3){
                 [self clearTmpPics];
+            }else{
+                OrderPassVC *orderList = [OrderPassVC new];
+                [self.navigationController pushViewController:orderList animated:YES];
             }
             break;
         default:
