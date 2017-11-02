@@ -23,8 +23,9 @@
     _webView.scrollView.showsVerticalScrollIndicator = NO;
     _webView.delegate = self;
     
-    self.url = @"http://appapi1.fanerweb.com/htapp/pages/kh/";
-    NSURLRequest *urlRe = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url]];
+    self.url = @"http://appapi1.fanerweb.com/htapp/index.html";
+    NSString *reUrl = [NSString stringWithFormat:@"%@?tokenKey=%@",self.url,[AccountTool account].tokenKey];
+    NSURLRequest *urlRe = [NSURLRequest requestWithURL:[NSURL URLWithString:reUrl]];
     [self.webView loadRequest:urlRe];
     self.navigationController.delegate = self;
     [self creatNaviBtn];
@@ -42,10 +43,10 @@
 
 - (void)creatNaviBtn{
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.frame = CGRectMake(10, 20, 54, 54);
+    btn.frame = CGRectMake(5, 20, 30, 50);
     btn.backgroundColor = [UIColor clearColor];
     [btn addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
-    [btn setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
+    [btn setImage:[UIImage imageNamed:@"icon_return"] forState:UIControlStateNormal];
     [self.view addSubview:btn];
 }
 

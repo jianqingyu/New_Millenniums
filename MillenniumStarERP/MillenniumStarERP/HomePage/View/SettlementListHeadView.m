@@ -46,6 +46,7 @@
         self.purLab.text = [NSString stringWithFormat:@"成色 : %@",_headInfo.purityName];
         self.numLab.text = [NSString stringWithFormat:@"数量 : %@件",_headInfo.number];
         self.priceLab.text = [OrderNumTool strWithPrice:_headInfo.totalPrice];
+        self.priceLab.hidden = !self.isShow;
     }
 }
 

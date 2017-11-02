@@ -150,6 +150,9 @@
 }
 
 - (void)cancelClick{
+    StorageDataTool *data = [StorageDataTool shared];
+    data.addInfo = nil;
+    data.cusInfo = nil;
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     window.rootViewController = [[LoginViewController alloc]init];
 }

@@ -39,7 +39,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 @property (nonatomic,assign)int isCan;
 @property (nonatomic,assign)int idx;
 @property (nonatomic,assign)float wid;
-@property (nonatomic,assign)BOOL isResh;
+@property (nonatomic,assign)int isResh;
 @property (nonatomic,assign)BOOL isNote;
 
 @property (nonatomic,  copy)NSString*proNum;
@@ -630,7 +630,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                     }else{
                         self.proId = [messArr intValue];
                         [self clearNakedDri];
-                        self.isResh = YES;
+                        self.isResh = 2;
                         [self setupDetailData];
                     }
                 }
@@ -647,7 +647,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
             firstCell.modelInfo = self.modelInfo;
             firstCell.messArr = self.proNum;
             firstCell.handSize = self.handStr;
-            self.isResh = NO;
+            self.isResh = 0;
             return firstCell;
         }
     }else if (indexPath.row==self.mutArr.count+self.idx-1){
@@ -660,6 +660,9 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
             }
             if (isYes) {
                 [self addOrder:message];
+                self.isResh = 1;
+                NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self.tableView reloadRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationNone];
             }
         };
         lastCell.isNote = self.isNote;

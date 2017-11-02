@@ -38,6 +38,8 @@
         [self.showBtn setOn:_mInfo.isShowOriginalPrice];
         self.shopFie.text = [NSString stringWithFormat:@"%0.0f",_mInfo.modelAddtion];
         self.driFie.text = [NSString stringWithFormat:@"%0.0f",_mInfo.stoneAddtion];
+        self.dri2Fie.text = [NSString stringWithFormat:@"%0.0f",_mInfo.stoneAddtion1];
+        self.dri3Fie.text = [NSString stringWithFormat:@"%0.0f",_mInfo.stoneAddtion2];
     }
 }
 
@@ -89,6 +91,36 @@
     int str = [self.driFie.text intValue];
     str++;
     self.driFie.text = [NSString stringWithFormat:@"%d",str];
+}
+
+- (IBAction)dri2Acc:(id)sender {
+    int str = [self.dri2Fie.text intValue];
+    if (str==1||str<1) {
+        return;
+    }
+    str--;
+    self.dri2Fie.text = [NSString stringWithFormat:@"%d",str];
+}
+
+- (IBAction)dri2Add:(id)sender {
+    int str = [self.dri2Fie.text intValue];
+    str++;
+    self.dri2Fie.text = [NSString stringWithFormat:@"%d",str];
+}
+
+- (IBAction)dri3Acc:(id)sender {
+    int str = [self.dri3Fie.text intValue];
+    if (str==1||str<1) {
+        return;
+    }
+    str--;
+    self.dri3Fie.text = [NSString stringWithFormat:@"%d",str];
+}
+
+- (IBAction)dri3Add:(id)sender {
+    int str = [self.dri3Fie.text intValue];
+    str++;
+    self.dri3Fie.text = [NSString stringWithFormat:@"%d",str];
 }
 
 @end

@@ -73,6 +73,15 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    if (textField.tag==2) {
+       [self backText:[textField.text floatValue]];
+        [self.handFie becomeFirstResponder];
+        return YES;
+    }
+    if (textField.tag==1&&[textField.text isEqualToString:_modelInfo.title]) {
+        [self.fie1 becomeFirstResponder];
+        return YES;
+    }
     [textField resignFirstResponder];
     return YES;
 }
@@ -88,6 +97,7 @@
                 self.MessBack(NO,response.data[@"id"]);
             }
         }else{
+            [self.titleFie becomeFirstResponder];
             self.titleFie.text = _modelInfo.title;
             [MBProgressHUD showError:response.message];
         }
@@ -157,14 +167,27 @@
         self.titleFie.userInteractionEnabled = !self.editId;
         self.ptLab.text = _modelInfo.weight;
         [self.btn setTitle:_modelInfo.categoryTitle forState:UIControlStateNormal];
-
-        if (self.refresh) {
-            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
-            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-                [self.fie1 becomeFirstResponder];
-            });
+        switch (self.refresh) {
+            case 1:
+                [self customFieFirstWith:self.titleFie];
+                break;
+            case 2:
+                [self customFieFirstWith:self.fie1];
+                break;
+            case 3:
+                [self customFieFirstWith:self.handFie];
+                break;
+            default:
+                break;
         }
     }
+}
+
+- (void)customFieFirstWith:(UITextField *)fie{
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [fie becomeFirstResponder];
+    });
 }
 
 - (void)setMessArr:(NSString *)messArr{

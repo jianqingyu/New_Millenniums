@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0B02C56CEF9CD4F9CC95C4A6 /* libPods-MillenniumStarERP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7A030BEEA4F618DC154CD2 /* libPods-MillenniumStarERP.a */; };
+		2919DDE51FA0391900F27C17 /* ShowPriceHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2919DDE41FA0391900F27C17 /* ShowPriceHeadView.m */; };
+		296079931FA039C100F7D515 /* ShowPriceHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 296079921FA039C100F7D515 /* ShowPriceHeadView.xib */; };
 		790376021EDFE30400344FCD /* NakedDriSeaListInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 790376011EDFE30400344FCD /* NakedDriSeaListInfo.m */; };
 		79050ADB1DF7B84700DCEA69 /* DetailHeadInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 79050ADA1DF7B84700DCEA69 /* DetailHeadInfo.m */; };
 		79050ADE1DF7F92B00DCEA69 /* ZBButten.m in Sources */ = {isa = PBXBuildFile; fileRef = 79050ADD1DF7F92B00DCEA69 /* ZBButten.m */; };
@@ -253,7 +255,6 @@
 		7969FB771DBE068900139681 /* ChooseAddressTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7969FB751DBE068900139681 /* ChooseAddressTableCell.m */; };
 		7969FB781DBE068900139681 /* ChooseAddressTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7969FB761DBE068900139681 /* ChooseAddressTableCell.xib */; };
 		796B1F5B1E6FACFC006B7330 /* AppDownViewC.m in Sources */ = {isa = PBXBuildFile; fileRef = 796B1F591E6FACFC006B7330 /* AppDownViewC.m */; };
-		796B1F5C1E6FACFC006B7330 /* AppDownViewC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 796B1F5A1E6FACFC006B7330 /* AppDownViewC.xib */; };
 		796BFF871DE28B11008D78A4 /* ProductionOrderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 796BFF851DE28B11008D78A4 /* ProductionOrderVC.m */; };
 		796BFF881DE28B11008D78A4 /* ProductionOrderVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 796BFF861DE28B11008D78A4 /* ProductionOrderVC.xib */; };
 		796BFF8B1DE28F60008D78A4 /* ProduceHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 796BFF8A1DE28F60008D78A4 /* ProduceHeadView.m */; };
@@ -425,6 +426,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2919DDE31FA0391800F27C17 /* ShowPriceHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowPriceHeadView.h; sourceTree = "<group>"; };
+		2919DDE41FA0391900F27C17 /* ShowPriceHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowPriceHeadView.m; sourceTree = "<group>"; };
+		296079921FA039C100F7D515 /* ShowPriceHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowPriceHeadView.xib; sourceTree = "<group>"; };
 		2DA28B36AF90E2D5C539E66B /* Pods-MillenniumStarERP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MillenniumStarERP.release.xcconfig"; path = "Pods/Target Support Files/Pods-MillenniumStarERP/Pods-MillenniumStarERP.release.xcconfig"; sourceTree = "<group>"; };
 		790376001EDFE30400344FCD /* NakedDriSeaListInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NakedDriSeaListInfo.h; sourceTree = "<group>"; };
 		790376011EDFE30400344FCD /* NakedDriSeaListInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NakedDriSeaListInfo.m; sourceTree = "<group>"; };
@@ -863,7 +867,6 @@
 		7969FB761DBE068900139681 /* ChooseAddressTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseAddressTableCell.xib; sourceTree = "<group>"; };
 		796B1F581E6FACFC006B7330 /* AppDownViewC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDownViewC.h; sourceTree = "<group>"; };
 		796B1F591E6FACFC006B7330 /* AppDownViewC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDownViewC.m; sourceTree = "<group>"; };
-		796B1F5A1E6FACFC006B7330 /* AppDownViewC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppDownViewC.xib; sourceTree = "<group>"; };
 		796BFF841DE28B11008D78A4 /* ProductionOrderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductionOrderVC.h; sourceTree = "<group>"; };
 		796BFF851DE28B11008D78A4 /* ProductionOrderVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductionOrderVC.m; sourceTree = "<group>"; };
 		796BFF861DE28B11008D78A4 /* ProductionOrderVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductionOrderVC.xib; sourceTree = "<group>"; };
@@ -1448,7 +1451,6 @@
 				79655E1F1D7D0F1D006B90FC /* HelpMenuVC.xib */,
 				796B1F581E6FACFC006B7330 /* AppDownViewC.h */,
 				796B1F591E6FACFC006B7330 /* AppDownViewC.m */,
-				796B1F5A1E6FACFC006B7330 /* AppDownViewC.xib */,
 			);
 			path = HelpMenu;
 			sourceTree = "<group>";
@@ -1900,6 +1902,9 @@
 				7915BCDF1E7A6F0100407927 /* ProductionDetailView.m */,
 				7915BCE11E7A6F5100407927 /* SettlementDetailView.h */,
 				7915BCE21E7A6F5100407927 /* SettlementDetailView.m */,
+				2919DDE31FA0391800F27C17 /* ShowPriceHeadView.h */,
+				2919DDE41FA0391900F27C17 /* ShowPriceHeadView.m */,
+				296079921FA039C100F7D515 /* ShowPriceHeadView.xib */,
 				7940ACDF1E84C5E400216916 /* SearchOrderView.h */,
 				7940ACE01E84C5E400216916 /* SearchOrderView.m */,
 				7915BCE41E7A6F9B00407927 /* FinishedDetailView.h */,
@@ -2336,7 +2341,6 @@
 				79655D911D7D0668006B90FC /* LaunchScreen.storyboard in Resources */,
 				79409ADD1F3846BC00B06A99 /* ConfirmOrderCollectionVC.xib in Resources */,
 				7958EF281D87DABA009084B5 /* CustomProDetailVC.xib in Resources */,
-				796B1F5C1E6FACFC006B7330 /* AppDownViewC.xib in Resources */,
 				79EC14C71F27421F0057586E /* EditUserInfoVC.xib in Resources */,
 				79EC14C21F2741A90057586E /* NakedDriLibHeadView.xib in Resources */,
 				7930F5A11E6D0881008549C3 /* SettlementFootView.xib in Resources */,
@@ -2373,6 +2377,7 @@
 				796BFF881DE28B11008D78A4 /* ProductionOrderVC.xib in Resources */,
 				79C196401DB0BCB70098FB89 /* EditPhoneNumVc.xib in Resources */,
 				79ED9EF01DC08BAF00257454 /* OrderListTableCell.xib in Resources */,
+				296079931FA039C100F7D515 /* ShowPriceHeadView.xib in Resources */,
 				79CD6B9A1E77E39300492463 /* SearchOrderVc.xib in Resources */,
 				79655DF31D7D0AAA006B90FC /* RegisterViewController.xib in Resources */,
 				796401071D8681A2006E5338 /* PopViewMultipleCell.xib in Resources */,
@@ -2582,6 +2587,7 @@
 				796793F61D93B46F005AEBFB /* ScreeningHeadSView.m in Sources */,
 				7969657D1EDFABA600F6B027 /* NakedDriLibInfo.m in Sources */,
 				794F289B1EDEB6B1003EC54D /* NakedDriListOrderVc.m in Sources */,
+				2919DDE51FA0391900F27C17 /* ShowPriceHeadView.m in Sources */,
 				7958EF2C1D87DB0C009084B5 /* CustomProCell.m in Sources */,
 				794F22481E71306B0095899E /* DelSListInfo.m in Sources */,
 				79050ADB1DF7B84700DCEA69 /* DetailHeadInfo.m in Sources */,
@@ -2888,7 +2894,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.millenniumStar.mStar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "d14e7a18-2b3b-4bda-be8f-49358968900c";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2926,7 +2932,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.millenniumStar.mStar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "d14e7a18-2b3b-4bda-be8f-49358968900c";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

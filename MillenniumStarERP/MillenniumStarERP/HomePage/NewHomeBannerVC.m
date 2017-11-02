@@ -62,6 +62,7 @@
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             StorageDataTool *data = [StorageDataTool shared];
+            data.isMain = [response.data[@"IsMasterAccount"]boolValue];
             if ([YQObjectBool boolForObject:response.data[@"address"]]){
                 data.addInfo = [AddressInfo objectWithKeyValues:response.data[@"address"]];
             }

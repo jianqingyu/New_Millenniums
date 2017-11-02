@@ -48,6 +48,7 @@
         self.setDate.text = [NSString stringWithFormat:@"出货日期 : %@",string];
         NSString *dePrice = [OrderNumTool strWithPrice:_listInfo.totalPrice];
         self.priceLab.text = [NSString stringWithFormat:@"价格 : %@",dePrice];
+        self.priceLab.hidden = !self.isShow;
         self.numLab.text = [NSString stringWithFormat:@"数量 : %@件",_listInfo.number];
     }
 }

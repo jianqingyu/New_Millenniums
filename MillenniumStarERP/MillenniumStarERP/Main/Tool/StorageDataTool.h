@@ -14,7 +14,7 @@
 #import "NakedDriSeaListInfo.h"
 @interface StorageDataTool : NSObject
 + (instancetype)shared;
-
+@property (nonatomic,assign)BOOL isMain;
 @property (nonatomic,copy)NSString *word;
 @property (nonatomic,copy)NSString *note;
 @property (nonatomic,copy)NSString *handSize;

@@ -17,7 +17,7 @@ typedef void (^CustomFirBack)(BOOL isSel,NSString*messArr);
 @property (nonatomic,  copy) NSString *handSize;
 @property (nonatomic,  copy) NSString *certCode;
 @property (nonatomic,assign) BOOL isNew;
-@property (nonatomic,assign) BOOL refresh;
+@property (nonatomic,assign) int refresh;
 @property (nonatomic,  copy) CustomFirBack MessBack;
 @property (nonatomic,  copy) DisBack dBack;
 @property (nonatomic,strong) DetailModel *modelInfo;

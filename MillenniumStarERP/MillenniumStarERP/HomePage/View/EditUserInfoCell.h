@@ -13,4 +13,6 @@
 @property (nonatomic,strong)MasterCountInfo *mInfo;
 @property (weak, nonatomic) IBOutlet UITextField *shopFie;
 @property (weak, nonatomic) IBOutlet UITextField *driFie;
+@property (weak, nonatomic) IBOutlet UITextField *dri2Fie;
+@property (weak, nonatomic) IBOutlet UITextField *dri3Fie;
 @end

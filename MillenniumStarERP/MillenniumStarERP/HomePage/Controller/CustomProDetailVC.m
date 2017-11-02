@@ -532,7 +532,7 @@
                     [self openNumberAndhandSize:2 and:indexPath];
                 }else{
                     self.proId = [messArr intValue];
-                    self.isResh = YES;
+                    self.isResh = 2;
                     [self setupDetailData];
                 }
             }
@@ -542,7 +542,7 @@
         firstCell.messArr = self.proNum;
         firstCell.handSize = self.handStr;
         firstCell.editId = self.isEdit;
-        self.isResh = NO;
+        self.isResh = 0;
         return firstCell;
     }else if (indexPath.row==self.mutArr.count+1){
         CustomEditTableCell *editCell = [CustomEditTableCell cellWithTableView:tableView];

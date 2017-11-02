@@ -13,9 +13,14 @@
 #import "SettlementListCell.h"
 #import "DeliveryOrderVC.h"
 #import "SettlementOrderVC.h"
+#import "ShowPriceHeadView.h"
+#import "CustomInputPassView.h"
 @interface SettlementDetailView()<UITableViewDelegate,UITableViewDataSource>{
     UITableView *_mTableView;
 }
+@property (nonatomic,assign)BOOL isShow;
+@property (nonatomic,  weak)ShowPriceHeadView *headView;
+@property (nonatomic,  weak)CustomInputPassView *putView;
 @end
 @implementation SettlementDetailView
 
@@ -38,9 +43,44 @@
     [_mTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(0);
         make.top.equalTo(self).offset(0);
-        make.right.equalTo(self).offset(0);
+        make.right.equalTo(self).offset(0); 
         make.bottom.equalTo(self).offset(0);
     }];
+    StorageDataTool *data = [StorageDataTool shared];
+    if (data.isMain) {
+        UIView *head = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SDevWidth, 44)];
+        ShowPriceHeadView *headV = [ShowPriceHeadView view];
+        headV.frame = CGRectMake(0, 0, SDevWidth, 44);
+        [head addSubview:headV];
+        [headV.showBtn addTarget:self action:@selector(ClickOn:) forControlEvents:UIControlEventTouchUpInside];
+        _mTableView.tableHeaderView = head;
+        self.headView = headV;
+        
+        CustomInputPassView *pass = [CustomInputPassView new];
+        pass.hidden = YES;
+        pass.clickBlock = ^(BOOL isYes){
+            if (isYes) {
+                self.isShow = !self.isShow;
+                [_mTableView reloadData];
+            }else{
+                [MBProgressHUD showError:@"密码错误"];
+            }
+            self.putView.hidden = YES;
+            [self.headView.showBtn setOn:self.isShow];
+        };
+        [self addSubview:pass];
+        [pass mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self).offset(0);
+            make.left.equalTo(self).offset(0);
+            make.right.equalTo(self).offset(0);
+            make.bottom.equalTo(self).offset(0);
+        }];
+        self.putView = pass;
+    }
+}
+
+- (void)ClickOn:(UISwitch *)swBtn{
+    self.putView.hidden = NO;
 }
 
 - (void)setDict:(NSDictionary *)dict{
@@ -83,6 +123,7 @@
         make.left.equalTo(headV).offset(0);
         make.right.equalTo(headV).offset(0);
     }];
+    headView.isShow = self.isShow;
     NSArray *arr = self.dict[@"orderList"];
     OrderSetmentInfo *list = arr[section];
     headView.headInfo = list;
@@ -94,6 +135,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     SettlementListCell *listCell = [SettlementListCell cellWithTableView:tableView];
+    listCell.isShow = self.isShow;
     NSArray *arr = self.dict[@"orderList"];
     OrderSetmentInfo *list = arr[indexPath.section];
     listCell.listInfo = list.moList[indexPath.row];
@@ -105,6 +147,10 @@
 }
 //出货单
 - (void)loadDeliveryWithIndex:(NSIndexPath *)indexPath{
+    if (!self.isShow) {
+//        [MBProgressHUD showError:@"不显示价格不可查看"];
+        return;
+    }
     NSArray *arr = self.dict[@"orderList"];
     OrderSetmentInfo *list = arr[indexPath.section];
     DelSListInfo *sInfo = list.moList[indexPath.row];
@@ -115,6 +161,9 @@
 }
 //结算单
 - (void)loadSettlementVC:(NSInteger)section{
+    if (!self.isShow) {
+        return;
+    }
     NSArray *arr = self.dict[@"orderList"];
     OrderSetmentInfo *list = arr[section];
     SettlementOrderVC *orderVc = [SettlementOrderVC new];

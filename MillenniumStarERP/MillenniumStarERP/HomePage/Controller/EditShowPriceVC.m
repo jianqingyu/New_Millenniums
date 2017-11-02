@@ -71,25 +71,15 @@
     driparams[@"tokenKey"] = [AccountTool account].tokenKey;
     driparams[@"value"] = self.editCell.shopFie.text;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
-            if ([YQObjectBool boolForObject:response.data]) {
-                
-            }
-        }
-        [SVProgressHUD dismiss];
     } requestURL:driUrl params:driparams];
     
     NSString *regiUrl = [NSString stringWithFormat:@"%@modifyUserStoneAddtionDo",baseUrl];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"value"] = self.editCell.driFie.text;
+    params[@"value1"] = self.editCell.dri2Fie.text;
+    params[@"value2"] = self.editCell.dri3Fie.text;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
-            if ([YQObjectBool boolForObject:response.data]) {
-                
-            }
-        }
-        [SVProgressHUD dismiss];
     } requestURL:regiUrl params:params];
 }
 
@@ -103,7 +93,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row==3) {
-        return 145;
+        return 245;
     }
     return 44;
 }
